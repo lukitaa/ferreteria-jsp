@@ -4,6 +4,8 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<%@page import="servlets.SessionUser"%>
+<%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
@@ -14,6 +16,10 @@
         response.sendRedirect("login.jsp");
         return;
     }
+    
+    SessionUser sessionUser = Common.getSessionUser(request);
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>   
 
 <!DOCTYPE html>
@@ -49,18 +55,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="inicio">Inicio</a></li>
+                        <li class="active"><a href="home.jsp">Inicio</a></li>
                         <li><a href="historial">Historial</a></li>
                         <li><a href="productos">Productos</a></li>
+                        <% 
+                            if (sessionUser.isAdmin()){
+                        %>
                         <li><a href="usuarios">Usuarios</a></li>
+                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="productos">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -85,7 +99,11 @@
                         <div class="row">
                             <a href="historial" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
                             <a href="productos" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
-                            <a href="usuarios" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
+                            <% 
+                                if (sessionUser.isAdmin()){
+                            %>
+                                <a href="usuarios" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
+                            <% } %>
                         </div>
                     </div>
                 </div>

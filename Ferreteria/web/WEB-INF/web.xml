@@ -10,10 +10,6 @@
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Home</servlet-name>
-        <servlet-class>servlets.HomeServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Users</servlet-name>
         <servlet-class>servlets.UsersServlet</servlet-class>
     </servlet>
@@ -55,10 +51,6 @@
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Home</servlet-name>
-        <url-pattern>/inicio</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
