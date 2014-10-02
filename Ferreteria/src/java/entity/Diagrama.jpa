@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<jpa:entity-mappings status="GENERATED" id="_14115174314431" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm orm_2_1.xsd" xmlns:java="http://jcp.org/en/jsr/detail?id=270" xmlns:jpa="http://java.sun.com/xml/ns/persistence/orm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <jpa:entity class="Purchases" visibile="true" minimized="false" id="_14115174314434">
+        <jpa:table name="purchases"/>
+        <jpa:attributes>
+            <jpa:id name="idPurchase" attribute-type="java.lang.Integer" visibile="true" id="_14115174314748">
+                <jpa:column name="IdPurchase" unique="false" nullable="false" insertable="true" updatable="true" table="purchases"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:many-to-one name="idUser" target-entity="Users" optional="false" primaryKey="false" connected-entity-id="_14115174314596" connected-attribute-id="_141151743147420" visibile="true" id="_14115174314749">
+                <jpa:join-column name="IdUser" referenced-column-name="IdUser" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:one-to-many name="detailsCollection" target-entity="Details" mapped-by="idPurchase" connected-entity-id="_14115174314595" connected-attribute-id="_141151743147415" visibile="true" id="_141151743147410"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Details" visibile="true" minimized="false" id="_14115174314595">
+        <jpa:table name="details"/>
+        <jpa:attributes>
+            <jpa:id name="idDetail" attribute-type="java.lang.Integer" visibile="true" id="_141151743147411">
+                <jpa:column name="IdDetail" unique="false" nullable="false" insertable="true" updatable="true" table="details"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="amount" optional="false" attribute-type="int" visibile="true" id="_141151743147412">
+                <jpa:column name="Amount" unique="false" nullable="false" insertable="true" updatable="true" table="details"/>
+            </jpa:basic>
+            <jpa:basic name="price" optional="false" attribute-type="int" visibile="true" id="_141151743147413">
+                <jpa:column name="Price" unique="false" nullable="false" insertable="true" updatable="true" table="details"/>
+            </jpa:basic>
+            <jpa:many-to-one name="idProduct" target-entity="Products" optional="false" primaryKey="false" connected-entity-id="_14115174314597" connected-attribute-id="_141151743147425" visibile="true" id="_141151743147414">
+                <jpa:join-column name="IdProduct" referenced-column-name="IdProduct" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+            <jpa:many-to-one name="idPurchase" target-entity="Purchases" optional="false" primaryKey="false" connected-entity-id="_14115174314434" connected-attribute-id="_141151743147410" visibile="true" id="_141151743147415">
+                <jpa:join-column name="IdPurchase" referenced-column-name="IdPurchase" unique="false" nullable="true" insertable="true" updatable="true"/>
+            </jpa:many-to-one>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Users" visibile="true" minimized="false" id="_14115174314596">
+        <jpa:table name="users">
+            <jpa:unique-constraint>
+                <jpa:column-name>Username</jpa:column-name>
+            </jpa:unique-constraint>
+        </jpa:table>
+        <jpa:attributes>
+            <jpa:id name="idUser" attribute-type="java.lang.Integer" visibile="true" id="_141151743147416">
+                <jpa:column name="IdUser" unique="false" nullable="false" insertable="true" updatable="true" table="users"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="username" optional="false" attribute-type="java.lang.String" visibile="true" id="_141151743147417">
+                <jpa:column name="Username" unique="false" nullable="false" insertable="true" updatable="true" table="users" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="password" optional="false" attribute-type="java.lang.String" visibile="true" id="_141151743147418">
+                <jpa:column name="Password" unique="false" nullable="false" insertable="true" updatable="true" table="users" length="255"/>
+            </jpa:basic>
+            <jpa:basic name="admin" optional="false" attribute-type="boolean" visibile="true" id="_141151743147419">
+                <jpa:column name="Admin" unique="false" nullable="false" insertable="true" updatable="true" table="users"/>
+            </jpa:basic>
+            <jpa:one-to-many name="purchasesCollection" target-entity="Purchases" mapped-by="idUser" connected-entity-id="_14115174314434" connected-attribute-id="_14115174314749" visibile="true" id="_141151743147420"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:entity class="Products" visibile="true" minimized="false" id="_14115174314597">
+        <jpa:table name="products">
+            <jpa:unique-constraint>
+                <jpa:column-name>Product</jpa:column-name>
+            </jpa:unique-constraint>
+        </jpa:table>
+        <jpa:attributes>
+            <jpa:id name="idProduct" attribute-type="java.lang.Integer" visibile="true" id="_141151743147421">
+                <jpa:column name="IdProduct" unique="false" nullable="false" insertable="true" updatable="true" table="products"/>
+                <jpa:generated-value strategy="AUTO"/>
+            </jpa:id>
+            <jpa:basic name="product" optional="false" attribute-type="java.lang.String" visibile="true" id="_141151743147422">
+                <jpa:column name="Product" unique="false" nullable="false" insertable="true" updatable="true" table="products" length="50"/>
+            </jpa:basic>
+            <jpa:basic name="price" optional="false" attribute-type="int" visibile="true" id="_141151743147423">
+                <jpa:column name="Price" unique="false" nullable="false" insertable="true" updatable="true" table="products"/>
+            </jpa:basic>
+            <jpa:basic name="stock" optional="false" attribute-type="int" visibile="true" id="_141151743147424">
+                <jpa:column name="Stock" unique="false" nullable="false" insertable="true" updatable="true" table="products"/>
+            </jpa:basic>
+            <jpa:one-to-many name="detailsCollection" target-entity="Details" mapped-by="idProduct" connected-entity-id="_14115174314595" connected-attribute-id="_141151743147414" visibile="true" id="_141151743147425"/>
+        </jpa:attributes>
+    </jpa:entity>
+    <jpa:diagram id="_14115174314432">
+        <plane elementRef="_14115174314431" id="_14115174314433_p"/>
+    </jpa:diagram>
+</jpa:entity-mappings>
