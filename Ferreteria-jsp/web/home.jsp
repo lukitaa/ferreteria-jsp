@@ -65,7 +65,7 @@
                         <% 
                             if (sessionUser.isAdmin()){
                         %>
-                        <li><a href="usuarios">Usuarios</a></li>
+                        <li><a href="users.jsp">Usuarios</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -102,7 +102,7 @@
                             <% 
                                 if (sessionUser.isAdmin()){
                             %>
-                                <a href="usuarios" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
+                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
                             <% } %>
                         </div>
                     </div>

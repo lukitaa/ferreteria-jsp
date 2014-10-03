@@ -69,7 +69,7 @@ public class HistoricServlet extends HttpServlet {
         try {
             users = UsersController.getUsers();
         } catch (StorageException ex) {//TODO: do something
-            Logger.getLogger(UsersServlet.class.getName()).log(Level.SEVERE, null, ex);
+            //Logger.getLogger(UsersServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         response.setContentType("text/html;charset=UTF-8");

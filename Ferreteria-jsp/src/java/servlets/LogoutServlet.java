@@ -51,7 +51,7 @@ public class LogoutServlet extends HttpServlet {
 
                 // Use the PGR pattern for redirection
                 response.setStatus(303);
-                response.setHeader("Location", "/Ferreteria/index");
+                response.setHeader("Location", "index");
 
             } catch (IllegalStateException e) {
                 // Do nothing, the session is already invalid anyway

@@ -4,7 +4,37 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.logging.Logger"%>
+<%@page import="java.util.logging.Level"%>
+<%@page import="controllers.StorageException"%>
+<%@page import="controllers.UsersController"%>
+<%@page import="java.util.List"%>
+<%@page import="entity.Users"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
+<%  //Check to see if the user it's trying to enter the page via URL changing.
+    // If user is logged, do not login *again*!
+    if (!Common.userIsLogged(request)) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
+    SessionUser sessionUser = Common.getSessionUser(request);
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    
+    List<Users> users = new ArrayList();
+    try {
+        users = UsersController.getUsers();
+    } catch (StorageException ex) {
+        //TODO: do something
+    }
+%>   
+
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -12,7 +42,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Usuarios</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -39,17 +69,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historial">Historial</a></li>
                         <li><a href="productos">Productos</a></li>
                         <li class="active"><a href="usuarios">Usuarios</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="productos">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -61,7 +96,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="home.jsp">Inicio</a></li>
                     <li class="active">Usuarios</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -94,15 +129,17 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form action="DeleteUserServlet" method="post">
-                                <input type="hidden" name="user-id" value="{USER_ID}">
-                                <tr>
-                                    <td>{USER_NAME}</td>
-                                    <td>{USER_ADMIN}</td>
-                                    <td><a href="usuarios/editar?usuario={USER_ID}" class="btn btn-xs btn-info">Editar</a></td>
-                                    <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
-                                </tr>
-                            </form>
+                            <% for (Users u : users) { %>
+                                <form action="DeleteUserServlet" method="post">
+                                    <input type="hidden" name="user-id" value="<%= u.getIdUser() %>">
+                                    <tr>
+                                        <td><%= u.getUsername() %></td>
+                                        <td><%= ((u.isAdmin()) ? "SI" : "NOP") %></td>
+                                        <td><a href="usuarios/editar?usuario=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
+                                        <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
+                                    </tr>
+                                </form>
+                            <% } %>
                         </tbody>
                     </table>
                 </div>
