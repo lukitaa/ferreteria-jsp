@@ -62,7 +62,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddUserServlet</servlet-name>
-        <url-pattern>/usuarios/agregar</url-pattern>
+        <url-pattern>/AddUserServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>

@@ -27,12 +27,8 @@
     ShoppingCart shoppingCart = Common.getCart(request);
     int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
     
-    List<Users> users = new ArrayList();
-    try {
-        users = UsersController.getUsers();
-    } catch (StorageException ex) {
-        //TODO: do something
-    }
+    String receivedError = request.getParameter("error");
+    boolean error = (receivedError != null && receivedError.equals("true"));
 %>   
 
 <!DOCTYPE html>
@@ -97,51 +93,20 @@
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Usuarios</li>
+                    <li><a href="users.jsp">Usuarios</a></li>
+                    <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation users">
-                    <h1>ABM Usuarios</h1>
-                    <form class="form-inline" role="form" action="AddUserServlet" method="post">
-                        <div class="form-group">
-                          <label for="username">Nombre de usuario</label>
-                          <input type="text" name="username" id="username" class="form-control" placeholder="Ingrese el usuario" required>
-                        </div>
-                        <div class="form-group">
-                          <label for="user-password">Contraseña</label>
-                          <input type="password" name="password" id="user-password" class="form-control" placeholder="Ingrese el password" required>
-                        </div>
-                        <div class="checkbox">
-                          <label>
-                            Es administrador?  <input type="checkbox" name="admin"> 
-                          </label>
-                        </div>
-                        <button type="submit" class="btn btn-default">Agregar</button>
-                    </form>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre de usuario</th>
-                                <th>Es administrador</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Users u : users) { %>
-                                <form action="DeleteUserServlet" method="post">
-                                    <input type="hidden" name="user-id" value="<%= u.getIdUser() %>">
-                                    <tr>
-                                        <td><%= u.getUsername() %></td>
-                                        <td><%= ((u.isAdmin()) ? "SI" : "NOP") %></td>
-                                        <td><a href="usuarios/editar?usuario=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
-                                        <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
-                                    </tr>
-                                </form>
-                            <% } %>
-                        </tbody>
-                    </table>
+                <div class="jumbotron">
+                    <h1>Agregar Usuario</h1>
+                    <%
+                    if (!error) {
+                    %>
+                        <p class="lead">Usuario agregado exitosamente.</p>
+                    <% } else { %>
+                        <p class="lead">Usuario no agregado.</p>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
