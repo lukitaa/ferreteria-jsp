@@ -47,7 +47,7 @@ public class AddUserServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("/Ferreteria/login");
+            response.sendRedirect("login.jsp");
             return;
         }
 

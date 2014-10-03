@@ -50,7 +50,7 @@ public class DeleteUserServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("/Ferreteria/login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
@@ -71,7 +71,7 @@ public class DeleteUserServlet extends HttpServlet {
         }
 
         // Do not display success/error messages
-        response.sendRedirect("/Ferreteria/usuarios");
+        response.sendRedirect("users.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

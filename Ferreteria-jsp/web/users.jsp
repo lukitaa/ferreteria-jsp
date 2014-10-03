@@ -135,7 +135,7 @@
                                     <tr>
                                         <td><%= u.getUsername() %></td>
                                         <td><%= ((u.isAdmin()) ? "SI" : "NOP") %></td>
-                                        <td><a href="usuarios/editar?usuario=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
+                                        <td><a href="EditUserServlet?user=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
                                         <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
                                     </tr>
                                 </form>
