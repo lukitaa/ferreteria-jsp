@@ -88,7 +88,8 @@ public class AddToCartServlet extends HttpServlet {
             if (productAmount > 0)
                 updateCart(shoppingCart, productId, productAmount);
         }
-        
+        response.sendRedirect("products.jsp");
+        /*
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -97,6 +98,7 @@ public class AddToCartServlet extends HttpServlet {
         } finally {
             out.close();
         }
+        */
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

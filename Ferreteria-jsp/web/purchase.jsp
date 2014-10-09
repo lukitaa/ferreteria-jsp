@@ -4,15 +4,48 @@
     Author     : alumno
 --%>
 
+<%@page import="controllers.PurchaseController"%>
+<%@page import="entity.Details"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="controllers.StorageException"%>
+<%@page import="controllers.UsersController"%>
+<%@page import="java.util.List"%>
+<%@page import="entity.Users"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="servlets.Common"%>
+<%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%  //Check to see if the user it's trying to enter the page via URL changing.
+    // If user is logged, do not login *again*!
+    SessionUser sessionUser = Common.getSessionUser(request);
+    if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    
+    List<Users> users = new ArrayList();
+    try {
+        users = UsersController.getUsers();
+    } catch (StorageException ex) {
+        //TODO: do something
+    }
+    
+    List<Details> details = new ArrayList();
+    details = PurchaseController.purchaseProducts(shoppingCart, sessionUser.getIdUser());
+%>   
+
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Detalles compra</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -39,16 +72,20 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><a href="productos">Productos</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -60,7 +97,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="home.jsp">Inicio</a></li>
                     <li class="active">Compras</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -76,14 +113,18 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <% for (Details d : details) { %>
+                            <%! int total = 0;  %>
                             <tr>
-                                <td>{PRODUCT_NAME}</td>
-                                <td class="price">{PRODUCT_PRICE}</td>
-                                <td class="stock">{PRODUCT_STOCK}</td>
+                                <td><%= d.getProducts().getProduct() %></td>
+                                <td class="price"><%= d.getPrice() %></td>
+                                <td class="stock"><%= d.getAmount() %></td>
                             </tr>
+                            <% total += d.getAmount() * d.getPrice();
+                                } %>
                         </tbody>
                     </table>
-                    <p class="lead">Total: ${PURCHASE_TOTAL}</p>
+                    <p class="lead">Total: <%= total %></p>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

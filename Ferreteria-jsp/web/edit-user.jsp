@@ -52,11 +52,11 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="productos">Productos</a></li>
+                        <li><a href="products.jsp">Productos</a></li>
                         <li class="active"><a href="users.jsp">Usuarios</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
+                        <li><a href="products.jsp">Carrito <span class="badge">0</span></a></li>
                         <li><a>Hola, YO!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>

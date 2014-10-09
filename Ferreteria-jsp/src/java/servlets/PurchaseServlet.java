@@ -90,14 +90,7 @@ public class PurchaseServlet extends HttpServlet {
             response.sendRedirect("/Ferreteria/productos");
             return;
         }
-
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            out.println(new templates.PurchaseTemplate(details, purchaseTotal).printPage("DetallesCompra", session, shoppingCart));
-        } finally {
-            out.close();
-        }
+        response.sendRedirect("../purchase.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

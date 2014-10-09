@@ -4,15 +4,36 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<%@page import="controllers.PurchaseController"%>
+<%@page import="entity.Products"%>
+<%@page import="java.util.List"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="servlets.Common"%>
+<%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%  //Check to see if the user it's trying to enter the page via URL changing.
+    // If user is logged, do not login *again*!
+    SessionUser sessionUser = Common.getSessionUser(request);
+    if (!Common.userIsLogged(request)) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    
+    List<Products> products = PurchaseController.getProducts();
+%>   
+
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Productos</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -43,12 +64,16 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
                         <li class="active"><a href="productos">Productos</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -60,7 +85,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="home.jsp">Inicio</a></li>
                     <li class="active">Compras</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -78,16 +103,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <form class="products" action="carrito" method="post">
-                                <input type="hidden" name="product-id" value="{PRODUCT_ID}">
-                                <tr>
-                                    <td>{PRODUCT_NAME}</td>
-                                    <td class="price">{PRODUCT_PRICE}</td>
-                                    <td class="stock">{PRODUCT_STOCK}</td>
-                                    <td><input type="number" name="product-stock" min="0" max="{PRODUCT_STOCK}" value="0"></td>
-                                    <td><button type="submit" class="btn btn-xs btn-primary">Agregar</button></td>
-                                </tr>
-                            </form>                                
+                            <% for (Products p : products) { %>
+                                <form class="products" action="carrito" method="post">
+                                    <input type="hidden" name="product-id" value="<%= p.getIdProduct()%>">
+                                    <tr>
+                                        <td><%= p.getProduct() %></td>
+                                        <td class="price"><%= p.getPrice() %></td>
+                                        <td class="stock"><%= p.getStock() %></td>
+                                        <td><input type="number" name="product-stock" min="0" max="<%= p.getStock()%>" value="0"></td>
+                                        <td><button type="submit" class="btn btn-xs btn-primary">Agregar</button></td>
+                                    </tr>
+                                </form>                                
+                            <% } %>      
                         </tbody>
                     </table>
                     <a href="productos/compra" class="btn btn-xs btn-primary">Comprar</a>

@@ -75,14 +75,14 @@
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historial">Historial</a></li>
-                        <li><a href="productos">Productos</a></li>
+                        <li><a href="products.jsp">Productos</a></li>
                         <li class="active"><a href="users.jsp">Usuarios</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                     <% 
                         if (totalProducts > 0){
                     %>
-                        <li><a href="productos">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                     <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>

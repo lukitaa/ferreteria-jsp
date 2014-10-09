@@ -61,7 +61,7 @@
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="home.jsp">Inicio</a></li>
                         <li><a href="historial">Historial</a></li>
-                        <li><a href="productos">Productos</a></li>
+                        <li><a href="products.jsp">Productos</a></li>
                         <% 
                             if (sessionUser.isAdmin()){
                         %>
@@ -72,7 +72,7 @@
                     <% 
                         if (totalProducts > 0){
                     %>
-                        <li><a href="productos">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                     <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
@@ -81,13 +81,6 @@
             </div>
         </nav>
         <!-- ENDS NAV -->
-        
-        
-        
-        <!--
-            http://stackoverflow.com/users/157882/balusc
-            512k
-        -->
         
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
@@ -98,7 +91,7 @@
                     <div class="container menu">
                         <div class="row">
                             <a href="historial" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
-                            <a href="productos" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
+                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
                             <% 
                                 if (sessionUser.isAdmin()){
                             %>
