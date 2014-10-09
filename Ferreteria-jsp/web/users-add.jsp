@@ -18,12 +18,13 @@
 
 <%  //Check to see if the user it's trying to enter the page via URL changing.
     // If user is logged, do not login *again*!
-    if (!Common.userIsLogged(request)) {
+    SessionUser sessionUser = Common.getSessionUser(request);
+    
+    if (!Common.userIsLogged(request) && sessionUser.isAdmin()) {
         response.sendRedirect("login.jsp");
         return;
     }
     
-    SessionUser sessionUser = Common.getSessionUser(request);
     ShoppingCart shoppingCart = Common.getCart(request);
     int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
     
@@ -107,6 +108,7 @@
                     <% } else { %>
                         <p class="lead">Usuario no agregado.</p>
                     <% } %>
+                    <h2><a href="users.jsp">Volver a pagina usuarios.</a></h2>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

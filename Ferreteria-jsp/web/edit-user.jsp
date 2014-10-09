@@ -4,8 +4,16 @@
     Author     : alumno
 --%>
 
+<%@page import="entity.Users"%>
+<%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%  
+    int userID = Integer.valueOf(request.getParameter("user"));
+    Users user = UsersController.getUser(userID);
+%> 
+
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
@@ -43,9 +51,9 @@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="productos">Productos</a></li>
-                        <li class="active"><a href="usuarios">Usuarios</a></li>
+                        <li class="active"><a href="users.jsp">Usuarios</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="productos">Carrito <span class="badge">0</span></a></li>
@@ -61,7 +69,7 @@
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="home.jsp">Inicio</a></li>
                     <li class="active">Usuarios</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -69,19 +77,19 @@
                 <div class="jumbotron presentation users">
                     <h1>Editar Usuarios</h1>
                     <form class="form-inline" role="form" action="usuarios/editar" method="post">
-                        <input type="hidden" name="user-id" value="{USER_ID}">
+                        <input type="hidden" name="user-id" value="<%= user.getIdUser() %>" >
                         <div class="form-group">
-                          <label for="username">Nombre de usuario</label>
-                          <input type="text" name="username" id="username" class="form-control" placeholder="Nuevo nombre de usuario" required>
+                            <label for="username">Nombre de usuario</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Nuevo nombre de usuario" value="<%= user.getUsername() %>" required>
                         </div>
                         <div class="form-group">
-                          <label for="user-password">Contraseña</label>
-                          <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" required>
+                            <label for="user-password">Contraseña</label>
+                            <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" value="<%= user.getPassword() %>" required>
                         </div>
                         <div class="checkbox">
-                          <label>
-                            Es administrador?  <input type="checkbox" name="admin"> 
-                          </label>
+                            <label>
+                                Es administrador?  <input type="checkbox" name="admin" checked="<%= user.isAdmin()%>" > 
+                            </label>
                         </div>
                         <button type="submit" class="btn btn-default">Editar</button>
                     </form>

@@ -25,6 +25,7 @@ import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,13 +34,13 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alumno
  */
+@WebServlet(name = "EditUserServlet", urlPatterns = {"/EditUserServlet"})
 public class EditUserServlet extends HttpServlet {
 
-
+    // This part it's replaced with edited-user.jsp
     void loadEditUserView(HttpServletResponse response, SessionUser session, ShoppingCart shoppingCart, int userId) throws IOException {
         try {
             Users u = UsersController.getUser(userId);
-
             response.setContentType("text/html;charset=UTF-8");
             PrintWriter out = response.getWriter();
             try {
@@ -63,7 +64,8 @@ public class EditUserServlet extends HttpServlet {
         } catch (StorageException ex) {
             error = true;
         }
-
+        response.sendRedirect("../edited-user.jsp?error="+error);
+        /*
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         try {
@@ -71,6 +73,7 @@ public class EditUserServlet extends HttpServlet {
         } finally {
             out.close();
         }
+        */
     }
 
     /**
@@ -99,7 +102,9 @@ public class EditUserServlet extends HttpServlet {
                userIdEdited = request.getParameter("user-id");
 
         if (userIdToEdit != null && !userIdToEdit.isEmpty()) {
-            loadEditUserView(response, session, shoppingCart, Integer.parseInt(userIdToEdit));
+            //Se llama a la pagina de editar usuario.
+            response.sendRedirect("edited-user.jsp");
+            //loadEditUserView(response, session, shoppingCart, Integer.parseInt(userIdToEdit));
         } else if (userIdEdited != null && !userIdEdited.isEmpty()) {
 
             String username = request.getParameter("username"),

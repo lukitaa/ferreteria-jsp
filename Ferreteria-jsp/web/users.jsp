@@ -18,12 +18,12 @@
 
 <%  //Check to see if the user it's trying to enter the page via URL changing.
     // If user is logged, do not login *again*!
-    if (!Common.userIsLogged(request)) {
+    SessionUser sessionUser = Common.getSessionUser(request);
+    if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
         response.sendRedirect("login.jsp");
         return;
     }
     
-    SessionUser sessionUser = Common.getSessionUser(request);
     ShoppingCart shoppingCart = Common.getCart(request);
     int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
     
@@ -135,7 +135,7 @@
                                     <tr>
                                         <td><%= u.getUsername() %></td>
                                         <td><%= ((u.isAdmin()) ? "SI" : "NOP") %></td>
-                                        <td><a href="EditUserServlet?user=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
+                                        <td><a href="edit-user.jsp?user=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
                                         <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
                                     </tr>
                                 </form>
