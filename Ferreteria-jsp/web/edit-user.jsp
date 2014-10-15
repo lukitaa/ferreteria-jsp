@@ -4,12 +4,24 @@
     Author     : alumno
 --%>
 
+<%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
+<%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 
 <%  
+    SessionUser sessionUser = Common.getSessionUser(request);
+    if (!Common.adminIsLogged(request)) {
+        response.sendRedirect("home.jsp");
+        return;
+    }
+    
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    
     int userID = Integer.valueOf(request.getParameter("user"));
     Users user = UsersController.getUser(userID);
 %> 
@@ -47,7 +59,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
@@ -56,8 +68,12 @@
                         <li class="active"><a href="users.jsp">Usuarios</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="products.jsp">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -70,7 +86,8 @@
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Usuarios</li>
+                    <li><a href="users.jsp">Usuarios</a></li>
+                    <li class="active">Editar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
@@ -84,11 +101,15 @@
                         </div>
                         <div class="form-group">
                             <label for="user-password">Contraseña</label>
-                            <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" value="<%= user.getPassword() %>" required>
+                            <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" required>
                         </div>
                         <div class="checkbox">
                             <label>
-                                Es administrador?  <input type="checkbox" name="admin" checked="<%= user.isAdmin()%>" > 
+                                <% if(user.isAdmin()) { %> 
+                                    Es administrador?  <input type="checkbox" name="admin" checked > 
+                                <% } else { %>
+                                    Es administrador?  <input type="checkbox" name="admin" > 
+                                <% } %>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-default">Editar</button>

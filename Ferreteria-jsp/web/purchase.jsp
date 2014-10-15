@@ -4,6 +4,7 @@
     Author     : alumno
 --%>
 
+<%@page import="controllers.InvalidParameterException"%>
 <%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Details"%>
 <%@page import="java.util.ArrayList"%>
@@ -26,17 +27,12 @@
     }
     
     ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    List<Users> users = new ArrayList();
-    try {
-        users = UsersController.getUsers();
-    } catch (StorageException ex) {
-        //TODO: do something
-    }
     
     List<Details> details = new ArrayList();
-    details = PurchaseController.purchaseProducts(shoppingCart, sessionUser.getIdUser());
+    
+    details = Common.getLastPurchaseDetails(request);
+    
+    int total = 0;
 %>   
 
 <html lang="es" dir="ltr">
@@ -77,14 +73,15 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
+                        <% 
+                            if (sessionUser.isAdmin()){
+                        %>
+                        <li><a href="users.jsp">Usuarios</a></li>
+                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
-                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
@@ -98,7 +95,8 @@
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Compras</li>
+                    <li><a href="products.jsp">Compras</a></li>
+                    <li class="active">Detalle</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
@@ -114,14 +112,13 @@
                         </thead>
                         <tbody>
                             <% for (Details d : details) { %>
-                            <%! int total = 0;  %>
                             <tr>
                                 <td><%= d.getProducts().getProduct() %></td>
                                 <td class="price"><%= d.getPrice() %></td>
                                 <td class="stock"><%= d.getAmount() %></td>
                             </tr>
                             <% total += d.getAmount() * d.getPrice();
-                                } %>
+                               } %>
                         </tbody>
                     </table>
                     <p class="lead">Total: <%= total %></p>
@@ -135,3 +132,7 @@
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
+<%
+Common.destroyLastPurchaseDetails(request);
+Common.destroyCart(request);
+%>   

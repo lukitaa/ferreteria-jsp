@@ -60,7 +60,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historial">Historial</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
                         <% 
                             if (sessionUser.isAdmin()){
@@ -90,7 +90,7 @@
                     <p>Desde aqu&iacute; puede acceder a las siguientes opciones: </p>
                     <div class="container menu">
                         <div class="row">
-                            <a href="historial" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
+                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
                             <a href="products.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
                             <% 
                                 if (sessionUser.isAdmin()){

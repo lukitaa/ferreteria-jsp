@@ -17,7 +17,9 @@
 
 package servlets;
 
+import entity.Details;
 import entity.Users;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -28,7 +30,7 @@ import javax.servlet.http.HttpSession;
 public class Common {
 
     private static String SESSION_ATTR_NAME = "session_user",
-                          SESSION_ATTR_NAME_PURCHASE = "purchase_details",
+                          SESSION_ATTR_NAME_PURCHASE_DETAILS = "purchase_details",
                           SESSION_ATTR_NAME_CART = "shopping_cart";
 
     public static boolean adminIsLogged(HttpServletRequest request) {
@@ -82,6 +84,31 @@ public class Common {
 
     public static void destroyCart(HttpServletRequest request) {
         request.getSession().setAttribute(SESSION_ATTR_NAME_CART, null);
+    }
+    
+    
+    
+    
+    
+    // LAST PURCHASE DETAILS STUFF
+
+    public static HttpSession generateLastPurchaseDetails(HttpServletRequest request, List<Details> details) {
+        HttpSession session = null;
+
+        // Generate new session
+        session = request.getSession();
+
+        session.setAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS, details);
+
+        return session;
+    }
+
+    public static List<Details> getLastPurchaseDetails(HttpServletRequest request) {
+        return (List<Details>) request.getSession().getAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS);
+    }
+
+    public static void destroyLastPurchaseDetails(HttpServletRequest request) {
+        request.getSession().setAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS, null);
     }
     
 }

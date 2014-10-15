@@ -78,7 +78,8 @@ public class PurchaseServlet extends HttpServlet {
             }
 
             //CLEAR THE SESSION WITH PRODUCTS
-            Common.destroyCart(request);
+            //Common.destroyCart(request);
+            // NOTE: this has been moved into the JSP page 
         } catch (StorageException ex) {
             error = true;
         } catch (InvalidParameterException ex) {
@@ -90,6 +91,10 @@ public class PurchaseServlet extends HttpServlet {
             response.sendRedirect("/Ferreteria/productos");
             return;
         }
+        
+        // Add details into session to pass it to the view
+        Common.generateLastPurchaseDetails(request, details);
+        
         response.sendRedirect("../purchase.jsp");
     }
 

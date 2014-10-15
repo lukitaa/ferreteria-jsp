@@ -1,11 +1,39 @@
 <%-- 
-    Document   : historic-detail
-    Created on : Sep 23, 2014, 3:34:13 PM
+    Document   : historic
+    Created on : Sep 23, 2014, 3:00:57 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<%@page import="controllers.StorageException"%>
+<%@page import="controllers.UsersController"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="entity.Users"%>
+<%@page import="servlets.SessionUser"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
+
+<%  //Check to see if the user it's trying to enter the page via URL changing.
+    // If user is logged, do not login *again*!
+    SessionUser sessionUser = Common.getSessionUser(request);
+    if (!Common.adminIsLogged(request)) {
+        response.sendRedirect("historic-detail.jsp?usuario="+sessionUser.getIdUser());
+        return;
+    }
+    
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    
+    List<Users> users = new ArrayList();
+    try {
+        users = UsersController.getUsers();
+    } catch (StorageException ex) {
+        //TODO: do something
+    }
+%>  
+
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
@@ -39,18 +67,26 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="inicio">Inicio</a></li>
-                        <li class="active"><a href="historial">Historial</a></li>
-                        <li><a href="productos">Productos</a></li>
-                        <li><a href="usuarios">Usuarios</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
+                        <li class="active"><a href="historic.jsp">Historial</a></li>
+                        <li><a href="products.jsp">Productos</a></li>
+                        <% 
+                            if (sessionUser.isAdmin()){
+                        %>
+                        <li><a href="users.jsp">Usuarios</a></li>
+                        <% } %>
                     </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="productos">Carrito <span class="badge">0</span></a></li>
-                        <li><a>Hola, YO!</a></li>
+                     <ul class="nav navbar-nav navbar-right">
+                    <% 
+                        if (totalProducts > 0){
+                    %>
+                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                    <% } %>
+                        <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>
                     </ul>
                 </div>
@@ -62,30 +98,30 @@
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="home.jsp">Inicio</a></li>
                     <li class="active">Historial</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Compras realizadas</h1>
+                    <h1 class="header">Historial de compras</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Producto</th>
-                                <th>Precio Historico</th>
-                                <th>Unidades</th>
+                                <th>Nombre de usuario</th>
+                                <th>Historial</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>{PRODUCT_NAME}</td>
-                                <td>{PRODUCT_PRICE_HISTORIC}</td>
-                                <td>{PRODUCT_UNITIES}</td>
-                            </tr>
+                            <% for (Users u : users) { %>
+                                 <tr>    
+                                    <td><%= u.getUsername() %></td>
+                                    <td><a href="historic-detail.jsp?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
+                                </tr>
+                                </form>
+                            <% } %>
                         </tbody>
                     </table>
-                    <p class="lead">Total: ${PURCHASE_TOTAL}</p>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

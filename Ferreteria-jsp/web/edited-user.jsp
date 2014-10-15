@@ -5,8 +5,8 @@
 <%  //Check to see if the user it's trying to enter the page via URL changing.
     // If user is logged, do not login *again*!
     SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.userIsLogged(request)) {
-        response.sendRedirect("login.jsp");
+    if (!Common.adminIsLogged(request)) {
+        response.sendRedirect("home.jsp");
         return;
     }
     
@@ -52,7 +52,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">"
                         <li><a href="home.jsp">Inicio</a></li>"
-                        <li><a href="historial">Historial</a></li>"
+                        <li><a href="historic.jsp">Historial</a></li>"
                         <li><a href="products.jsp">Productos</a></li>"
                         <li class="active"><a href="users.jsp">Usuarios</a></li>"
                         </ul>
