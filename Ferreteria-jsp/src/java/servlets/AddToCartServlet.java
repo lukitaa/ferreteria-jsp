@@ -18,7 +18,6 @@
 package servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -31,25 +30,30 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "AddToCart", urlPatterns = {"/carrito"})
 public class AddToCartServlet extends HttpServlet {
-    
-    
+
+
     public void updateCart(ShoppingCart shoppingCart, Integer productId, Integer productAmount) {
-        //Go trought all the list searching if the product was already in the cart
         boolean exists = false;
-        for(int i = 0; i < shoppingCart.getProductsId().size(); i++){
+
+        //Go trought the products' list searching if
+        // the product was already in the cart to
+        // increment the amount of unities to buy
+        for(int i = 0, length = shoppingCart.getProductsId().size(), aux; i < length; i++) {
             //If it's in, add the new amount and the older one
-            if(shoppingCart.getProductsId().get(i) == productId){
-                int aux = shoppingCart.getProductsAmount().get(i) + productAmount;
+            if(shoppingCart.getProductsId().get(i).equals(productId)) {
+                aux = shoppingCart.getProductsAmount().get(i) + productAmount;
                 shoppingCart.getProductsAmount().set(i, aux);
                 exists = true;
+                break;
             }
         }
-        if(!exists){
+
+        if(!exists) {
             shoppingCart.getProductsId().add(productId);
             shoppingCart.getProductsAmount().add(productAmount);
         }
     }
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -67,38 +71,30 @@ public class AddToCartServlet extends HttpServlet {
             response.sendRedirect("/Ferreteria-jsp/login");
             return;
         }
-        
-        
+
+
         ShoppingCart shoppingCart = Common.getCart(request);
-        
+
         // Check if this is the first item to add into the cart
         if (shoppingCart == null) {
             shoppingCart = new ShoppingCart();
             Common.generateCart(request, shoppingCart);
         }
-        
+
         // Get the amount of unities for the product from the request parameters
-        String receivedProductId = request.getParameter("product-id"),
+        String receivedProductId     = request.getParameter("product-id"),
                receivedProductAmount = request.getParameter("product-stock");
-        
+
         if (receivedProductId != null && receivedProductAmount != null
                 && !receivedProductId.isEmpty() && !receivedProductAmount.isEmpty()) {
-            int productId = Integer.valueOf(receivedProductId), productAmount = Integer.valueOf(receivedProductAmount);
-            
+            int productId     = Integer.valueOf(receivedProductId),
+                productAmount = Integer.valueOf(receivedProductAmount);
+
             if (productAmount > 0)
                 updateCart(shoppingCart, productId, productAmount);
         }
-        response.sendRedirect("products.jsp");
-        /*
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
 
-            response.sendRedirect("productos");
-        } finally {
-            out.close();
-        }
-        */
+        response.sendRedirect("products.jsp");
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
