@@ -21,9 +21,6 @@ import controllers.StorageException;
 import controllers.UsersController;
 import entity.Users;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -37,21 +34,6 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet(name = "EditUserServlet", urlPatterns = {"/EditUserServlet"})
 public class EditUserServlet extends HttpServlet {
 
-    // This part it's replaced with edited-user.jsp
-    void loadEditUserView(HttpServletResponse response, SessionUser session, ShoppingCart shoppingCart, int userId) throws IOException {
-        try {
-            Users u = UsersController.getUser(userId);
-            response.setContentType("text/html;charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            try {
-                out.println(new templates.EditUserTemplate(u).printPage("Editar usuarios", session, shoppingCart));
-            } finally {
-                out.close();
-            }
-        } catch (StorageException ex) {//TODO: do something
-            Logger.getLogger(EditUserServlet.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 
     void loadUserEditedView(HttpServletResponse response, SessionUser session, ShoppingCart shoppingCart, int userId, String newUsername, String newPassword, boolean newAdminPolicy) throws IOException {
         boolean error = false;
@@ -81,7 +63,7 @@ public class EditUserServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("/Ferreteria/login");
+            response.sendRedirect("/Ferreteria-jsp/login");
             return;
         }
 
@@ -95,7 +77,6 @@ public class EditUserServlet extends HttpServlet {
         if (userIdToEdit != null && !userIdToEdit.isEmpty()) {
             //Se llama a la pagina de editar usuario.
             response.sendRedirect("edited-user.jsp");
-            //loadEditUserView(response, session, shoppingCart, Integer.parseInt(userIdToEdit));
         } else if (userIdEdited != null && !userIdEdited.isEmpty()) {
 
             String username = request.getParameter("username"),
@@ -105,7 +86,7 @@ public class EditUserServlet extends HttpServlet {
             loadUserEditedView(response, session, shoppingCart, Integer.parseInt(userIdEdited), username, password, admin);
         } else {
             // WTF do the user want to?? Go to ...
-            response.sendRedirect("/Ferreteria/usuarios");
+            response.sendRedirect("/Ferreteria-jsp/users.jsp");
         }
     }
 

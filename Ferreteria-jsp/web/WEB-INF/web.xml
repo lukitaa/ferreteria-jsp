@@ -15,10 +15,6 @@
         <servlet-class>servlets.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>Products</servlet-name>
-        <servlet-class>servlets.ProductsServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>PurchaseServlet</servlet-name>
         <servlet-class>servlets.PurchaseServlet</servlet-class>
     </servlet>
@@ -29,14 +25,6 @@
     <servlet>
         <servlet-name>EditUserServlet</servlet-name>
         <servlet-class>servlets.EditUserServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>Historic</servlet-name>
-        <servlet-class>servlets.HistoricServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>HistoricDetailServlet</servlet-name>
-        <servlet-class>servlets.HistoricDetailServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
@@ -53,10 +41,6 @@
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>Products</servlet-name>
-        <url-pattern>/productos</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>PurchaseServlet</servlet-name>
         <url-pattern>/productos/compra</url-pattern>
     </servlet-mapping>
@@ -67,14 +51,6 @@
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>
         <url-pattern>/usuarios/editar</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>Historic</servlet-name>
-        <url-pattern>/historial</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>HistoricDetailServlet</servlet-name>
-        <url-pattern>/historial/cliente</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -59,7 +59,7 @@ public class LogoutServlet extends HttpServlet {
         }
 
         // Redirect to index (replaced with about code)
-        //response.sendRedirect("/Ferreteria/index");
+        //response.sendRedirect("/Ferreteria-jsp/index");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

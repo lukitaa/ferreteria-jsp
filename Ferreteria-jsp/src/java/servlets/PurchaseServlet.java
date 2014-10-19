@@ -22,7 +22,6 @@ import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Details;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -51,7 +50,7 @@ public class PurchaseServlet extends HttpServlet {
 
         // User must be logged in to access this page!
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("/Ferreteria/login");
+            response.sendRedirect("/Ferreteria-jsp/login");
             return;
         }
 
@@ -65,8 +64,9 @@ public class PurchaseServlet extends HttpServlet {
 
         List<Details> details = new ArrayList();
 
+        // Check if they are products, otherwise exit
         if (purchaseDetails == null) {
-            response.sendRedirect("/Ferreteria/productos");
+            response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }
 
@@ -79,7 +79,7 @@ public class PurchaseServlet extends HttpServlet {
 
             //CLEAR THE SESSION WITH PRODUCTS
             //Common.destroyCart(request);
-            // NOTE: this has been moved into the JSP page 
+            // NOTE: this has been moved into the JSP page
         } catch (StorageException ex) {
             error = true;
         } catch (InvalidParameterException ex) {
@@ -88,13 +88,13 @@ public class PurchaseServlet extends HttpServlet {
 
         // Check if there was an error or nothing has been bought
         if (error || details.size() <= 0) {
-            response.sendRedirect("/Ferreteria/productos");
+            response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }
-        
+
         // Add details into session to pass it to the view
         Common.generateLastPurchaseDetails(request, details);
-        
+
         response.sendRedirect("../purchase.jsp");
     }
 
