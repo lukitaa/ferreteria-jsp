@@ -87,7 +87,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="products.jsp">Compras</a></li>
+                    <li><a href="products.jsp">Productos</a></li>
                     <li class="active">Detalle</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->

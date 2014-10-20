@@ -92,7 +92,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Compras</li>
+                    <li class="active">Productos</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
