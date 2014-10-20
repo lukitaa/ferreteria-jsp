@@ -25,11 +25,11 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 
 CREATE TABLE IF NOT EXISTS `products` (
-    `IdProduct` INT NOT NULL AUTO_INCREMENT,
-    `Product` VARCHAR(50) NOT NULL UNIQUE,
-	`Price` INT NOT NULL,
-	`Stock` INT NOT NULL,
-    PRIMARY KEY (`IdProduct`)
+  `IdProduct` INT NOT NULL AUTO_INCREMENT,
+  `Product` VARCHAR(50) NOT NULL UNIQUE,
+  `Price` INT NOT NULL,
+  `Stock` INT NOT NULL,
+  PRIMARY KEY (`IdProduct`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ;
 
 
@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `purchases` (
   `IdPurchase` INT NOT NULL AUTO_INCREMENT,
   -- `FechaIngreso` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `IdUser` INT NOT NULL,
+  `Done` bool NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`IdPurchase`),
   FOREIGN KEY (`IdUser`)
     REFERENCES users(`IdUser`)
