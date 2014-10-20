@@ -71,7 +71,7 @@
                     <% 
                         if (totalProducts > 0){
                     %>
-                        <li><a href="products.jsp">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                     <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a href="logout">Salir</a></li>

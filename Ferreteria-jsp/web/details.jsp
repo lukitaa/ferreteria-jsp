@@ -21,6 +21,13 @@ if (!Common.userIsLogged(request)) {
 SessionUser sessionUser = Common.getSessionUser(request);
 // Load details list
 List<Details> details = Common.getPurchaseDetails(request);
+
+// Check if there is something to list, otherwise exit
+if (details == null) {
+    response.sendRedirect("products.jsp");
+    return;
+}
+
 // Initializate auxiliar variables
 Products p = null;
 boolean itemIsOverProductStock = false;
