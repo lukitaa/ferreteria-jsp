@@ -28,6 +28,10 @@
         <servlet-name>DetailsServlet</servlet-name>
         <servlet-class>servlets.DetailsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>RemoveProductFromCartServlet</servlet-name>
+        <servlet-class>servlets.RemoveProductFromCartServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -57,6 +61,10 @@
     <servlet-mapping>
         <servlet-name>DetailsServlet</servlet-name>
         <url-pattern>/DetailsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RemoveProductFromCartServlet</servlet-name>
+        <url-pattern>/quitar-del-carrito</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -129,7 +129,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
                                 <td><%= d.getPrice() %></td>
                                 <td><%= stockToBuy %></td>
                                 <td><%= realStock %></td>
-                                <td><a href="remove?product=<%= p.getIdProduct() %>" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
+                                <td><a href="quitar-del-carrito?producto=<%= p.getIdProduct() %>" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
                             </tr>
                             <%
                                 total += d.getAmount() * d.getPrice();
