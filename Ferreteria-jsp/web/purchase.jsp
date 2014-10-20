@@ -18,6 +18,13 @@ if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
 }
 
 List<Details> details = Common.getPurchaseDetails(request);
+
+// Check if there is something to purchase, otherwise exit
+if (details == null) {
+    response.sendRedirect("products.jsp");
+    return;
+}
+
 int total = 0;
 %>   
 <!DOCTYPE html>

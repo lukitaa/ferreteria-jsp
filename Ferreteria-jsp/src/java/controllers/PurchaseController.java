@@ -57,7 +57,7 @@ public class PurchaseController extends IntermediateController {
         // Get the user how made the purchase
         Users user = UsersController.getUser(userId);
         // Generate a new purchase
-        Purchases purchase = new Purchases(user);
+        Purchases purchase = new Purchases(false, user);
 
         Session session = HibernateUtil.getSessionFactory().openSession();
         try {

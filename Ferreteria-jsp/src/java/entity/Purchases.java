@@ -1,5 +1,6 @@
 package entity;
 // Generated Sep 11, 2014 2:17:32 AM by Hibernate Tools 3.6.0
+// Modified by Lucio on .. now
 
 
 import java.util.HashSet;
@@ -12,39 +13,47 @@ public class Purchases  implements java.io.Serializable {
 
 
      private Integer idPurchase;
+     private boolean done;
      private Users users;
      private Set detailses = new HashSet(0);
 
     public Purchases() {
     }
 
-	
-    public Purchases(Users users) {
+
+    public Purchases(boolean done, Users users) {
         this.users = users;
     }
-    public Purchases(Users users, Set detailses) {
+    public Purchases(boolean done, Users users, Set detailses) {
        this.users = users;
        this.detailses = detailses;
     }
-   
+
     public Integer getIdPurchase() {
         return this.idPurchase;
     }
-    
+
     public void setIdPurchase(Integer idPurchase) {
         this.idPurchase = idPurchase;
+    }
+    public boolean getDone() {
+        return this.done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
     public Users getUsers() {
         return this.users;
     }
-    
+
     public void setUsers(Users users) {
         this.users = users;
     }
     public Set getDetailses() {
         return this.detailses;
     }
-    
+
     public void setDetailses(Set detailses) {
         this.detailses = detailses;
     }

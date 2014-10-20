@@ -8,6 +8,9 @@
             <column name="IdPurchase" />
             <generator class="identity" />
         </id>
+        <property name="done" type="boolean">
+            <column name="Done" not-null="true" />
+        </property>
         <many-to-one name="users" class="entity.Users" fetch="select">
             <column name="IdUser" not-null="true" />
         </many-to-one>
