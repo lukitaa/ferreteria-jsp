@@ -22,7 +22,6 @@ import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Details;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,10 +30,9 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  *
- * @author alumno
+ * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class PurchaseServlet extends HttpServlet {
-
+public class DetailsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,49 +46,37 @@ public class PurchaseServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // User must be logged in to access this page!
+        // Check if user is logged
+        SessionUser sessionUser = Common.getSessionUser(request);
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("/Ferreteria-jsp/login");
+            response.sendRedirect("login.jsp");
             return;
         }
 
-        SessionUser session = Common.getSessionUser(request);
-
-        //TODO: get products to buy from POST
-        List<Details> purchaseDetails = Common.getPurchaseDetails(request);
-        boolean error = false;
-
-        List<Details> details = new ArrayList();
+        ShoppingCart shoppingCart = Common.getCart(request);
 
         // Check if they are products, otherwise exit
-        if (purchaseDetails == null) {
+        if (shoppingCart == null) {
             response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }
+
+        boolean errorLoadingData = false;
 
         try {
-            details = PurchaseController.purchaseProducts(purchaseDetails, session.getIdUser());
 
-            //CLEAR THE SESSION WITH PRODUCTS
-            //Common.destroyCart(request);
-            // NOTE: this has been moved into the JSP page
-        } catch (StorageException ex) {
-            error = true;
+            List<Details> details = PurchaseController.getDetailsFromCart(shoppingCart);
+
+            // Store details on session to be processed on view
+            Common.generatePurchaseDetails(request, details);
+
         } catch (InvalidParameterException ex) {
-            error = true;
+            errorLoadingData = true;
+        } catch (StorageException ex) {
+            errorLoadingData = true;
         }
 
-        // Check if there was an error or nothing has been bought
-        if (error || details.size() <= 0) {
-            //TODO: display an error message
-            response.sendRedirect("/Ferreteria-jsp/products.jsp");
-            return;
-        }
-
-        // Add details into session to pass it to the view
-        Common.generatePurchaseDetails(request, details);
-
-        response.sendRedirect("../purchase.jsp");
+        response.sendRedirect("details.jsp" + ((errorLoadingData) ? "?error=1" : ""));
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

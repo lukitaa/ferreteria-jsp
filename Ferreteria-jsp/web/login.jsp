@@ -12,7 +12,7 @@
 <%@page import="java.util.Calendar"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    String username = request.getParameter("username");
+String username = request.getParameter("username");
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    <!-- SERVLETS LIST -->
     <servlet>
         <servlet-name>Index</servlet-name>
         <servlet-class>servlets.IndexServlet</servlet-class>
@@ -9,7 +8,6 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>servlets.LoginServlet</servlet-class>
     </servlet>
-    <!-- URL MAPPING -->
     <servlet>
         <servlet-name>Logout</servlet-name>
         <servlet-class>servlets.LogoutServlet</servlet-class>
@@ -25,6 +23,10 @@
     <servlet>
         <servlet-name>EditUserServlet</servlet-name>
         <servlet-class>servlets.EditUserServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DetailsServlet</servlet-name>
+        <servlet-class>servlets.DetailsServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
@@ -51,6 +53,10 @@
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>
         <url-pattern>/usuarios/editar</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DetailsServlet</servlet-name>
+        <url-pattern>/DetailsServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

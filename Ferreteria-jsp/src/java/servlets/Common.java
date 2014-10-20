@@ -92,7 +92,7 @@ public class Common {
     
     // LAST PURCHASE DETAILS STUFF
 
-    public static HttpSession generateLastPurchaseDetails(HttpServletRequest request, List<Details> details) {
+    public static HttpSession generatePurchaseDetails(HttpServletRequest request, List<Details> details) {
         HttpSession session = null;
 
         // Generate new session
@@ -103,11 +103,11 @@ public class Common {
         return session;
     }
 
-    public static List<Details> getLastPurchaseDetails(HttpServletRequest request) {
+    public static List<Details> getPurchaseDetails(HttpServletRequest request) {
         return (List<Details>) request.getSession().getAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS);
     }
 
-    public static void destroyLastPurchaseDetails(HttpServletRequest request) {
+    public static void destroyPurchaseDetails(HttpServletRequest request) {
         request.getSession().setAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS, null);
     }
     

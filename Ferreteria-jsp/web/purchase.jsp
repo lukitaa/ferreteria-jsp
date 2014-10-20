@@ -4,37 +4,23 @@
     Author     : alumno
 --%>
 
-<%@page import="controllers.InvalidParameterException"%>
-<%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Details"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="controllers.StorageException"%>
-<%@page import="controllers.UsersController"%>
-<%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
-<%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
+<%@page import="java.util.List"%>
 <%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%
+// Check if user is logged and is admin
+SessionUser sessionUser = Common.getSessionUser(request);
+if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
+    response.sendRedirect("login.jsp");
+    return;
+}
 
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    
-    List<Details> details = new ArrayList();
-    
-    details = Common.getLastPurchaseDetails(request);
-    
-    int total = 0;
+List<Details> details = Common.getPurchaseDetails(request);
+int total = 0;
 %>   
-
+<!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
@@ -133,6 +119,6 @@
     </body>
 </html>
 <%
-Common.destroyLastPurchaseDetails(request);
+Common.destroyPurchaseDetails(request);
 Common.destroyCart(request);
 %>   
