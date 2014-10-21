@@ -94,7 +94,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                 <div class="jumbotron presentation products">
                     <h1 class="header">Ordenes pendientes</h1>
                     <p>A continuación podrá generar ordenes de piqueo para ordenes pendientes.</p>
-                    <% if (orders != null || orders.size() == 0) { %>
+                    <% if (orders != null && orders.size() > 0) { %>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
