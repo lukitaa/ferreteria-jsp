@@ -97,7 +97,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Comprar productos</h1>
+                    <h1 class="header">Productos</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -117,13 +117,13 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                                         <td class="price"><%= p.getPrice() %></td>
                                         <td class="stock"><%= p.getStock() %></td>
                                         <td><input type="number" name="product-stock" min="0" max="<%= p.getStock()%>" value="0"></td>
-                                        <td><button type="submit" class="btn btn-xs btn-primary">Agregar</button></td>
+                                        <td><button type="submit" class="btn btn-xs btn-default" title="Agregar producto al carrito">Agregar</button></td>
                                     </tr>
                                 </form>                                
                             <% } %>      
                         </tbody>
                     </table>
-                    <a href="DetailsServlet" class="btn btn-xs btn-primary">Ver Pedido</a>
+                    <a href="DetailsServlet" class="btn btn-primary">Ver Pedido</a>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

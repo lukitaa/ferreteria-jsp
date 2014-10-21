@@ -34,7 +34,7 @@ int total = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Detalles compra</title>
+        <title>Ferreter&iacute;a - Detalle pedido</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -89,12 +89,13 @@ int total = 0;
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Detalle</li>
+                    <li class="active">Detalle pedido</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Detalle compra</h1>
+                    <h1 class="header">Detalle pedido</h1>
+                    <p>Su pedido a sido realizado satisfactoriamente! A continuaci&oacute;n se detallan los productos incluidos.</p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>

@@ -40,7 +40,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Detalles de pedido</title>
+        <title>Ferreter&iacute;a - Modificar pedido</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -95,12 +95,12 @@ int total = 0, stockToBuy = 0, realStock = 0;
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Detalle</li>
+                    <li class="active">Modificar pedido</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Detalle de pedido</h1>
+                    <h1 class="header">Modificar pedido</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -129,7 +129,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
                                 <td><%= d.getPrice() %></td>
                                 <td><%= stockToBuy %></td>
                                 <td><%= realStock %></td>
-                                <td><a href="quitar-del-carrito?producto=<%= p.getIdProduct() %>" class="close"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
+                                <td><a href="quitar-del-carrito?producto=<%= p.getIdProduct() %>" class="btn btn-xs btn-warning" title="Quitar del pedido"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
                             </tr>
                             <%
                                 total += d.getAmount() * d.getPrice();
@@ -137,8 +137,8 @@ int total = 0, stockToBuy = 0, realStock = 0;
                         </tbody>
                     </table>
                     <p class="lead">Total: <%= total %></p>
-                    <a href="productos/compra" class="btn btn-info" <%= itemIsOverProductStock?"disabled":""%>>Comprar</a>
-                    <h4 class="text-muted">Advertencia: no se podra realizar la compra si la cantidad de unidades de un art&iacute;culo supera el stock disponible</h4>
+                    <a href="productos/compra" class="btn btn-info" <%= itemIsOverProductStock?"disabled":""%>>Realizar Pedido</a>
+                    <h4 class="text-muted">Advertencia: no se podra realizar la compra si la cantidad de unidades de un art&iacute;culo supera el stock disponible.</h4>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
