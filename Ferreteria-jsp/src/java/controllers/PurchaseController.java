@@ -162,24 +162,79 @@ public class PurchaseController extends IntermediateController {
      * Get pending orders
      *
      * @param session A Hibernate session already opened
-     * @return A list of purchases if no errors, otherwise null
+     * @return A list of purchases if no errors, otherwise an empty list
      * @throws StorageException
      */
     public static List<Purchases> getPendingOrders(Session session) throws StorageException {
         List<Purchases> orders = null;
 
         try {
-            orders = new PurchasesDaoImpl(session).fetchAll();
+            orders = new PurchasesDaoImpl(session).getPending();
 
         } catch(HibernateException e) {
             if (session != null) {
                 session.close();
             }
 
-            throw new StorageException("Error interno al intentar cargar el usuario.");
+            throw new StorageException("Error interno al intentar cargar las ordenes pendientes.");
         }
 
         return orders;
+    }
+
+    /**
+     * Update a purchase
+     *
+     * @param purchase purchase previously generated and stored
+     * @throws StorageException if hibernate has troubles
+     * @throws InvalidParameterException if you enter something nasty
+     */
+    public static void udpatePurchase(Purchases purchase)
+            throws StorageException, InvalidParameterException {
+
+        if (purchase == null)
+            throw new InvalidParameterException("La orden ingresada es invalida.");
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+
+            new PurchasesDaoImpl(session).update(purchase);
+
+            session.getTransaction().commit();
+
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+
+            throw new StorageException("Error interno al intentar actualizar la orden.");
+        }
+    }
+
+
+    public static Purchases getPurchase(int purchaseId) throws StorageException {
+
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            session.beginTransaction();
+
+            Purchases p = new PurchasesDaoImpl(session).get(purchaseId);
+
+            session.getTransaction().commit();
+            session.close();
+
+            return p;
+
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+
+            throw new StorageException("Error interno al intentar cargar la compra.");
+        }
     }
 
 }

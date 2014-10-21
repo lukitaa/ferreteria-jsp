@@ -1,27 +1,22 @@
 <%-- 
-    Document   : orders
-    Created on : Oct 21, 2014, 2:42:33 AM
+    Document   : generate-order
+    Created on : Oct 21, 2014, 3:55:12 AM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="java.util.List"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
-<%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Purchases"%>
-<%@page import="servlets.SessionUser"%>
 <%@page import="servlets.ShoppingCart"%>
+<%@page import="servlets.SessionUser"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
+<%    
 ShoppingCart shoppingCart = Common.getCart(request);
 SessionUser sessionUser   = Common.getSessionUser(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-// TODO: get pending orders
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
-%>  
+String args = request.getParameter("error");
+
+boolean error = (args != null && !args.isEmpty());
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -29,7 +24,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Ordenes</title>
+        <title>Ferreter&iacute;a - Inicio</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -45,7 +40,6 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <![endif]-->
     </head>
     <body>
-        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -68,12 +62,10 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                         <li class="active"><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
-                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <%  if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
@@ -91,30 +83,12 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Ordenes pendientes</h1>
-                    <p>A continuación podrá generar ordenes de piqueo para ordenes pendientes.</p>
-                    <% if (orders != null || orders.size() == 0) { %>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>ID pedido</th>
-                                <th>Usuario</th>
-                                <th>Generar orden</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Purchases p : orders) { %>
-                            <tr>    
-                                <td><%= p.getIdPurchase() %></td>
-                                <td><%= p.getUsers().getUsername() %></td>
-                                <td><a href="generar-orden?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
-                            </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                <div class="jumbotron presentation">
+                    <h1 class="header">Generar orden</h1>
+                    <% if (!error) { %>
+                    <p class="text-success">La orden de piqueo ha sido generada exitosamente! :)</p>
                     <% } else { %>
-                    <p class="lead">No se encontraron ordenes pendientes.</p>
+                    <p class="text-danger">Error al generar la orden de piqueo. Intente nuevamente m&aacute;s tarde</p>
                     <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
@@ -126,8 +100,3 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
-<%
-if (sessionHibernate != null) {
-    sessionHibernate.close();
-}
-%>

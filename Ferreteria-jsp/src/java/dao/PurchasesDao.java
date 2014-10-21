@@ -17,7 +17,6 @@
 
 package dao;
 
-import entity.Products;
 import entity.Purchases;
 import java.util.List;
 
@@ -26,7 +25,8 @@ import java.util.List;
  * @author alumno
  */
 public interface PurchasesDao extends GenericDao <Purchases, Integer> {
-    
+
     List<Purchases> fetchAll();
-    
+    List<Purchases> getPending();
+
 }

@@ -36,6 +36,10 @@
         <servlet-name>OrdersServlet</servlet-name>
         <servlet-class>servlets.OrdersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerateOrderServlet</servlet-name>
+        <servlet-class>servlets.GenerateOrderServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -73,6 +77,10 @@
     <servlet-mapping>
         <servlet-name>OrdersServlet</servlet-name>
         <url-pattern>/ordenes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateOrderServlet</servlet-name>
+        <url-pattern>/generar-orden</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
