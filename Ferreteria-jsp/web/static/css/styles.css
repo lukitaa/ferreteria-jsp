@@ -98,6 +98,9 @@ body > .container {
     text-transform: uppercase;
 }
 
+.products .btn-right{
+    float: right;
+}
 
 /**       **/
 /*  USERS  */

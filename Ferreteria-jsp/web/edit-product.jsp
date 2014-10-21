@@ -1,31 +1,34 @@
 <%-- 
-    Document   : products
-    Created on : Aug 26, 2014, 5:16:07 PM
-    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+    Document   : edit-product
+    Created on : 21/10/2014, 12:19:17
+    Author     : usuario
 --%>
 
-<%@page import="controllers.PurchaseController"%>
+<%@page import="controllers.ProductsController"%>
 <%@page import="entity.Products"%>
-<%@page import="java.util.List"%>
-<%@page import="servlets.ShoppingCart"%>
-<%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="entity.Users"%>
+<%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// Check if user is logged
-if (!Common.userIsLogged(request)) {
-    response.sendRedirect("login.jsp");
-    return;
-}
 
-ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+<%  
+    // Check if admin user is logged
+    if (!Common.adminIsLogged(request)) {
+        response.sendRedirect("home.jsp");
+        return;
+    }
 
-// Load products
-List<Products> products = PurchaseController.getProducts();
+    SessionUser sessionUser   = Common.getSessionUser(request);
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-%>   
+    int productsId = Integer.valueOf(request.getParameter("product-id"));
+    Products p = ProductsController.getProduct(productsId);
+    
+%>
+
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -33,7 +36,7 @@ List<Products> products = PurchaseController.getProducts();
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Productos</title>
+        <title>Ferreter&iacute;a - Editar producto</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -65,12 +68,9 @@ List<Products> products = PurchaseController.getProducts();
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if (totalProducts > 0) { %>
@@ -89,41 +89,29 @@ List<Products> products = PurchaseController.getProducts();
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Productos</li>
+                    <li><a href="products.jsp">Productos</a></li>
+                    <li class="active">Editar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Productos</h1>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Stock</th>
-                                <th>Unidades</th>
-                                <th>Agregar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Products p : products) { %>
-                                <form class="products" action="carrito" method="post">
-                                    <input type="hidden" name="product-id" value="<%= p.getIdProduct()%>">
-                                    <tr>
-                                        <td><%= p.getProduct() %></td>
-                                        <td class="price"><%= p.getPrice() %></td>
-                                        <td class="stock"><%= p.getStock() %></td>
-                                        <td><input type="number" name="product-stock" min="0" max="<%= p.getStock()%>" value="0"></td>
-                                        <td><button type="submit" class="btn btn-xs btn-default" title="Agregar producto al carrito">Agregar</button></td>
-                                    </tr>
-                                </form>                                
-                            <% } %>      
-                        </tbody>
-                    </table>
-                    <a href="DetailsServlet" class="btn btn-primary">Ver Pedido</a>
-                    <% if (sessionUser.isAdmin()) { %>
-                        <a href="products-add.jsp" class="btn btn-primary btn-right">ABM de Productos</a>
-                    <% } %>
+                <div class="jumbotron presentation users">
+                    <h1>Editar Producto</h1>
+                    <form role="form" action="EditProductServlet" method="post">
+                        <input type="hidden" name="product-id" value="<%= productsId %>" >
+                        <div class="form-group">
+                            <label>Nombre producto</label>
+                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Nombre del producto" value="<%= p.getProduct() %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="text" name="producto-precio" id="producto-precio" class="form-control" placeholder="Precio producto" value="<%= p.getPrice() %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="text" name="producto-stock" id="producto-stock" class="form-control" placeholder="Stock del producto" value="<%= p.getStock() %>" required>
+                        </div>
+                        <button type="submit" class="btn btn-default">Editar</button>
+                    </form>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

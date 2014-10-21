@@ -40,6 +40,18 @@
         <servlet-name>GenerateOrderServlet</servlet-name>
         <servlet-class>servlets.GenerateOrderServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddProductsServlet</servlet-name>
+        <servlet-class>servlets.AddProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteProductServlet</servlet-name>
+        <servlet-class>servlets.DeleteProductServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProductServlet</servlet-name>
+        <servlet-class>servlets.EditProductServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -81,6 +93,18 @@
     <servlet-mapping>
         <servlet-name>GenerateOrderServlet</servlet-name>
         <url-pattern>/generar-orden</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddProductsServlet</servlet-name>
+        <url-pattern>/AddProductsServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteProductServlet</servlet-name>
+        <url-pattern>/DeleteProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProductServlet</servlet-name>
+        <url-pattern>/EditProductServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
