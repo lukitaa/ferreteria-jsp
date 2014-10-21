@@ -93,7 +93,7 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
                                 if (sessionUser.isAdmin()){
                             %>
                                 <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
-                                <a href="#on-the-near-future" class="col-md-3 btn-block btn btn-lg">pedidos</a>
+                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">pedidos</a>
                             <% } %>
                         </div>
                     </div>

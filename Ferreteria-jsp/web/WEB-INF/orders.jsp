@@ -1,35 +1,26 @@
 <%-- 
-    Document   : historic
-    Created on : Sep 23, 2014, 3:00:57 PM
+    Document   : orders
+    Created on : Oct 21, 2014, 2:42:33 AM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="controllers.StorageException"%>
-<%@page import="controllers.UsersController"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
+<%@page import="util.HibernateUtil"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="controllers.PurchaseController"%>
+<%@page import="entity.Purchases"%>
 <%@page import="servlets.SessionUser"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-// Check if admin user is logged
-if (!Common.adminIsLogged(request)) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-    
 ShoppingCart shoppingCart = Common.getCart(request);
 SessionUser sessionUser   = Common.getSessionUser(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-List<Users> users = new ArrayList();
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
+// TODO: get pending orders
+Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
+List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
 %>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -38,7 +29,7 @@ try {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Historial</title>
+        <title>Ferreter&iacute;a - Ordenes</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -70,12 +61,11 @@ try {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li class="active"><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                      <ul class="nav navbar-nav navbar-right">
@@ -97,28 +87,35 @@ try {
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Historial</li>
+                    <li class="active">Ordenes</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Historial de compras</h1>
+                    <h1 class="header">Ordenes pendientes</h1>
+                    <p>A continuación podrá generar ordenes de piqueo para ordenes pendientes.</p>
+                    <% if (orders != null) { %>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>Nombre de usuario</th>
-                                <th>Historial</th>
+                                <th>ID pedido</th>
+                                <th>Usuario</th>
+                                <th>Generar orden</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% for (Users u : users) { %>
+                            <% for (Purchases p : orders) { %>
                             <tr>    
-                                <td><%= u.getUsername() %></td>
-                                <td><a href="historic-detail.jsp?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
+                                <td><%= p.getIdPurchase() %></td>
+                                <td><%= p.getUsers().getUsername() %></td>
+                                <td><a href="generar-orden?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
                             </tr>
                             <% } %>
                         </tbody>
                     </table>
+                    <% } else { %>
+                    <p class="lead">No se encontraron ordenes pendientes.</p>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
@@ -129,3 +126,8 @@ try {
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
+<%
+if (sessionHibernate != null) {
+    sessionHibernate.close();
+}
+%>

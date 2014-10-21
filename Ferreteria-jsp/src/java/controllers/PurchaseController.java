@@ -158,4 +158,28 @@ public class PurchaseController extends IntermediateController {
         return details;
     }
 
+    /**
+     * Get pending orders
+     *
+     * @param session A Hibernate session already opened
+     * @return A list of purchases if no errors, otherwise null
+     * @throws StorageException
+     */
+    public static List<Purchases> getPendingOrders(Session session) throws StorageException {
+        List<Purchases> orders = null;
+
+        try {
+            orders = new PurchasesDaoImpl(session).fetchAll();
+
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.close();
+            }
+
+            throw new StorageException("Error interno al intentar cargar el usuario.");
+        }
+
+        return orders;
+    }
+
 }
