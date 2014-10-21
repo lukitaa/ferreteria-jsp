@@ -82,7 +82,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>

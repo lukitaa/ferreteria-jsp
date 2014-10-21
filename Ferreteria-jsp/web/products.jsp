@@ -80,7 +80,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                     <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>
