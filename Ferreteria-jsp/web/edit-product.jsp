@@ -1,38 +1,33 @@
 <%-- 
-    Document   : users
-    Created on : Aug 26, 2014, 5:16:07 PM
-    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+    Document   : edit-product
+    Created on : 21/10/2014, 12:19:17
+    Author     : usuario
 --%>
 
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.logging.Logger"%>
-<%@page import="java.util.logging.Level"%>
-<%@page import="controllers.StorageException"%>
-<%@page import="controllers.UsersController"%>
-<%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
-<%@page import="servlets.ShoppingCart"%>
+<%@page import="controllers.ProductsController"%>
+<%@page import="entity.Products"%>
 <%@page import="servlets.SessionUser"%>
 <%@page import="servlets.Common"%>
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="entity.Users"%>
+<%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// Check if admin user is logged
-if (!Common.adminIsLogged(request)) {
-    response.sendRedirect("home.jsp");
-    return;
-}
+
+<%  
+    // Check if admin user is logged
+    if (!Common.adminIsLogged(request)) {
+        response.sendRedirect("home.jsp");
+        return;
+    }
+
+    SessionUser sessionUser   = Common.getSessionUser(request);
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+
+    int productsId = Integer.valueOf(request.getParameter("product-id"));
+    Products p = ProductsController.getProduct(productsId);
     
-ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-List<Users> users = new ArrayList();
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-%>   
+%>
 
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -41,7 +36,7 @@ try {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Usuarios</title>
+        <title>Ferreter&iacute;a - Editar producto</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -73,13 +68,12 @@ try {
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
+                        <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <%  if (totalProducts > 0) { %>
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
@@ -95,51 +89,29 @@ try {
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Usuarios</li>
+                    <li><a href="products.jsp">Productos</a></li>
+                    <li class="active">Editar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
-                    <h1>ABM Usuarios</h1>
-                    <form class="form-inline" role="form" action="AddUserServlet" method="post">
+                    <h1>Editar Producto</h1>
+                    <form role="form" action="EditProductServlet" method="post">
+                        <input type="hidden" name="product-id" value="<%= productsId %>" >
                         <div class="form-group">
-                          <label for="username">Nombre de usuario</label>
-                          <input type="text" name="username" id="username" class="form-control" placeholder="Ingrese el usuario" required>
+                            <label>Nombre producto</label>
+                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Nombre del producto" value="<%= p.getProduct() %>" required>
                         </div>
                         <div class="form-group">
-                          <label for="user-password">Contraseña</label>
-                          <input type="password" name="password" id="user-password" class="form-control" placeholder="Ingrese el password" required>
+                            <label>Precio</label>
+                            <input type="text" name="producto-precio" id="producto-precio" class="form-control" placeholder="Precio producto" value="<%= p.getPrice() %>" required>
                         </div>
-                        <div class="checkbox">
-                          <label>
-                            Es administrador?  <input type="checkbox" name="admin"> 
-                          </label>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="text" name="producto-stock" id="producto-stock" class="form-control" placeholder="Stock del producto" value="<%= p.getStock() %>" required>
                         </div>
-                        <button type="submit" class="btn btn-default">Agregar</button>
+                        <button type="submit" class="btn btn-default">Editar</button>
                     </form>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre de usuario</th>
-                                <th>Es administrador</th>
-                                <th>Editar</th>
-                                <th>Eliminar</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Users u : users) { %>
-                                <form action="DeleteUserServlet" method="post">
-                                    <input type="hidden" name="user-id" value="<%= u.getIdUser() %>">
-                                    <tr>
-                                        <td><%= u.getUsername() %></td>
-                                        <td><%= ((u.isAdmin()) ? "SI" : "NOP") %></td>
-                                        <td><a href="edit-user.jsp?user=<%= u.getIdUser() %>" class="btn btn-xs btn-info">Editar</a></td>
-                                        <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
-                                    </tr>
-                                </form>
-                            <% } %>
-                        </tbody>
-                    </table>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

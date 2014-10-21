@@ -18,7 +18,6 @@
 package dao;
 
 import entity.Purchases;
-import entity.Users;
 import java.util.List;
 import org.hibernate.Session;
 
@@ -35,6 +34,12 @@ public class PurchasesDaoImpl extends GenericDaoImpl<Purchases, Integer> impleme
     @Override
     public List<Purchases> fetchAll() {
         String hql = "FROM Purchases";
+        return session.createQuery(hql).list();
+    }
+
+    @Override
+    public List<Purchases> getPending() {
+        String hql = "FROM Purchases p WHERE p.done = 0";
         return session.createQuery(hql).list();
     }
 

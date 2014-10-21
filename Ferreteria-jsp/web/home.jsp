@@ -1,5 +1,5 @@
 <%-- 
-    Document   : index
+    Document   : home
     Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
@@ -7,21 +7,18 @@
 <%@page import="servlets.SessionUser"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-  
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    if (!Common.userIsLogged(request)) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<%
+// Check if user is logged
+if (!Common.userIsLogged(request)) {
+    response.sendRedirect("login.jsp");
+    return;
+}
     
-    SessionUser sessionUser = Common.getSessionUser(request);
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-%>   
-
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -62,20 +59,17 @@
                         <li class="active"><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                        <%  if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>
@@ -87,15 +81,16 @@
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation home">
                     <h1 header>Bienvenido a Ferreter&iacute;a!</h1>
-                    <p>Desde aqu&iacute; puede acceder a las siguientes opciones: </p>
+                    <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
                     <div class="container menu">
                         <div class="row">
-                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
-                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
+                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg">historial</a>
+                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg">productos</a>
                             <% 
                                 if (sessionUser.isAdmin()){
                             %>
-                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
+                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
+                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">pedidos</a>
                             <% } %>
                         </div>
                     </div>

@@ -18,12 +18,12 @@ if (!Common.userIsLogged(request)) {
     return;
 }
 
-SessionUser sessionUser   = Common.getSessionUser(request);
 ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+
 // Load products
 List<Products> products = PurchaseController.getProducts();
-
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 %>   
 <!DOCTYPE html>
@@ -67,20 +67,17 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>
@@ -97,7 +94,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Comprar productos</h1>
+                    <h1 class="header">Productos</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -117,13 +114,16 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                                         <td class="price"><%= p.getPrice() %></td>
                                         <td class="stock"><%= p.getStock() %></td>
                                         <td><input type="number" name="product-stock" min="0" max="<%= p.getStock()%>" value="0"></td>
-                                        <td><button type="submit" class="btn btn-xs btn-primary">Agregar</button></td>
+                                        <td><button type="submit" class="btn btn-xs btn-default" title="Agregar producto al carrito">Agregar</button></td>
                                     </tr>
                                 </form>                                
                             <% } %>      
                         </tbody>
                     </table>
-                    <a href="DetailsServlet" class="btn btn-xs btn-primary">Ver Pedido</a>
+                    <a href="DetailsServlet" class="btn btn-primary">Ver Pedido</a>
+                    <% if (sessionUser.isAdmin()) { %>
+                        <a href="products-add.jsp" class="btn btn-primary btn-right">ABM de Productos</a>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

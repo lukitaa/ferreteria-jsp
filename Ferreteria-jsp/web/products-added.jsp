@@ -1,53 +1,35 @@
 <%-- 
-    Document   : historic-detail
-    Created on : Sep 23, 2014, 3:34:13 PM
+    Document   : users-add
+    Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="entity.Purchases"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
-<%@page import="java.util.Set"%>
-<%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Details"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.logging.Logger"%>
+<%@page import="java.util.logging.Level"%>
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.UsersController"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-<%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
+    
+SessionUser sessionUser   = Common.getSessionUser(request);
 // Check if user is logged
-if (!Common.userIsLogged(request)) {
-    response.sendRedirect("login.jsp");
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
     return;
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-List<Users> users = new ArrayList();
-Users u = null;
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-int userId = Integer.valueOf(request.getParameter("usuario"));
-for(Users usuario : users){
-    if(usuario.getIdUser() == userId )
-        u = usuario;
-}
-Set<Purchases> purchases = u.getPurchaseses();
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-purchases = UsersController.getUserPurchases(userId, sessionHibernate);
-
-int total = 0;
-%>
+    
+String receivedError = request.getParameter("error");
+boolean error = (receivedError != null && receivedError.equals("true"));
+%>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -55,7 +37,7 @@ int total = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Historial</title>
+        <title>Ferreter&iacute;a - Usuarios</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -87,12 +69,10 @@ int total = 0;
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li class="active"><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
@@ -111,39 +91,21 @@ int total = 0;
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Historial</li>
+                    <li><a href="products.jsp">Productos</a></li>
+                    <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Pedidos realizados</h1>
-                    <% for (Purchases p : purchases) { %>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio Historico</th>
-                                    <th>Unidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% 
-                            Set<Details> purchaseDetails = p.getDetailses();
-                            for (Details d : purchaseDetails) { 
-                            %>
-                                <tr> 
-                                    <td><%= d.getProducts().getProduct() %></td>
-                                    <td><%= d.getPrice() %></td>
-                                    <td><%= d.getAmount() %></td>
-                                </tr>
-                                <% 
-                                    total += d.getPrice() * d.getAmount();
-                                %>
-                            <% } %>
-                            </tbody>
-                        </table>
-                        <p class="lead">Total: <%= total %></p>
-                    <% total = 0; } %>
+                <div class="jumbotron">
+                    <h1>Agregar Producto</h1>
+                    <%
+                    if (!error) {
+                    %>
+                        <p class="lead">Producto agregado exitosamente.</p>
+                    <% } else { %>
+                        <p class="lead">Producto no agregado.</p>
+                    <% } %>
+                    <h2><a href="products.jsp">Volver a pagina productos.</a></h2>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

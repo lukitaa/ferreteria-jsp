@@ -15,8 +15,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-console.log('I HAS BEEN LOADED :)')
+console.log('I HAS BEEN LOADED :)');
 
-/* ** ** ** */
-/* PURCHASE */
-/* ** ** ** */
+(function(){
+    
+    // Confirmate logout
+    $( '.btn-logout' ).click(function(event) {
+
+        var userConfirmedExit = confirm('Seguro deseas salir?');
+
+        if (!userConfirmedExit) {
+            event.preventDefault();
+        }
+
+    });
+    
+}());

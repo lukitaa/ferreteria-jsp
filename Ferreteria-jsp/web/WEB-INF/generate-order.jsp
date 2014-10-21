@@ -1,52 +1,21 @@
 <%-- 
-    Document   : historic-detail
-    Created on : Sep 23, 2014, 3:34:13 PM
+    Document   : generate-order
+    Created on : Oct 21, 2014, 3:55:12 AM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="entity.Purchases"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
-<%@page import="java.util.Set"%>
-<%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Details"%>
-<%@page import="controllers.StorageException"%>
-<%@page import="controllers.UsersController"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-<%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// Check if user is logged
-if (!Common.userIsLogged(request)) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
+<%    
 ShoppingCart shoppingCart = Common.getCart(request);
 SessionUser sessionUser   = Common.getSessionUser(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-List<Users> users = new ArrayList();
-Users u = null;
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-int userId = Integer.valueOf(request.getParameter("usuario"));
-for(Users usuario : users){
-    if(usuario.getIdUser() == userId )
-        u = usuario;
-}
-Set<Purchases> purchases = u.getPurchaseses();
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-purchases = UsersController.getUserPurchases(userId, sessionHibernate);
+String args = request.getParameter("error");
 
-int total = 0;
+boolean error = (args != null && !args.isEmpty());
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -55,7 +24,7 @@ int total = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Historial</title>
+        <title>Ferreter&iacute;a - Inicio</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -71,7 +40,6 @@ int total = 0;
         <![endif]-->
     </head>
     <body>
-        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -87,11 +55,11 @@ int total = 0;
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
                         <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
-                        <li><a href="ordenes">Ordenes</a></li>
+                        <li class="active"><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -111,39 +79,17 @@ int total = 0;
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Historial</li>
+                    <li class="active">Ordenes</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Pedidos realizados</h1>
-                    <% for (Purchases p : purchases) { %>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio Historico</th>
-                                    <th>Unidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% 
-                            Set<Details> purchaseDetails = p.getDetailses();
-                            for (Details d : purchaseDetails) { 
-                            %>
-                                <tr> 
-                                    <td><%= d.getProducts().getProduct() %></td>
-                                    <td><%= d.getPrice() %></td>
-                                    <td><%= d.getAmount() %></td>
-                                </tr>
-                                <% 
-                                    total += d.getPrice() * d.getAmount();
-                                %>
-                            <% } %>
-                            </tbody>
-                        </table>
-                        <p class="lead">Total: <%= total %></p>
-                    <% total = 0; } %>
+                <div class="jumbotron presentation">
+                    <h1 class="header">Generar orden</h1>
+                    <% if (!error) { %>
+                    <p class="text-success">La orden de piqueo ha sido generada exitosamente! :)</p>
+                    <% } else { %>
+                    <p class="text-danger">Error al generar la orden de piqueo. Intente nuevamente m&aacute;s tarde</p>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

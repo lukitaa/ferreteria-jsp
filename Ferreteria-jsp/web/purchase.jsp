@@ -10,13 +10,15 @@
 <%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-// Check if user is logged and is admin
-SessionUser sessionUser = Common.getSessionUser(request);
-if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
-    response.sendRedirect("login.jsp");
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
     return;
 }
 
+SessionUser sessionUser = Common.getSessionUser(request);
+
+// Recover details from last purchase
 List<Details> details = Common.getPurchaseDetails(request);
 
 // Check if there is something to purchase, otherwise exit
@@ -34,7 +36,7 @@ int total = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Detalles compra</title>
+        <title>Ferreter&iacute;a - Detalle pedido</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -68,15 +70,14 @@ int total = 0;
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>
@@ -89,12 +90,13 @@ int total = 0;
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Detalle</li>
+                    <li class="active">Detalle pedido</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Detalle compra</h1>
+                    <h1 class="header">Detalle pedido</h1>
+                    <p>Su pedido a sido realizado satisfactoriamente! A continuaci&oacute;n se detallan los productos incluidos.</p>
                     <table class="table table-bordered">
                         <thead>
                             <tr>

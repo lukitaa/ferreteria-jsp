@@ -1,5 +1,5 @@
 <%-- 
-    Document   : addUser
+    Document   : edit-user
     Created on : 16/09/2014, 19:41:33
     Author     : alumno
 --%>
@@ -10,29 +10,28 @@
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
 <%  
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
+    return;
+}
     
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    int userID = Integer.valueOf(request.getParameter("user"));
-    Users user = UsersController.getUser(userID);
-%> 
+SessionUser sessionUser   = Common.getSessionUser(request);
+ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
+int userID = Integer.valueOf(request.getParameter("user"));
+Users user = UsersController.getUser(userID);
+%>
+<!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Editar usuario</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -66,15 +65,14 @@
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="products.jsp">Productos</a></li>
                         <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>

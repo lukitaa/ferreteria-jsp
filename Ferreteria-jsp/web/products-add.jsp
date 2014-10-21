@@ -1,53 +1,36 @@
 <%-- 
-    Document   : historic-detail
-    Created on : Sep 23, 2014, 3:34:13 PM
+    Document   : users-add
+    Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="entity.Purchases"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
-<%@page import="java.util.Set"%>
-<%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Details"%>
+<%@page import="entity.Products"%>
+<%@page import="controllers.ProductsController"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.logging.Logger"%>
+<%@page import="java.util.logging.Level"%>
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.UsersController"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-<%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
+<%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 // Check if user is logged
-if (!Common.userIsLogged(request)) {
-    response.sendRedirect("login.jsp");
+    SessionUser sessionUser   = Common.getSessionUser(request);
+    if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
     return;
 }
     
-ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+    ShoppingCart shoppingCart = Common.getCart(request);
+    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-List<Users> users = new ArrayList();
-Users u = null;
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-int userId = Integer.valueOf(request.getParameter("usuario"));
-for(Users usuario : users){
-    if(usuario.getIdUser() == userId )
-        u = usuario;
-}
-Set<Purchases> purchases = u.getPurchaseses();
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-purchases = UsersController.getUserPurchases(userId, sessionHibernate);
-
-int total = 0;
-%>
+    List<Products> listaProd = null;
+    listaProd = ProductsController.getProducts();
+%>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -55,7 +38,7 @@ int total = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Historial</title>
+        <title>Ferreter&iacute;a - ABM Productos</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -87,12 +70,10 @@ int total = 0;
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
+                        <li><a href="historic.jsp">Historial</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
@@ -111,39 +92,55 @@ int total = 0;
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Historial</li>
+                    <li><a href="products.jsp">Productos</a></li>
+                    <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Pedidos realizados</h1>
-                    <% for (Purchases p : purchases) { %>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio Historico</th>
-                                    <th>Unidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% 
-                            Set<Details> purchaseDetails = p.getDetailses();
-                            for (Details d : purchaseDetails) { 
-                            %>
-                                <tr> 
-                                    <td><%= d.getProducts().getProduct() %></td>
-                                    <td><%= d.getPrice() %></td>
-                                    <td><%= d.getAmount() %></td>
-                                </tr>
-                                <% 
-                                    total += d.getPrice() * d.getAmount();
-                                %>
+                <div class="jumbotron">
+                    <h2>Agregar producto</h2>
+                    <form class="form-inline" role="form" action="AddProductsServlet" method="post">
+                        <div class="form-group">
+                            <label>Nombre del producto:</label>
+                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Ingrese el producto" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="text" name="producto-stock" id="producto-stock" class="form-control" placeholder="Ingrese el stock" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="text" name="producto-precio" id="producto-precio" class="form-control" placeholder="Ingrese el precio" required>
+                        </div>
+                        <button type="submit" class="btn btn-default">Agregar producto</button>
+                    </form>
+                    <br>
+                    <h2>Tabla de productos actuales</h2>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Stock</th>
+                                <th>Modificar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Products r : listaProd) { %>
+                                <form action="DeleteProductServlet" method="post">
+                                    <input type="hidden" name="product-id" value="<%= r.getIdProduct()%>">
+                                    <tr>
+                                        <td><%= r.getProduct()%></td>
+                                        <td><%= r.getPrice() %></td>
+                                        <td><%= r.getStock() %></td>
+                                        <td><a href="edit-product.jsp?product-id=<%= r.getIdProduct()%>" class="btn btn-xs btn-info">Editar</a></td>
+                                        <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
+                                    </tr>
+                                </form>
                             <% } %>
-                            </tbody>
-                        </table>
-                        <p class="lead">Total: <%= total %></p>
-                    <% total = 0; } %>
+                        </tbody>
+                    </table>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

@@ -13,34 +13,32 @@
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
+    return;
+}
+    
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("historic-detail.jsp?usuario="+sessionUser.getIdUser());
-        return;
-    }
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    List<Users> users = new ArrayList();
-    try {
-        users = UsersController.getUsers();
-    } catch (StorageException ex) {
-        //TODO: do something
-    }
+List<Users> users = new ArrayList();
+try {
+    users = UsersController.getUsers();
+} catch (StorageException ex) {
+    //TODO: do something
+}
 %>  
-
+<!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Historial</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -74,20 +72,17 @@
                         <li><a href="home.jsp">Inicio</a></li>
                         <li class="active"><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
-                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <%  if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
-                        <li><a href="logout">Salir</a></li>
+                        <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
                 </div>
             </div>
@@ -114,11 +109,10 @@
                         </thead>
                         <tbody>
                             <% for (Users u : users) { %>
-                                 <tr>    
-                                    <td><%= u.getUsername() %></td>
-                                    <td><a href="historic-detail.jsp?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
-                                </tr>
-                                </form>
+                            <tr>    
+                                <td><%= u.getUsername() %></td>
+                                <td><a href="historic-detail.jsp?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
+                            </tr>
                             <% } %>
                         </tbody>
                     </table>
