@@ -56,7 +56,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Historial</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -120,7 +120,7 @@
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Compras realizadas</h1>
+                    <h1 class="header">Pedidos realizados</h1>
                     <% for (Purchases p : purchases) { %>
                         <table class="table table-bordered">
                             <thead>
