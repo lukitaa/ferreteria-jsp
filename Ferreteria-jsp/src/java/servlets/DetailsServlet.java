@@ -56,7 +56,7 @@ public class DetailsServlet extends HttpServlet {
         ShoppingCart shoppingCart = Common.getCart(request);
 
         // Check if they are products, otherwise exit
-        if (shoppingCart == null) {
+        if (shoppingCart == null || shoppingCart.getProductsId().size() == 0) {
             response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }

@@ -29,8 +29,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RemoveProductFromCartServlet extends HttpServlet {
 
-    private void removeProductFromCart(int productId) {
-        //TODO smart :P
+    private void removeProductFromCart(ShoppingCart cart, int productId) {
+        for(int i = 0, length = cart.getProductsId().size(); i < length; i++) {
+            if (productId == cart.getProductsId().get(i)) {
+                cart.getProductsId().remove(i);
+                cart.getProductsAmount().remove(i);
+                break;
+            }
+        }
     }
 
     /**
@@ -64,7 +70,7 @@ public class RemoveProductFromCartServlet extends HttpServlet {
 
         if (productIdReceived != null && !productIdReceived.isEmpty()) {
             try {
-                removeProductFromCart(Integer.parseInt(productIdReceived));
+                removeProductFromCart(shoppingCart, Integer.parseInt(productIdReceived));
             } catch(NumberFormatException e) { } // I don't care about assholes
         }
 
