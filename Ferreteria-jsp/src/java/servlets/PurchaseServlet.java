@@ -60,7 +60,7 @@ public class PurchaseServlet extends HttpServlet {
         List<Details> purchaseDetails = Common.getPurchaseDetails(request);
         boolean error = false;
 
-        List<Details> details = new ArrayList();
+        //List<Details> details = new ArrayList();
 
         // Check if they are products, otherwise exit
         if (purchaseDetails == null) {
@@ -69,7 +69,7 @@ public class PurchaseServlet extends HttpServlet {
         }
 
         try {
-            details = PurchaseController.purchaseProducts(purchaseDetails, session.getIdUser());
+            purchaseDetails = PurchaseController.purchaseProducts(purchaseDetails, session.getIdUser());
 
             //CLEAR THE SESSION WITH PRODUCTS
             //Common.destroyCart(request);
@@ -81,14 +81,14 @@ public class PurchaseServlet extends HttpServlet {
         }
 
         // Check if there was an error or nothing has been bought
-        if (error || details.size() <= 0) {
+        if (error || purchaseDetails.size() <= 0) {
             //TODO: display an error message
             response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }
 
         // Add details into session to pass it to the view
-        Common.generatePurchaseDetails(request, details);
+        //Common.generatePurchaseDetails(request, details);
 
         response.sendRedirect("../purchase.jsp");
     }

@@ -17,12 +17,7 @@
 
 package servlets;
 
-import controllers.InvalidParameterException;
-import controllers.PurchaseController;
-import controllers.StorageException;
-import entity.Details;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +27,17 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class DetailsServlet extends HttpServlet {
+public class RemoveProductFromCartServlet extends HttpServlet {
+
+    private void removeProductFromCart(ShoppingCart cart, int productId) {
+        for(int i = 0, length = cart.getProductsId().size(); i < length; i++) {
+            if (productId == cart.getProductsId().get(i)) {
+                cart.getProductsId().remove(i);
+                cart.getProductsAmount().remove(i);
+                break;
+            }
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,7 +52,6 @@ public class DetailsServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Check if user is logged
-        SessionUser sessionUser = Common.getSessionUser(request);
         if (!Common.userIsLogged(request)) {
             response.sendRedirect("login.jsp");
             return;
@@ -56,27 +60,21 @@ public class DetailsServlet extends HttpServlet {
         ShoppingCart shoppingCart = Common.getCart(request);
 
         // Check if they are products, otherwise exit
-        if (shoppingCart == null || shoppingCart.getProductsId().size() == 0) {
+        if (shoppingCart == null) {
             response.sendRedirect("/Ferreteria-jsp/products.jsp");
             return;
         }
 
-        boolean errorLoadingData = false;
+        // Get product ID from parameter
+        String productIdReceived = request.getParameter("producto");
 
-        try {
-
-            List<Details> details = PurchaseController.getDetailsFromCart(shoppingCart);
-
-            // Store details on session to be processed on view
-            Common.generatePurchaseDetails(request, details);
-
-        } catch (InvalidParameterException ex) {
-            errorLoadingData = true;
-        } catch (StorageException ex) {
-            errorLoadingData = true;
+        if (productIdReceived != null && !productIdReceived.isEmpty()) {
+            try {
+                removeProductFromCart(shoppingCart, Integer.parseInt(productIdReceived));
+            } catch(NumberFormatException e) { } // I don't care about assholes
         }
 
-        response.sendRedirect("details.jsp" + ((errorLoadingData) ? "?error=1" : ""));
+        response.sendRedirect("DetailsServlet");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
