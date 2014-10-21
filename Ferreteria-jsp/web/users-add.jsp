@@ -1,5 +1,5 @@
 <%-- 
-    Document   : index
+    Document   : users-add
     Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
@@ -15,22 +15,20 @@
 <%@page import="servlets.SessionUser"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
+<%
+// Check if user is logged
+if (!Common.userIsLogged(request)) {
+    response.sendRedirect("login.jsp");
+    return;
+}
     
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
     
-    String receivedError = request.getParameter("error");
-    boolean error = (receivedError != null && receivedError.equals("true"));
+String receivedError = request.getParameter("error");
+boolean error = (receivedError != null && receivedError.equals("true"));
 %>   
-
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>

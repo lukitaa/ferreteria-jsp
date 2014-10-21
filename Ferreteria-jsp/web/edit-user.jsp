@@ -1,5 +1,5 @@
 <%-- 
-    Document   : addUser
+    Document   : edit-user
     Created on : 16/09/2014, 19:41:33
     Author     : alumno
 --%>
@@ -10,22 +10,21 @@
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-
 <%  
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
+    return;
+}
     
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    int userID = Integer.valueOf(request.getParameter("user"));
-    Users user = UsersController.getUser(userID);
-%> 
+SessionUser sessionUser   = Common.getSessionUser(request);
+ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
+int userID = Integer.valueOf(request.getParameter("user"));
+Users user = UsersController.getUser(userID);
+%> 
+<!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">

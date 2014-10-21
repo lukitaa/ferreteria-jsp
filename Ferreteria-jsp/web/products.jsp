@@ -18,12 +18,12 @@ if (!Common.userIsLogged(request)) {
     return;
 }
 
-SessionUser sessionUser   = Common.getSessionUser(request);
 ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+
 // Load products
 List<Products> products = PurchaseController.getProducts();
-
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 %>   
 <!DOCTYPE html>

@@ -1,27 +1,31 @@
+<%-- 
+    Document   : edited-user
+    Created on : 16/09/2014, 19:41:33
+    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+--%>
+
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
-<!DOCTYPE html> 
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-%>   
+<%
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
+    return;
+}
 
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+%>   
+<!DOCTYPE html>
 <html lang="es" dir="ltr">     
     <head>         
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Ferreter&iacute;a - Usuario editado</title>           
+        <title>Ferreter&iacute;a - Editar usuario</title>           
 
         <base href="${pageContext.request.contextPath}/" >
         

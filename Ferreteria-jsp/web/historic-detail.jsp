@@ -19,35 +19,34 @@
 <%@page import="servlets.Common"%>
 <%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+// Check if user is logged
+if (!Common.userIsLogged(request)) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+    
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.userIsLogged(request)) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    List<Users> users = new ArrayList();
-    Users u = null;
-    try {
-        users = UsersController.getUsers();
-    } catch (StorageException ex) {
-        //TODO: do something
-    }
-    int userId = Integer.valueOf(request.getParameter("usuario"));
-    for(Users usuario : users){
-        if(usuario.getIdUser() == userId )
-            u = usuario;
-    }
-    Set<Purchases> purchases = u.getPurchaseses();
-    Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-    purchases = UsersController.getUserPurchases(userId, sessionHibernate);
-    
-    int total = 0;
+List<Users> users = new ArrayList();
+Users u = null;
+try {
+    users = UsersController.getUsers();
+} catch (StorageException ex) {
+    //TODO: do something
+}
+int userId = Integer.valueOf(request.getParameter("usuario"));
+for(Users usuario : users){
+    if(usuario.getIdUser() == userId )
+        u = usuario;
+}
+Set<Purchases> purchases = u.getPurchaseses();
+Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
+purchases = UsersController.getUserPurchases(userId, sessionHibernate);
+
+int total = 0;
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">

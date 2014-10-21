@@ -10,13 +10,15 @@
 <%@page import="servlets.SessionUser"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-// Check if user is logged and is admin
-SessionUser sessionUser = Common.getSessionUser(request);
-if (!Common.userIsLogged(request) && !sessionUser.isAdmin()) {
-    response.sendRedirect("login.jsp");
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
     return;
 }
 
+SessionUser sessionUser = Common.getSessionUser(request);
+
+// Recover details from last purchase
 List<Details> details = Common.getPurchaseDetails(request);
 
 // Check if there is something to purchase, otherwise exit

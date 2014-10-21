@@ -1,5 +1,5 @@
 <%-- 
-    Document   : index
+    Document   : home
     Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
@@ -7,21 +7,18 @@
 <%@page import="servlets.SessionUser"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-
-  
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    if (!Common.userIsLogged(request)) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
+<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<%
+// Check if user is logged
+if (!Common.userIsLogged(request)) {
+    response.sendRedirect("login.jsp");
+    return;
+}
     
-    SessionUser sessionUser = Common.getSessionUser(request);
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-%>   
-
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>

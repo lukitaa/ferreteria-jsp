@@ -4,7 +4,6 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-
 <%@page import="entity.Products"%>
 <%@page import="entity.Details"%>
 <%@page import="java.util.List"%>

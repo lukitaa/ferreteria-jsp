@@ -13,27 +13,25 @@
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
+<%
+// Check if admin user is logged
+if (!Common.adminIsLogged(request)) {
+    response.sendRedirect("home.jsp");
+    return;
+}
+    
+ShoppingCart shoppingCart = Common.getCart(request);
+SessionUser sessionUser   = Common.getSessionUser(request);
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-<%  //Check to see if the user it's trying to enter the page via URL changing.
-    // If user is logged, do not login *again*!
-    SessionUser sessionUser = Common.getSessionUser(request);
-    if (!Common.adminIsLogged(request)) {
-        response.sendRedirect("historic-detail.jsp?usuario="+sessionUser.getIdUser());
-        return;
-    }
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-    List<Users> users = new ArrayList();
-    try {
-        users = UsersController.getUsers();
-    } catch (StorageException ex) {
-        //TODO: do something
-    }
+List<Users> users = new ArrayList();
+try {
+    users = UsersController.getUsers();
+} catch (StorageException ex) {
+    //TODO: do something
+}
 %>  
-
+<!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
         <meta charset="utf-8">
