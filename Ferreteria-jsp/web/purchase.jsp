@@ -70,10 +70,9 @@ int total = 0;
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
-                        <% 
-                            if (sessionUser.isAdmin()){
-                        %>
+                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

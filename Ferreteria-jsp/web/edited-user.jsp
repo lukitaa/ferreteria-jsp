@@ -58,12 +58,12 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
                         <li><a href="home.jsp">Inicio</a></li>"
                         <li><a href="historic.jsp">Historial</a></li>"
                         <li><a href="products.jsp">Productos</a></li>"
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>"
+                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="ordenes">Ordenes</a></li>
                         </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        
-                        <%  if (totalProducts > 0){       %>
-                                <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <%  if (totalProducts > 0) { %>
+                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>                     
