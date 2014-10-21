@@ -87,15 +87,16 @@
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation home">
                     <h1 header>Bienvenido a Ferreter&iacute;a!</h1>
-                    <p>Desde aqu&iacute; puede acceder a las siguientes opciones: </p>
+                    <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
                     <div class="container menu">
                         <div class="row">
-                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">historial</a>
-                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">productos</a>
+                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg">historial</a>
+                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg">productos</a>
                             <% 
                                 if (sessionUser.isAdmin()){
                             %>
-                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg text-uppercase">usuarios</a>
+                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
+                                <a href="#on-the-near-future" class="col-md-3 btn-block btn btn-lg">pedidos</a>
                             <% } %>
                         </div>
                     </div>
