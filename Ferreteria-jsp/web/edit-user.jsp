@@ -23,7 +23,7 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
 
 int userID = Integer.valueOf(request.getParameter("user"));
 Users user = UsersController.getUser(userID);
-%> 
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -31,7 +31,7 @@ Users user = UsersController.getUser(userID);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - TITLE</title>
+        <title>Ferreter&iacute;a - Editar usuario</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
