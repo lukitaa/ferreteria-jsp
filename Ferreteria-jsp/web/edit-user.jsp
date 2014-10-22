@@ -4,7 +4,7 @@
     Author     : alumno
 --%>
 
-<jsp:setProperty name="sessionUser" property="*" />
+<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
 
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>

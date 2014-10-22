@@ -4,7 +4,7 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:setProperty name="sessionUser" property="*" />
+<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
 <%@page import="entity.Purchases"%>
 <%@page import="util.HibernateUtil"%>
 <%@page import="org.hibernate.Session"%>

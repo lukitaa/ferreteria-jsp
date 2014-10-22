@@ -4,7 +4,7 @@
     Author     : usuario
 --%>
 
-<jsp:setProperty name="sessionUser" property="*" />
+<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
 <%@page import="controllers.ProductsController"%>
 <%@page import="entity.Products"%>
 
