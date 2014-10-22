@@ -49,7 +49,7 @@ public class PurchaseServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        Users sessionUser = (Users) request.getAttribute("sessionUser");
+        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
 
         // User must be logged in to access this page!
         if (sessionUser == null) {

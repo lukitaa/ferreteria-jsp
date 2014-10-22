@@ -68,7 +68,7 @@ public class AddToCartServlet extends HttpServlet {
             throws ServletException, IOException {
         
         
-        Users sessionUser = (Users) request.getAttribute("sessionUser");
+        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
 
         // User must be logged in to access this page!
         if (sessionUser == null) {
