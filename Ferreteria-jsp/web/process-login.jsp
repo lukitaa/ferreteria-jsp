@@ -4,13 +4,12 @@
     Author     : alumno
 --%>
 
-
+<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
+<jsp:setProperty name="sessionUser" property="*" />
 <%@page import="entity.Users"%>
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.InvalidParameterException"%>
 <%@page import="controllers.LoginController"%>
-<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
-<jsp:setProperty name="sessionUser" property="*" />
 <%
 boolean success = false;
 

@@ -4,18 +4,19 @@
     Author     : usuario
 --%>
 
+<jsp:setProperty name="sessionUser" property="*" />
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page import="servlets.SessionUser"%>
+
 <%
 // Check if admin user is logged
-if (!Common.adminIsLogged(request)) {
+if (sessionUser == null || !sessionUser.isAdmin()) {
     response.sendRedirect("home.jsp");
     return;
 }
 
 ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
+
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>   
 <!DOCTYPE html>

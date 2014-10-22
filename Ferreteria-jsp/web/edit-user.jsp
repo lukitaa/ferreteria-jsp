@@ -4,7 +4,8 @@
     Author     : alumno
 --%>
 
-<%@page import="servlets.SessionUser"%>
+<jsp:setProperty name="sessionUser" property="*" />
+
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
@@ -12,12 +13,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%  
 // Check if admin user is logged
-if (!Common.adminIsLogged(request)) {
+if (sessionUser == null || !sessionUser.isAdmin()) {
     response.sendRedirect("home.jsp");
     return;
 }
     
-SessionUser sessionUser   = Common.getSessionUser(request);
+
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 

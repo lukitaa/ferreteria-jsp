@@ -52,7 +52,7 @@ public class RemoveProductFromCartServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Check if user is logged
-        if (!Common.userIsLogged(request)) {
+        if (sessionUser == null) {
             response.sendRedirect("login.jsp");
             return;
         }

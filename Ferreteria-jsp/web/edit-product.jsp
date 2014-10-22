@@ -4,23 +4,23 @@
     Author     : usuario
 --%>
 
+<jsp:setProperty name="sessionUser" property="*" />
 <%@page import="controllers.ProductsController"%>
 <%@page import="entity.Products"%>
-<%@page import="servlets.SessionUser"%>
+
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <%  
     // Check if admin user is logged
-    if (!Common.adminIsLogged(request)) {
+    if (sessionUser == null || !sessionUser.isAdmin()) {
         response.sendRedirect("home.jsp");
         return;
     }
 
-    SessionUser sessionUser   = Common.getSessionUser(request);
+    
     ShoppingCart shoppingCart = Common.getCart(request);
     int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
@@ -28,7 +28,6 @@
     Products p = ProductsController.getProduct(productsId);
     
 %>
-
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>

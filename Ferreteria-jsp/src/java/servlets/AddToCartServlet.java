@@ -67,7 +67,7 @@ public class AddToCartServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // User must be logged in to access this page!
-        if (!Common.userIsLogged(request)) {
+        if (sessionUser == null) {
             response.sendRedirect("/Ferreteria-jsp/login");
             return;
         }

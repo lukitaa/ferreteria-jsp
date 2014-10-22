@@ -4,22 +4,23 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
 <%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Products"%>
 <%@page import="java.util.List"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page import="servlets.SessionUser"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 // Check if user is logged
-if (!Common.userIsLogged(request)) {
+if (sessionUser == null) {
     response.sendRedirect("login.jsp");
     return;
 }
 
 ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
+
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 // Load products

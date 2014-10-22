@@ -5,12 +5,12 @@
 --%>
 
 <%@page import="servlets.ShoppingCart"%>
-<%@page import="servlets.SessionUser"%>
+
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%    
 ShoppingCart shoppingCart = Common.getCart(request);
-SessionUser sessionUser   = Common.getSessionUser(request);
+
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 String args = request.getParameter("error");

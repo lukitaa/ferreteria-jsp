@@ -47,7 +47,7 @@ public class AddProductsServlet extends HttpServlet {
             throws ServletException, IOException {
         
         // An admin must be logged in to access this page!
-        if (!Common.adminIsLogged(request)) {
+        if (sessionUser == null || !sessionUser.isAdmin()) {
             response.sendRedirect("login.jsp");
             return;
         }

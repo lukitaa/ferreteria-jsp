@@ -4,20 +4,21 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<jsp:setProperty name="sessionUser" property="*" />
 <%@page import="entity.Products"%>
 <%@page import="entity.Details"%>
 <%@page import="java.util.List"%>
 <%@page import="servlets.Common"%>
-<%@page import="servlets.SessionUser"%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
 // Check if user is logged
-if (!Common.userIsLogged(request)) {
+if (sessionUser == null) {
     response.sendRedirect("login.jsp");
     return;
 }
 
-SessionUser sessionUser = Common.getSessionUser(request);
+
 // Load details list
 List<Details> details = Common.getPurchaseDetails(request);
 

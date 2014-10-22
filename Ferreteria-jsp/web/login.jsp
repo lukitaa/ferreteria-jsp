@@ -16,7 +16,7 @@
 
 <%@page import="entity.Users"%>
 <%@page import="controllers.LoginController"%>
-<%@page import="servlets.SessionUser"%>
+
 <%@page import="servlets.Common"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>

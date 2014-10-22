@@ -19,7 +19,6 @@ if (sessionUser == null) {
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
-//SessionUser sessionUser   = Common.getSessionUser(request);
 int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>
 <!DOCTYPE html>

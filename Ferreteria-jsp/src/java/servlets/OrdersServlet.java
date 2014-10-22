@@ -42,7 +42,7 @@ public class OrdersServlet extends HttpServlet {
             throws ServletException, IOException {
 
         // Check if admin user is logged
-        if (!Common.adminIsLogged(request)) {
+        if (sessionUser == null || !sessionUser.isAdmin()) {
             response.sendRedirect("home.jsp");
             return;
         }
