@@ -58,7 +58,7 @@ public class LoginServlet extends HttpServlet {
         // Verify username and password
         String username = request.getParameter("username"),
                password = request.getParameter("password");
-
+        
         // Check if user is trying to login
         if (username != null) {
             try {

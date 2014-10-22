@@ -4,6 +4,16 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<jsp:useBean id="usuario" class="entity.Users" scope="session"/>   
+
+<%-- vacio los atributos del bean --%>
+<jsp:setProperty name="usuario" property="idUser" value="-1"/>
+<jsp:setProperty name="usuario" property="username" value=""/>
+<jsp:setProperty name="usuario" property="admin" value=""/>
+
+
+
+
 <%@page import="entity.Users"%>
 <%@page import="controllers.LoginController"%>
 <%@page import="servlets.SessionUser"%>
@@ -90,7 +100,7 @@ String username = request.getParameter("username");
                            
                     
                     
-                    <form role="form" class="form form-horizontal" method="POST" action="Login">
+                    <form role="form" class="form form-horizontal" method="POST" action="process-login.jsp">
                         <div class="form-group">
                             <label for="username-login" class="col-sm-3 control-label">Nombre de Usuario</label>
                             <div class="col-sm-7">
