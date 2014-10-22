@@ -21,6 +21,7 @@ import controllers.InvalidParameterException;
 import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Details;
+import entity.Users;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,8 @@ public class PurchaseServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
 
         // User must be logged in to access this page!
         if (sessionUser == null) {

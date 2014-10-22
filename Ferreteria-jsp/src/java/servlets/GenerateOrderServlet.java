@@ -21,6 +21,7 @@ import controllers.InvalidParameterException;
 import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Purchases;
+import entity.Users;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -46,6 +47,8 @@ public class GenerateOrderServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
 
         // An admin must be logged in to access this page!
         if (sessionUser == null || !sessionUser.isAdmin()) {

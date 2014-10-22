@@ -17,6 +17,7 @@
 
 package servlets;
 
+import entity.Users;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -65,6 +66,9 @@ public class AddToCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
 
         // User must be logged in to access this page!
         if (sessionUser == null) {

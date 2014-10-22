@@ -19,6 +19,7 @@ package servlets;
 import controllers.InvalidParameterException;
 import controllers.ProductsController;
 import controllers.StorageException;
+import entity.Users;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -45,6 +46,8 @@ public class AddProductsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
         
         // An admin must be logged in to access this page!
         if (sessionUser == null || !sessionUser.isAdmin()) {

@@ -47,6 +47,8 @@ public class DeleteUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
 
         // An admin must be logged in to access this page!
         if (sessionUser == null || !sessionUser.isAdmin()) {

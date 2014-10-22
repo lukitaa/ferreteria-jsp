@@ -31,7 +31,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alumno
  */
-@WebServlet(name = "EditUserServlet", urlPatterns = {"/EditUserServlet"})
 public class EditUserServlet extends HttpServlet {
 
 
@@ -61,9 +60,11 @@ public class EditUserServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        
+        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
         // An admin must be logged in to access this page!
         if (sessionUser == null || !sessionUser.isAdmin()) {
-            response.sendRedirect("/Ferreteria-jsp/login");
+            response.sendRedirect("/Ferreteria-jsp/login.jsp");
             return;
         }
 

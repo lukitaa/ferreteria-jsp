@@ -19,6 +19,7 @@ package servlets;
 import controllers.ProductsController;
 import controllers.StorageException;
 import entity.Products;
+import entity.Users;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,6 +44,8 @@ public class DeleteProductServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
             
         // An admin must be logged in to access this page!
         if (sessionUser == null || !sessionUser.isAdmin()) {

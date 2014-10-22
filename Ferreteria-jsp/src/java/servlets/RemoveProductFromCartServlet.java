@@ -17,6 +17,7 @@
 
 package servlets;
 
+import entity.Users;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -50,6 +51,8 @@ public class RemoveProductFromCartServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        Users sessionUser = (Users) request.getAttribute("sessionUser");
 
         // Check if user is logged
         if (sessionUser == null) {
