@@ -4,14 +4,12 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
-    
-    
-    
 // Check if user is logged
 if (sessionUser == null) {
     response.sendRedirect("login.jsp");
@@ -19,7 +17,7 @@ if (sessionUser == null) {
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -82,17 +80,15 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation home">
-                    <h1 header>Bienvenido a Ferreter&iacute;a!</h1>
+                    <h1>Bienvenido a Ferreter&iacute;a!</h1>
                     <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
                     <div class="container menu">
                         <div class="row">
                             <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg">historial</a>
                             <a href="products.jsp" class="col-md-3 btn-block btn btn-lg">productos</a>
-                            <% 
-                                if (sessionUser.isAdmin()){
-                            %>
+                            <% if (sessionUser.isAdmin()){ %>
                                 <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
-                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">pedidos</a>
+                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">ordenes</a>
                             <% } %>
                         </div>
                     </div>
