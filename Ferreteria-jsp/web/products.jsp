@@ -4,14 +4,14 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Products"%>
 <%@page import="java.util.List"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
 // Check if user is logged
 if (sessionUser == null) {
@@ -20,12 +20,10 @@ if (sessionUser == null) {
 }
 
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 // Load products
 List<Products> products = PurchaseController.getProducts();
-
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">

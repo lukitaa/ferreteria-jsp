@@ -4,29 +4,27 @@
     Author     : usuario
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="controllers.ProductsController"%>
 <%@page import="entity.Products"%>
-
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%  
-    // Check if admin user is logged
-    if (sessionUser == null || !sessionUser.isAdmin()) {
-        response.sendRedirect("home.jsp");
-        return;
-    }
+// Check if admin user is logged
+if (sessionUser == null || !sessionUser.isAdmin()) {
+    response.sendRedirect("home.jsp");
+    return;
+}
 
-    
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-    int productsId = Integer.valueOf(request.getParameter("product-id"));
-    Products p = ProductsController.getProduct(productsId);
-    
+int productsId = Integer.valueOf(request.getParameter("product-id"));
+Products p = ProductsController.getProduct(productsId);
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">

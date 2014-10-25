@@ -4,7 +4,7 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="entity.Products"%>
 <%@page import="controllers.ProductsController"%>
 <%@page import="java.util.ArrayList"%>
@@ -15,22 +15,21 @@
 <%@page import="java.util.List"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
-// Check if user is logged
-    
-    if (sessionUser == null || !sessionUser.isAdmin()) {
+// Check if admin user is logged
+if (sessionUser == null || !sessionUser.isAdmin()) {
     response.sendRedirect("home.jsp");
     return;
 }
     
-    ShoppingCart shoppingCart = Common.getCart(request);
-    int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-    List<Products> listaProd = null;
-    listaProd = ProductsController.getProducts();
+List<Products> listaProd = null;
+listaProd = ProductsController.getProducts();
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -102,16 +101,16 @@
                     <h2>Agregar producto</h2>
                     <form class="form-inline" role="form" action="AddProductsServlet" method="post">
                         <div class="form-group">
-                            <label>Nombre del producto:</label>
-                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Ingrese el producto" required>
+                            <label>Nombre</label>
+                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Nombre del producto" min="0" required>
                         </div>
                         <div class="form-group">
                             <label>Stock</label>
-                            <input type="text" name="producto-stock" id="producto-stock" class="form-control" placeholder="Ingrese el stock" required>
+                            <input type="number" name="producto-stock" min="0" value="0" id="producto-stock" class="form-control" required>
                         </div>
                         <div class="form-group">
                             <label>Precio</label>
-                            <input type="text" name="producto-precio" id="producto-precio" class="form-control" placeholder="Ingrese el precio" required>
+                            <input type="number" name="producto-precio" min="0" value="0" id="producto-precio" class="form-control" required>
                         </div>
                         <button type="submit" class="btn btn-default">Agregar producto</button>
                     </form>

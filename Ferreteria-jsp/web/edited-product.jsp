@@ -4,10 +4,10 @@
     Author     : usuario
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
 // Check if admin user is logged
 if (sessionUser == null || !sessionUser.isAdmin()) {
@@ -16,8 +16,7 @@ if (sessionUser == null || !sessionUser.isAdmin()) {
 }
 
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">     
