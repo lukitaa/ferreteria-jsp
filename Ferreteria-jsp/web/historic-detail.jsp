@@ -42,9 +42,9 @@ String userIdReceived = request.getParameter("usuario");
 // Why? because we don't have an ERROR message *yet*
 int userId = (userIdReceived != null && !userIdReceived.isEmpty()) ? Integer.parseInt(userIdReceived) : sessionUser.getIdUser();
 
-for(Users usuario : users){
-    if(usuario.getIdUser() == userId )
-        u = usuario;
+for(Users user : users){
+    if(user.getIdUser() == userId )
+        u = user;
 }
 
 Set<Purchases> purchases = u.getPurchaseses();

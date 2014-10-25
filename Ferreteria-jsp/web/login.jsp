@@ -4,19 +4,8 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="usuario" class="entity.Users" scope="session"/>   
-
-<%-- vacio los atributos del bean --%>
-<jsp:setProperty name="usuario" property="idUser" value="-1"/>
-<jsp:setProperty name="usuario" property="username" value=""/>
-<jsp:setProperty name="usuario" property="admin" value=""/>
-
-
-
-
 <%@page import="entity.Users"%>
 <%@page import="controllers.LoginController"%>
-
 <%@page import="servlets.Common"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.Calendar"%>
@@ -86,19 +75,13 @@ String username = request.getParameter("username");
                     <h1>Bienvenido a Ferreter&iacute;a!</h1>
                     <p>Inicia sesi&oacute;n para entrar al sistema de compras.</p>
                     
-                    
-                    
-                    <!-- TODO: Esto no deberia aparecer al mostrar la pagina, solo si falla el login. -->
-                    <% 
-                        if(username != null){
-                    %>
+                    <!-- Intento de login fallido -->
+                    <% if(username != null) { %>
                         <div class="alert alert-danger alert-dismissible" role=\"alert\">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                             <strong>Error</strong> La combinaci&oacute;n usuario contraseña es incorrecta.
                         </div>
-                    <% }  %> 
-                           
-                    
+                    <% } %> 
                     
                     <form role="form" class="form form-horizontal" method="POST" action="Login">
                         <div class="form-group">
