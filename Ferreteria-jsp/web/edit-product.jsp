@@ -65,6 +65,7 @@ Products p = ProductsController.getProduct(productsId);
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
@@ -87,6 +88,7 @@ Products p = ProductsController.getProduct(productsId);
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
+                    <li><a href="products-add.jsp">Editar Productos</a></li>
                     <li class="active">Editar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->

@@ -36,7 +36,7 @@ boolean error = (receivedError != null && receivedError.equals("true"));
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Usuarios</title>
+        <title>Ferreter&iacute;a - Agregar Producto</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -69,8 +69,8 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
+                        <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -91,20 +91,19 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
+                    <li><a href="products-add.jsp">Editar Productos</a></li>
                     <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron">
                     <h1>Agregar Producto</h1>
-                    <%
-                    if (!error) {
-                    %>
+                    <% if (!error) { %>
                         <p class="lead">Producto agregado exitosamente.</p>
                     <% } else { %>
                         <p class="lead">Producto no agregado.</p>
                     <% } %>
-                    <h2><a href="products.jsp">Volver a pagina productos.</a></h2>
+                    <h2><a href="products-add.jsp">Volver</a></h2>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

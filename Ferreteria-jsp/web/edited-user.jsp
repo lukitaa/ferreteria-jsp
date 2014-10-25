@@ -55,9 +55,9 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
                     <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a> 
                 </div>        
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">"
-                        <li><a href="home.jsp">Inicio</a></li>"
-                        <li><a href="historic.jsp">Historial</a></li>"
+                    <ul class="nav navbar-nav">
+                        <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>"
                         <li class="active"><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
@@ -91,9 +91,9 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
             </div>
         </main>
     
-    <script src=\"static/vendors/jquery/js/jquery.min.js\"></script>
-    <script src=\"static/vendors/bootstrap/js/bootstrap.min.js\"></script>
-    <script src=\"static/js/scripts.js\"></script>
+    <script src="static/vendors/jquery/js/jquery.min.js"></script>
+    <script src="static/vendors/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/js/scripts.js"></script>
     
     </body>
 </html>

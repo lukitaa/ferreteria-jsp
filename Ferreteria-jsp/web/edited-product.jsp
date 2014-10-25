@@ -54,10 +54,10 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                     <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a> 
                 </div>        
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">"
-                        <li><a href="home.jsp">Inicio</a></li>"
-                        <li><a href="historic.jsp">Historial</a></li>"
-                        <li class="active"><a href="products.jsp">Productos</a></li>"
+                    <ul class="nav navbar-nav">
+                        <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         </ul>
@@ -76,24 +76,24 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="users.jsp">Productos</a></li>
-                    <li class="active">Editar producto</li>
+                    <li><a href="products-add.jsp">Editar Productos</a></li>
+                    <li class="active">Editar</li>
                 </ol>
                 <div class="jumbotron">
                     <h1>Editar producto</h1>
-                    <% if (request.getParameter("error").equals("false")) {     %>
+                    <% if (request.getParameter("error").equals("false")) { %>
                         <p class="lead">Producto editado exitosamente.</p>
-                    <% } else {                                                 %>
-                        <p class="lead">Productos no editado debido a un error interno.</p>
-                    <% }                                                        %>
-                    <h2><a href="products-add.jsp">Volver a pagina edicion de productos.</a></h2>
+                    <% } else { %>
+                        <p class="lead">Producto no editado debido a un error interno.</p>
+                    <% } %>
+                    <h2><a href="products-add.jsp">Volver</a></h2>
                 </div>
             </div>
         </main>
     
-    <script src=\"static/vendors/jquery/js/jquery.min.js\"></script>
-    <script src=\"static/vendors/bootstrap/js/bootstrap.min.js\"></script>
-    <script src=\"static/js/scripts.js\"></script>
-    
+        <script src="static/vendors/jquery/js/jquery.min.js"></script>
+        <script src="static/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="static/js/scripts.js"></script>
     </body>
 </html>
     

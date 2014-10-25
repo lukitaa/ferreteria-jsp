@@ -38,7 +38,7 @@ listaProd = ProductsController.getProducts();
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - ABM Productos</title>
+        <title>Ferreter&iacute;a - Editar Productos</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -93,7 +93,7 @@ listaProd = ProductsController.getProducts();
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Agregar</li>
+                    <li class="active">Editar Productos</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
