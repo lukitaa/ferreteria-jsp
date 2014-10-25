@@ -1,6 +1,6 @@
 <%-- 
-    Document   : orders
-    Created on : Oct 21, 2014, 2:42:33 AM
+    Document   : orders-pending
+    Created on : Oct 25, 2014, 20:19:33 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
@@ -28,7 +28,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Ordenes</title>
+        <title>Ferreter&iacute;a - Ordenes pendientes</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -67,12 +67,10 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                         <li class="active"><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
-                     <ul class="nav navbar-nav navbar-right">
-                    <% 
-                        if (totalProducts > 0){
-                    %>
+                    <ul class="nav navbar-nav navbar-right">
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
-                    <% } %>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
@@ -86,17 +84,36 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Ordenes</li>
+                    <li><a href="ordenes">Ordenes</a></li>
+                    <li class="active">Ordenes Pendientes</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Ordenes</h1>
-                    <p>Accede a los siguientes tipos de ordenes para administrar las mismas: </p>
-                    <ul>
-                        <li><a href="ordenes/pendientes">Ordenes Pendientes</a></li>
-                        <li><a href="#onthenearfuture">Ordenes de Piqueo</a></li>
-                    </ul>
+                    <h1 class="header">Ordenes pendientes</h1>
+                    <p>A continuaci&oacute;n podra generar ordenes de piqueo para ordenes pendientes.</p>
+                    <% if (orders != null && orders.size() > 0) { %>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID pedido</th>
+                                <th>Usuario</th>
+                                <th>Generar orden</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Purchases p : orders) { %>
+                            <tr>    
+                                <td><%= p.getIdPurchase() %></td>
+                                <td><%= p.getUsers().getUsername() %></td>
+                                <td><a href="generar-orden?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                    <% } else { %>
+                    <p class="lead">No se encontraron ordenes pendientes.</p>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

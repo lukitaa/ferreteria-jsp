@@ -52,6 +52,10 @@
         <servlet-name>EditProductServlet</servlet-name>
         <servlet-class>servlets.EditProductServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>PendingOrdersServlet</servlet-name>
+        <servlet-class>servlets.PendingOrdersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -105,6 +109,10 @@
     <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
         <url-pattern>/EditProductServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PendingOrdersServlet</servlet-name>
+        <url-pattern>/ordenes/pendientes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
