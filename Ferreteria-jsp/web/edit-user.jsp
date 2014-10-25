@@ -4,13 +4,13 @@
     Author     : alumno
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%  
 // Check if admin user is logged
 if (sessionUser == null || !sessionUser.isAdmin()) {
@@ -24,7 +24,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
 int userID = Integer.parseInt(request.getParameter("user"));
 
 // DO NOT edit the logged user
-//TODO: display error message instead of exit
+//TODO: pass message through POST
 if (userID == sessionUser.getIdUser()) {
     response.sendRedirect("users.jsp?result=El usuario se encuentra activo.");
     return;
@@ -111,9 +111,9 @@ Users user = UsersController.getUser(userID);
                         <div class="checkbox">
                             <label>
                                 <% if(user.isAdmin()) { %> 
-                                    Es administrador?  <input type="checkbox" name="admin" checked > 
+                                    Es administrador?  <input type="checkbox" name="admin" checked>
                                 <% } else { %>
-                                    Es administrador?  <input type="checkbox" name="admin" > 
+                                    Es administrador?  <input type="checkbox" name="admin"> 
                                 <% } %>
                             </label>
                         </div>

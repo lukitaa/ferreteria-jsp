@@ -102,7 +102,7 @@ try {
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
-                    <h1>ABM Usuarios</h1>
+                    <h1>Usuarios</h1>
                     
                     <!-- Display message if there is any -->
                     <% if (message != null && !message.isEmpty()) { %>
