@@ -4,21 +4,13 @@
     Author     : alumno
 --%>
 
-<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
+
 <%@page import="entity.Details"%>
 <%@page import="servlets.Common"%>
 <%@page import="java.util.List"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-
-
-
 // Recover details from last purchase
 List<Details> details = Common.getPurchaseDetails(request);
 

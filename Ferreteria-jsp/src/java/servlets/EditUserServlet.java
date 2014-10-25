@@ -22,7 +22,6 @@ import controllers.UsersController;
 import entity.Users;
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,12 +58,10 @@ public class EditUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
         // An admin must be logged in to access this page!
-        if (sessionUser == null || !sessionUser.isAdmin()) {
-            response.sendRedirect("/Ferreteria-jsp/login.jsp");
+        if (!Common.adminIsLogged(request)) {
+            response.sendRedirect("login.jsp");
             return;
         }
 

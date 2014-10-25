@@ -20,9 +20,7 @@ package servlets;
 import controllers.InvalidParameterException;
 import controllers.StorageException;
 import controllers.UsersController;
-import entity.Users;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,11 +43,9 @@ public class AddUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
 
         // An admin must be logged in to access this page!
-        if (sessionUser == null || !sessionUser.isAdmin()) {
+        if (!Common.adminIsLogged(request)) {
             response.sendRedirect("login.jsp");
             return;
         }

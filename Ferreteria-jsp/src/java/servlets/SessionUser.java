@@ -70,6 +70,10 @@ public class SessionUser {
     }
 
 
+    public SessionUser() {
+        // Necessary to be a bean..
+    }
+
     public SessionUser(Integer idUser, String username, boolean admin) {
         this.idUser = idUser;
         this.username = username;

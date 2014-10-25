@@ -4,7 +4,7 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>  

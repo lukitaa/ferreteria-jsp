@@ -17,7 +17,6 @@
 
 package servlets;
 
-import entity.Users;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,11 +40,10 @@ public class OrdersServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
+
 
         // Check if admin user is logged
-        if (sessionUser == null || !sessionUser.isAdmin()) {
+        if (!Common.adminIsLogged(request)) {
             response.sendRedirect("home.jsp");
             return;
         }

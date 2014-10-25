@@ -100,7 +100,7 @@ String username = request.getParameter("username");
                            
                     
                     
-                    <form role="form" class="form form-horizontal" method="POST" action="process-login.jsp">
+                    <form role="form" class="form form-horizontal" method="POST" action="Login">
                         <div class="form-group">
                             <label for="username-login" class="col-sm-3 control-label">Nombre de Usuario</label>
                             <div class="col-sm-7">

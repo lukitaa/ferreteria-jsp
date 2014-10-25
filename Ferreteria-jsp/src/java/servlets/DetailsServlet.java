@@ -21,7 +21,6 @@ import controllers.InvalidParameterException;
 import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Details;
-import entity.Users;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -46,12 +45,9 @@ public class DetailsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
 
         // Check if user is logged
-        
-        if (sessionUser == null) {
+        if (!Common.userIsLogged(request)) {
             response.sendRedirect("login.jsp");
             return;
         }

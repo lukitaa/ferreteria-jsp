@@ -29,7 +29,7 @@ import javax.servlet.http.HttpSession;
  */
 public class Common {
 
-    private static String SESSION_ATTR_NAME = "session_user",
+    private static String SESSION_ATTR_NAME = "sessionUser",
                           SESSION_ATTR_NAME_PURCHASE_DETAILS = "purchase_details",
                           SESSION_ATTR_NAME_CART = "shopping_cart";
 
@@ -85,11 +85,11 @@ public class Common {
     public static void destroyCart(HttpServletRequest request) {
         request.getSession().setAttribute(SESSION_ATTR_NAME_CART, null);
     }
-    
-    
-    
-    
-    
+
+
+
+
+
     // LAST PURCHASE DETAILS STUFF
 
     public static HttpSession generatePurchaseDetails(HttpServletRequest request, List<Details> details) {
@@ -110,5 +110,5 @@ public class Common {
     public static void destroyPurchaseDetails(HttpServletRequest request) {
         request.getSession().setAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS, null);
     }
-    
+
 }

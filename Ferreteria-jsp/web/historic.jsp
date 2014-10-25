@@ -4,7 +4,7 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.UsersController"%>
 <%@page import="java.util.ArrayList"%>
@@ -17,13 +17,12 @@
 <%
 // Check if admin user is logged
 if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
+    response.sendRedirect("historic-detail.jsp");
     return;
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 List<Users> users = new ArrayList();
 try {

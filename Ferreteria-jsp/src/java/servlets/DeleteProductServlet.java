@@ -19,7 +19,6 @@ package servlets;
 import controllers.ProductsController;
 import controllers.StorageException;
 import entity.Products;
-import entity.Users;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -43,15 +42,15 @@ public class DeleteProductServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException{
-        
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
-            
+    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+
         // An admin must be logged in to access this page!
-        if (sessionUser == null || !sessionUser.isAdmin()) {
+        if (!Common.adminIsLogged(request)) {
             response.sendRedirect("login.jsp");
             return;
         }
+
         //Obtener el id del producto a borrar.
         String recievedId = request.getParameter("product-id");
         int productId;

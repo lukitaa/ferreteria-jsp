@@ -5,13 +5,12 @@
 --%>
 
 <%@page import="servlets.ShoppingCart"%>
-
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%    
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 String args = request.getParameter("error");
 

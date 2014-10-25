@@ -4,7 +4,6 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="entity.Users" scope="session"/>
 <%@page import="entity.Purchases"%>
 <%@page import="util.HibernateUtil"%>
 <%@page import="org.hibernate.Session"%>
@@ -18,8 +17,8 @@
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
 // Check if user is logged
 if (sessionUser == null) {
@@ -28,8 +27,7 @@ if (sessionUser == null) {
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
 List<Users> users = new ArrayList();
 Users u = null;
@@ -38,11 +36,17 @@ try {
 } catch (StorageException ex) {
     //TODO: do something
 }
-int userId = Integer.valueOf(request.getParameter("usuario"));
+
+String userIdReceived = request.getParameter("usuario");
+// Default to current user when ID is wrong or missing
+// Why? because we don't have an ERROR message *yet*
+int userId = (userIdReceived != null && !userIdReceived.isEmpty()) ? Integer.parseInt(userIdReceived) : sessionUser.getIdUser();
+
 for(Users usuario : users){
     if(usuario.getIdUser() == userId )
         u = usuario;
 }
+
 Set<Purchases> purchases = u.getPurchaseses();
 Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
 purchases = UsersController.getUserPurchases(userId, sessionHibernate);

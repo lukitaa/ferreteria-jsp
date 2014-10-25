@@ -21,9 +21,7 @@ import controllers.InvalidParameterException;
 import controllers.PurchaseController;
 import controllers.StorageException;
 import entity.Details;
-import entity.Users;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -48,12 +46,10 @@ public class PurchaseServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        Users sessionUser = (Users) request.getSession().getAttribute("sessionUser");
 
         // User must be logged in to access this page!
-        if (sessionUser == null) {
-            response.sendRedirect("/Ferreteria-jsp/login");
+        if (!Common.userIsLogged(request)) {
+            response.sendRedirect("login");
             return;
         }
 
@@ -67,7 +63,7 @@ public class PurchaseServlet extends HttpServlet {
 
         // Check if they are products, otherwise exit
         if (purchaseDetails == null) {
-            response.sendRedirect("/Ferreteria-jsp/products.jsp");
+            response.sendRedirect("products.jsp");
             return;
         }
 
@@ -86,14 +82,14 @@ public class PurchaseServlet extends HttpServlet {
         // Check if there was an error or nothing has been bought
         if (error || purchaseDetails.size() <= 0) {
             //TODO: display an error message
-            response.sendRedirect("/Ferreteria-jsp/products.jsp");
+            response.sendRedirect("products.jsp");
             return;
         }
 
         // Add details into session to pass it to the view
         //Common.generatePurchaseDetails(request, details);
 
-        response.sendRedirect("../purchase.jsp");
+        request.getRequestDispatcher("/WEB-INF/purchase.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
