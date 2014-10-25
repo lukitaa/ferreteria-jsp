@@ -43,4 +43,10 @@ public class PurchasesDaoImpl extends GenericDaoImpl<Purchases, Integer> impleme
         return session.createQuery(hql).list();
     }
 
+    @Override
+    public List<Purchases> getNotPending() {
+        String hql = "FROM Purchases p WHERE p.done = 1";
+        return session.createQuery(hql).list();
+    }
+
 }

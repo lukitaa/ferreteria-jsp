@@ -1,21 +1,26 @@
 <%-- 
-    Document   : generate-order
-    Created on : Oct 21, 2014, 3:55:12 AM
+    Document   : not-pending-orders
+    Created on : Oct 25, 2014, 20:31:33 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="util.HibernateUtil"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="controllers.PurchaseController"%>
+<%@page import="entity.Purchases"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%    
+<%
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-String args = request.getParameter("error");
-
-boolean error = (args != null && !args.isEmpty());
-%>
+// TODO: get pending orders
+Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
+List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate);
+%>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -23,7 +28,7 @@ boolean error = (args != null && !args.isEmpty());
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Inicio</title>
+        <title>Ferreter&iacute;a - Ordenes de piqueo</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -39,6 +44,7 @@ boolean error = (args != null && !args.isEmpty());
         <![endif]-->
     </head>
     <body>
+        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -62,7 +68,7 @@ boolean error = (args != null && !args.isEmpty());
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <%  if (totalProducts > 0) { %>
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
@@ -79,16 +85,31 @@ boolean error = (args != null && !args.isEmpty());
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="ordenes">Ordenes</a></li>
-                    <li class="active">Generar</li>
+                    <li class="active">Ordenes de piqueo</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation">
-                    <h1 class="header">Generar orden</h1>
-                    <% if (!error) { %>
-                    <p class="text-success">La orden de piqueo ha sido generada exitosamente! :)</p>
+                <div class="jumbotron presentation products">
+                    <h1 class="header">Ordenes de piqueo</h1>
+                    <% if (orders != null && orders.size() > 0) { %>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>ID pedido</th>
+                                <th>Usuario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Purchases p : orders) { %>
+                            <tr>    
+                                <td><%= p.getIdPurchase() %></td>
+                                <td><%= p.getUsers().getUsername() %></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                     <% } else { %>
-                    <p class="text-danger">Error al generar la orden de piqueo. Intente nuevamente m&aacute;s tarde</p>
+                    <p class="lead">No se encontraron ordenes de piqueo.</p>
                     <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
@@ -100,3 +121,8 @@ boolean error = (args != null && !args.isEmpty());
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
+<%
+if (sessionHibernate != null) {
+    sessionHibernate.close();
+}
+%>

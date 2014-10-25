@@ -1,5 +1,5 @@
 <%-- 
-    Document   : orders-pending
+    Document   : pending-orders
     Created on : Oct 25, 2014, 20:19:33 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
@@ -106,7 +106,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                             <tr>    
                                 <td><%= p.getIdPurchase() %></td>
                                 <td><%= p.getUsers().getUsername() %></td>
-                                <td><a href="generar-orden?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
+                                <td><a href="ordenes/generar?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
                             </tr>
                             <% } %>
                         </tbody>

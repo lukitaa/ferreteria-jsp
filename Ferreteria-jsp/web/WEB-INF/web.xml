@@ -56,6 +56,10 @@
         <servlet-name>PendingOrdersServlet</servlet-name>
         <servlet-class>servlets.PendingOrdersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>NotPendingOrdersServlet</servlet-name>
+        <servlet-class>servlets.NotPendingOrdersServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -96,7 +100,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>GenerateOrderServlet</servlet-name>
-        <url-pattern>/generar-orden</url-pattern>
+        <url-pattern>/ordenes/generar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddProductsServlet</servlet-name>
@@ -113,6 +117,10 @@
     <servlet-mapping>
         <servlet-name>PendingOrdersServlet</servlet-name>
         <url-pattern>/ordenes/pendientes</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NotPendingOrdersServlet</servlet-name>
+        <url-pattern>/ordenes/piqueo</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

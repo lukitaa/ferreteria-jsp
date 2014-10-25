@@ -95,7 +95,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                     <p>Accede a los siguientes tipos de ordenes para administrar las mismas: </p>
                     <ul>
                         <li><a href="ordenes/pendientes">Ordenes Pendientes</a></li>
-                        <li><a href="#onthenearfuture">Ordenes de Piqueo</a></li>
+                        <li><a href="ordenes/piqueo">Ordenes de Piqueo</a></li>
                     </ul>
                 </div>
                 <!-- ENDS CONTENT -->

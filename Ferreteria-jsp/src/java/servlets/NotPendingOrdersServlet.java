@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class PendingOrdersServlet extends HttpServlet {
+public class NotPendingOrdersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -48,7 +48,7 @@ public class PendingOrdersServlet extends HttpServlet {
         }
 
         // Render page
-        request.getRequestDispatcher("/WEB-INF/pending-orders.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/not-pending-orders.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

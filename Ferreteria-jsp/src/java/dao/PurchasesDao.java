@@ -28,5 +28,6 @@ public interface PurchasesDao extends GenericDao <Purchases, Integer> {
 
     List<Purchases> fetchAll();
     List<Purchases> getPending();
+    List<Purchases> getNotPending();
 
 }
