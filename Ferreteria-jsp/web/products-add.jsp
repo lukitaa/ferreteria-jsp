@@ -98,6 +98,8 @@ listaProd = ProductsController.getProducts();
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron">
+                    <h1>Editar Productos</h1>
+                    
                     <h2>Agregar producto</h2>
                     <form class="form-inline" role="form" action="AddProductsServlet" method="post">
                         <div class="form-group">
@@ -114,8 +116,8 @@ listaProd = ProductsController.getProducts();
                         </div>
                         <button type="submit" class="btn btn-default">Agregar producto</button>
                     </form>
-                    <br>
-                    <h2>Tabla de productos actuales</h2>
+                    
+                    <h2>Productos actuales</h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>

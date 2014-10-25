@@ -102,7 +102,7 @@ try {
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
-                    <h1>Usuarios</h1>
+                    <h1>Editar Usuarios</h1>
                     
                     <!-- Display message if there is any -->
                     <% if (message != null && !message.isEmpty()) { %>
@@ -112,6 +112,7 @@ try {
                     </div>
                     <% } %>
                     
+                    <h2>Agregar usuario</h2>
                     <form class="form-inline" role="form" action="AddUserServlet" method="post">
                         <div class="form-group">
                           <label for="username">Nombre de usuario</label>
@@ -129,6 +130,7 @@ try {
                         <button type="submit" class="btn btn-default">Agregar</button>
                     </form>
                     
+                    <h2>Usuarios actuales</h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
