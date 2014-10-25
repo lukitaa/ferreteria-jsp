@@ -21,8 +21,6 @@ import controllers.StorageException;
 import controllers.UsersController;
 import entity.Users;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -54,24 +52,36 @@ public class DeleteUserServlet extends HttpServlet {
             return;
         }
 
-        String recievedId = request.getParameter("user-id");
+        SessionUser loggedUser = Common.getSessionUser(request);
+        String recievedId    = request.getParameter("user-id"),
+               resultMessage = "";
         int userId;
 
-        if (recievedId != null && !recievedId.isEmpty()) {
+        try {
 
-            userId = Integer.valueOf(recievedId);
+            if (recievedId != null && !recievedId.isEmpty()) {
 
-            try {
-                Users u = UsersController.getUser(userId);
+                userId = Integer.parseInt(recievedId);
 
-                UsersController.deleteUser(u);
-            } catch (StorageException ex) {//TODO: do something
-                Logger.getLogger(DeleteUserServlet.class.getName()).log(Level.SEVERE, null, ex);
+                // DO NOT remove the logged user
+                if (userId != loggedUser.getIdUser()) {
+                    // Get user to remove
+                    Users u = UsersController.getUser(userId);
+                    // Remove it
+                    UsersController.deleteUser(u);
+
+                    resultMessage = "Exito al eliminar el usuario.";
+                } else {
+                    resultMessage = "El usuario se encuentra activo.";
+                }
             }
+
+        } catch (StorageException ex) {
+            resultMessage = "Error interno al intentar eliminar usuario.";
         }
 
         // Do not display success/error messages
-        response.sendRedirect("users.jsp");
+        response.sendRedirect("users.jsp?result="+resultMessage);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

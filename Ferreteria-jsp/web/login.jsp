@@ -77,10 +77,10 @@ String username = request.getParameter("username");
                     
                     <!-- Intento de login fallido -->
                     <% if(username != null) { %>
-                        <div class="alert alert-danger alert-dismissible" role=\"alert\">
-                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
-                            <strong>Error</strong> La combinaci&oacute;n usuario contraseña es incorrecta.
-                        </div>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <strong>Error</strong> La combinaci&oacute;n usuario contraseña es incorrecta.
+                    </div>
                     <% } %> 
                     
                     <form role="form" class="form form-horizontal" method="POST" action="Login">

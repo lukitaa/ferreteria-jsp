@@ -17,12 +17,18 @@ if (sessionUser == null || !sessionUser.isAdmin()) {
     response.sendRedirect("home.jsp");
     return;
 }
-    
 
 ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-int userID = Integer.valueOf(request.getParameter("user"));
+int userID = Integer.parseInt(request.getParameter("user"));
+
+// DO NOT edit the logged user
+//TODO: display error message instead of exit
+if (userID == sessionUser.getIdUser()) {
+    response.sendRedirect("users.jsp?result=El usuario se encuentra activo.");
+    return;
+}
 Users user = UsersController.getUser(userID);
 %>
 <!DOCTYPE html>

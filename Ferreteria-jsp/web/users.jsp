@@ -4,7 +4,7 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.logging.Logger"%>
 <%@page import="java.util.logging.Level"%>
@@ -13,9 +13,9 @@
 <%@page import="java.util.List"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
 // Check if admin user is logged
 if (sessionUser == null || !sessionUser.isAdmin()) {
@@ -24,8 +24,10 @@ if (sessionUser == null || !sessionUser.isAdmin()) {
 }
     
 ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+// Catch possible transaction results message
+String message = request.getParameter("result");
     
 List<Users> users = new ArrayList();
 try {
@@ -33,8 +35,7 @@ try {
 } catch (StorageException ex) {
     //TODO: do something
 }
-%>   
-
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -102,6 +103,15 @@ try {
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
                     <h1>ABM Usuarios</h1>
+                    
+                    <!-- Display message if there is any -->
+                    <% if (message != null && !message.isEmpty()) { %>
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+                        <strong>Error</strong> <%= message %>
+                    </div>
+                    <% } %>
+                    
                     <form class="form-inline" role="form" action="AddUserServlet" method="post">
                         <div class="form-group">
                           <label for="username">Nombre de usuario</label>
@@ -118,6 +128,7 @@ try {
                         </div>
                         <button type="submit" class="btn btn-default">Agregar</button>
                     </form>
+                    
                     <table class="table table-bordered">
                         <thead>
                             <tr>
