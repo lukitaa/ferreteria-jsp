@@ -23,7 +23,7 @@ Aún no completada, pero los pasos por el momento son los siguientes.
     2. Persistence JPA 2.0
     3. MySQL driver
     4. jBCrypt
- 3. En el directorio ./Ferreteria/src/java/, copia el archivo `hibernate.cfg.xml.template` y pegalo en la misma carpeta con el nombre `hibernate.cfg.xml`
+ 3. En el directorio `./Ferreteria/src/java/`, copia el archivo `hibernate.cfg.xml.template` y pegalo en la misma carpeta con el nombre `hibernate.cfg.xml`
  4. Luego modifica el nuevo archivo `hibernate.cfg.xml` con tus datos
  5. El usuario administrador sera generado al ejecutar `IndexServlet.java`
  6. Corre el script `add_products.sql` para cargar productos para hacer pruebas
