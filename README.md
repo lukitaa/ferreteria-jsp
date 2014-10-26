@@ -3,34 +3,36 @@ ferreteria-jsp
 
 Once again a ferreteria, but this time made with JSP
 
-Requisitos
+#Requisitos
 
-    JDK 1.7 or higher
-    Apache Tomcat 7
-    Hibernate 4.x
-    jBCrypt 0.3
-    MySQL 5.x*
+ - JDK 1.7 or higher
+ - Apache Tomcat 7
+ - Hibernate 4.x
+ - jBCrypt 0.3
+ - MySQL 5.x*
 
-* Puedes reemplazar MySQL por cualquier otro motor compatible con Hibernate.
-Instalación
+\* Puedes reemplazar MySQL por cualquier otro motor compatible con Hibernate.
+
+#Instalación
 
 Aún no completada, pero los pasos por el momento son los siguientes.
 
-    Ejecuta el archivo ./Ferreteria/db/install.sql sobre MySQL
-    Añade las dependencias al proyecto:
-        MySQL driver
-        Hibernate
-        Persistence JPA 2.0
-        jBCrypt
-    En el directorio ./Ferreteria/src/java/, copia el archivo hibernate.cfg.xml.template y pegalo en la misma carpeta con el nombre hibernate.cfg.xml
-    Luego modifica el nuevo archivo hibernate.cfg.xml con tus datos
-    El servlet index cuenta con el método install() para generar un usuario
-    Otros datos, como productos, deberán ser precargados en la base de datos ya que exceden el propósito de este sistema
+ 1. Ejecuta el archivo ./Ferreteria/db/install.sql sobre MySQL
+ 2. Añade las dependencias al proyecto:
+    1. Hibernate
+    2. Persistence JPA 2.0
+    3. MySQL driver
+    4. jBCrypt
+ 3. En el directorio ./Ferreteria/src/java/, copia el archivo `hibernate.cfg.xml.template` y pegalo en la misma carpeta con el nombre `hibernate.cfg.xml`
+ 4. Luego modifica el nuevo archivo `hibernate.cfg.xml` con tus datos
+ 5. El usuario administrador sera generado al ejecutar `IndexServlet.java`
+ 6. Corre el script `add_products.sql` para cargar productos para hacer pruebas
 
-Autores
+#Autores
 
 Luca Giordano y Lucio Martínez.
-Licencia
+
+#Licencia
 
 Copyright (C) 2014 Luca Giordano, Lucio Martínez.
 
