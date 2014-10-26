@@ -60,6 +60,10 @@
         <servlet-name>NotPendingOrdersServlet</servlet-name>
         <servlet-class>servlets.NotPendingOrdersServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ViewPurchaseServlet</servlet-name>
+        <servlet-class>servlets.ViewPurchaseServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
         <url-pattern>/index</url-pattern>
@@ -121,6 +125,10 @@
     <servlet-mapping>
         <servlet-name>NotPendingOrdersServlet</servlet-name>
         <url-pattern>/ordenes/piqueo</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewPurchaseServlet</servlet-name>
+        <url-pattern>/compra</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

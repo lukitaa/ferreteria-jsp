@@ -230,6 +230,8 @@ public class PurchaseController extends IntermediateController {
 
             session.getTransaction().commit();
 
+            session.close();
+
         } catch(HibernateException e) {
             if (session != null) {
                 session.getTransaction().rollback();
@@ -241,15 +243,28 @@ public class PurchaseController extends IntermediateController {
     }
 
 
-    public static Purchases getPurchase(int purchaseId) throws StorageException {
+    public static Purchases getPurchase(Session session, int purchaseId) throws StorageException {
 
-        Session session = HibernateUtil.getSessionFactory().openSession();
         try {
-            session.beginTransaction();
-
             Purchases p = new PurchasesDaoImpl(session).get(purchaseId);
 
-            session.getTransaction().commit();
+            return p;
+
+        } catch(HibernateException e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                session.close();
+            }
+
+            throw new StorageException("Error interno al intentar cargar la compra.");
+        }
+    }
+
+    public static Purchases getPurchase(int purchaseId) throws StorageException {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        try {
+            Purchases p = new PurchasesDaoImpl(session).get(purchaseId);
+
             session.close();
 
             return p;

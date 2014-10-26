@@ -4,9 +4,6 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="java.util.List"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
 <%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Purchases"%>
 <%@page import="servlets.ShoppingCart"%>
@@ -16,10 +13,6 @@
 <%
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-// TODO: get pending orders
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
 %>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -107,8 +100,3 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
-<%
-if (sessionHibernate != null) {
-    sessionHibernate.close();
-}
-%>

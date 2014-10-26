@@ -17,7 +17,7 @@
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-// TODO: get pending orders
+// Get pending orders
 Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
 List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
 %>  
@@ -104,7 +104,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                         <tbody>
                             <% for (Purchases p : orders) { %>
                             <tr>    
-                                <td><%= p.getIdPurchase() %></td>
+                                <td><a href="compra?id=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
                                 <td><%= p.getUsers().getUsername() %></td>
                                 <td><a href="ordenes/generar?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
                             </tr>

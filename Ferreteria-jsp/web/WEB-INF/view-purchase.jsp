@@ -1,15 +1,16 @@
 <%-- 
-    Document   : not-pending-orders
-    Created on : Oct 25, 2014, 20:31:33 PM
+    Document   : view-purchase
+    Created on : Oct 25, 2014, 8:46:01 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="java.util.List"%>
+
+<%@page import="servlets.ShoppingCart"%>
 <%@page import="util.HibernateUtil"%>
 <%@page import="org.hibernate.Session"%>
+<%@page import="java.util.Set"%>
 <%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Purchases"%>
-<%@page import="servlets.ShoppingCart"%>
+<%@page import="entity.Details"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
@@ -17,10 +18,13 @@
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 
-// TODO: get pending orders
+// Recover details from last purchase
+int purchaseId = Integer.parseInt(request.getParameter("id"));
 Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate);
-%>  
+Set<Details> details = PurchaseController.getPurchase(sessionHibernate, purchaseId).getDetailses();
+
+int total = 0;
+%>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -28,7 +32,7 @@ List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Ordenes de piqueo</title>
+        <title>Ferreter&iacute;a - Detalle pedido</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -62,10 +66,8 @@ List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
-                        <li class="active"><a href="ordenes">Ordenes</a></li>
-                        <% } %>
+                        <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if (totalProducts > 0) { %>
@@ -84,33 +86,34 @@ List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="ordenes">Ordenes</a></li>
-                    <li class="active">Ordenes de piqueo</li>
+                    <li class="active">Ver compra</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Ordenes de piqueo</h1>
-                    <% if (orders != null && orders.size() > 0) { %>
+                    <h1 class="header">Detalle de la compra</h1>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th>ID pedido</th>
-                                <th>Usuario</th>
+                                <th>Producto</th>
+                                <th>Precio</th>
+                                <th>Unidades</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% for (Purchases p : orders) { %>
-                            <tr>    
-                                <td><a href="compra?id=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
-                                <td><%= p.getUsers().getUsername() %></td>
+                            <% for (Details d : details) { %>
+                            <tr>
+                                <td><%= d.getProducts().getProduct() %></td>
+                                <td class="price"><%= d.getPrice() %></td>
+                                <td class="stock"><%= d.getAmount() %></td>
                             </tr>
-                            <% } %>
+                            <% 
+                                total += d.getAmount() * d.getPrice();
+                            } 
+                            %>
                         </tbody>
                     </table>
-                    <% } else { %>
-                    <p class="lead">No se encontraron ordenes de piqueo.</p>
-                    <% } %>
+                    <p class="lead">Total: <%= total %></p>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
