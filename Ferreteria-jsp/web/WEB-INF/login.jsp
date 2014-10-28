@@ -76,14 +76,14 @@ String username = request.getParameter("username");
                     <p>Inicia sesi&oacute;n para entrar al sistema de compras.</p>
                     
                     <!-- Intento de login fallido -->
-                    <% if(username != null) { %>
+                    <% if(!username.isEmpty()) { %>
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                         <strong>Error</strong> La combinaci&oacute;n usuario contraseña es incorrecta.
                     </div>
                     <% } %> 
                     
-                    <form role="form" class="form form-horizontal" method="POST" action="Login">
+                    <form role="form" class="form form-horizontal" method="POST" action="login">
                         <div class="form-group">
                             <label for="username-login" class="col-sm-3 control-label">Nombre de Usuario</label>
                             <div class="col-sm-7">

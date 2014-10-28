@@ -16,18 +16,12 @@
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-    
+<%    
 ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
     
-String receivedError = request.getParameter("error");
-boolean error = (receivedError != null && receivedError.equals("true"));
+String results = request.getParameter("success");
+boolean error = (results != null && results.equals("false"));
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -36,7 +30,7 @@ boolean error = (receivedError != null && receivedError.equals("true"));
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Agregar Producto</title>
+        <title>Ferreter&iacute;a - Usuarios</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -69,8 +63,8 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
-                        <li class="active"><a href="products.jsp">Productos</a></li>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="products.jsp">Productos</a></li>
+                        <li class="active"><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -90,20 +84,19 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="products.jsp">Productos</a></li>
-                    <li><a href="products-add.jsp">Editar Productos</a></li>
+                    <li><a href="users.jsp">Usuarios</a></li>
                     <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron">
-                    <h1>Agregar Producto</h1>
+                    <h1>Agregar Usuario</h1>
                     <% if (!error) { %>
-                        <p class="lead">Producto agregado exitosamente.</p>
+                        <p class="lead">Usuario agregado exitosamente.</p>
                     <% } else { %>
-                        <p class="lead">Producto no agregado.</p>
+                        <p class="lead">Usuario no agregado.</p>
                     <% } %>
-                    <h2><a href="products-add.jsp">Volver</a></h2>
+                    <h2><a href="usuarios">Volver a pagina usuarios.</a></h2>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

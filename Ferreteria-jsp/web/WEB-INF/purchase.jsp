@@ -10,16 +10,8 @@
 <%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="details" type="java.util.List<Details>" scope="session"/>
 <%
-// Recover details from last purchase
-List<Details> details = Common.getPurchaseDetails(request);
-
-// Check if there is something to purchase, otherwise exit
-if (details == null) {
-    response.sendRedirect("products.jsp");
-    return;
-}
-
 int total = 0;
 %>   
 <!DOCTYPE html>

@@ -11,25 +11,10 @@
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%  
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-
+<jsp:useBean id="user" type="Users" scope="session"/>
+<%
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-int userID = Integer.parseInt(request.getParameter("user"));
-
-// DO NOT edit the logged user
-//TODO: pass message through POST
-if (userID == sessionUser.getIdUser()) {
-    response.sendRedirect("users.jsp?result=El usuario se encuentra activo.");
-    return;
-}
-Users user = UsersController.getUser(userID);
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -110,11 +95,7 @@ Users user = UsersController.getUser(userID);
                         </div>
                         <div class="checkbox">
                             <label>
-                                <% if(user.isAdmin()) { %> 
-                                    Es administrador?  <input type="checkbox" name="admin" checked>
-                                <% } else { %>
-                                    Es administrador?  <input type="checkbox" name="admin"> 
-                                <% } %>
+                                Es administrador?  <input type="checkbox" name="admin" <%= (((user.isAdmin()))?"checked":"")%>>
                             </label>
                         </div>
                         <button type="submit" class="btn btn-default">Editar</button>

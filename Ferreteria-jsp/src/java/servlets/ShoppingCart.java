@@ -25,17 +25,17 @@ import java.util.List;
  * @author alumno
  */
 public class ShoppingCart {
-    
+
     private List<Integer> productsAmount;
     private List<Integer> productsId;
-    
+
     public ShoppingCart() {
         productsAmount = new ArrayList();
         productsId = new ArrayList();
     }
 
-    
-    
+
+
     public List<Integer> getProductsAmount() {
         return productsAmount;
     }
@@ -48,10 +48,10 @@ public class ShoppingCart {
     public void setProductsId(List<Integer> idProd) {
         this.productsId = idProd;
     }
-    
-    
+
+
     public int getTotalProducts() {
-        return this.productsAmount.size();
+        return (productsAmount != null) ? productsAmount.size() : 0;
     }
-    
+
 }

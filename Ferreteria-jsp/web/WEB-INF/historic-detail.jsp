@@ -14,11 +14,11 @@
 <%@page import="controllers.UsersController"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="purchases" type="Set<Purchases>" scope="session"/>
 <%
 // Check if user is logged
 if (sessionUser == null) {
@@ -28,28 +28,6 @@ if (sessionUser == null) {
     
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-List<Users> users = new ArrayList();
-Users u = null;
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-
-String userIdReceived = request.getParameter("usuario");
-// Default to current user when ID is wrong or missing
-// Why? because we don't have an ERROR message *yet*
-int userId = (userIdReceived != null && !userIdReceived.isEmpty()) ? Integer.parseInt(userIdReceived) : sessionUser.getIdUser();
-
-for(Users user : users){
-    if(user.getIdUser() == userId )
-        u = user;
-}
-
-Set<Purchases> purchases = u.getPurchaseses();
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-purchases = UsersController.getUserPurchases(userId, sessionHibernate);
 
 int total = 0;
 %>
@@ -122,33 +100,36 @@ int total = 0;
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
                     <h1 class="header">Pedidos realizados</h1>
+                    <% if (purchases.size() == 0) { %>
+                    <p class="lead">No se han encontrado pedidos realizados por el usuario.</p>
+                    <% } %>
                     <% for (Purchases p : purchases) { %>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio Historico</th>
-                                    <th>Unidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% 
-                            Set<Details> purchaseDetails = p.getDetailses();
-                            for (Details d : purchaseDetails) { 
-                            %>
-                                <tr> 
-                                    <td><%= d.getProducts().getProduct() %></td>
-                                    <td><%= d.getPrice() %></td>
-                                    <td><%= d.getAmount() %></td>
-                                </tr>
-                                <% 
-                                    total += d.getPrice() * d.getAmount();
-                                %>
-                            <% } %>
-                            </tbody>
-                        </table>
-                        <p class="lead">Total: <%= total %></p>
-                    <% total = 0; } %>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Precio Historico</th>
+                                <th>Unidades</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <% 
+                        Set<Details> purchaseDetails = p.getDetailses();
+                        for (Details d : purchaseDetails) { 
+                        %>
+                        <tr> 
+                            <td><%= d.getProducts().getProduct() %></td>
+                            <td><%= d.getPrice() %></td>
+                            <td><%= d.getAmount() %></td>
+                        </tr>
+                        <% total += d.getPrice() * d.getAmount(); %>
+                        <% } %>
+                        </tbody>
+                    </table>
+                    <p class="lead">Total: <%= total %></p>
+                    <% 
+                        total = 0; 
+                    } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

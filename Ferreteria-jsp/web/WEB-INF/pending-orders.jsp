@@ -104,7 +104,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                         <tbody>
                             <% for (Purchases p : orders) { %>
                             <tr>    
-                                <td><a href="compra?id=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
+                                <td><a href="compras/historial?compra=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
                                 <td><%= p.getUsers().getUsername() %></td>
                                 <td><a href="ordenes/generar?pedido=<%= p.getIdPurchase() %>" title="Generar orden de piqueo para el pedido" class="btn btn-xs btn-info">Generar</a></td>
                             </tr>

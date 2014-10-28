@@ -42,27 +42,31 @@ public class AddProductsServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("../../inicio");
             return;
         }
+
         //Obtener los valores del producto a agregar
         String producto = request.getParameter("producto");
-        int stock = Integer.valueOf(request.getParameter("producto-stock")),
-            precio = Integer.valueOf(request.getParameter("producto-precio"));
-        boolean error = false;
+        int stock       = Integer.parseInt(request.getParameter("producto-stock")),
+            precio      = Integer.parseInt(request.getParameter("producto-precio"));
+        boolean success = false;
+
         //Agregar el producto.
         try {
             ProductsController.addProduct(producto, precio, stock);
-        } catch (InvalidParameterException ex) {
-            error = true;
-        } catch (StorageException ex) {
-            error = true;
+
+            success = true;
         }
-        //Redirect a la pagina con el boolean error
-        response.sendRedirect("products-added.jsp?error=" + error);
+        catch (InvalidParameterException ex) { }
+        catch (StorageException ex) { }
+
+
+        // Render page
+        request.getRequestDispatcher("/WEB-INF/added-product.jsp?success=" + success).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -1,37 +1,27 @@
 <%-- 
-    Document   : details
-    Created on : Oct 19, 2014, 12:54:45 PM
+    Document   : users-add
+    Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="entity.Products"%>
-<%@page import="entity.Details"%>
+<%@page import="controllers.ProductsController"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.logging.Logger"%>
+<%@page import="java.util.logging.Level"%>
+<%@page import="controllers.StorageException"%>
+<%@page import="controllers.UsersController"%>
 <%@page import="java.util.List"%>
+<%@page import="entity.Users"%>
+<%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="products" type="java.util.List<Products>" scope="session"/>
 <%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-
-
-// Load details list
-List<Details> details = Common.getPurchaseDetails(request);
-
-// Check if there is something to list, otherwise exit
-if (details == null) {
-    response.sendRedirect("products.jsp");
-    return;
-}
-
-// Initializate auxiliar variables
-Products p = null;
-boolean itemIsOverProductStock = false;
-int total = 0, stockToBuy = 0, realStock = 0;
+ShoppingCart shoppingCart = Common.getCart(request);
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -40,7 +30,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Modificar pedido</title>
+        <title>Ferreter&iacute;a - Editar Productos</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -74,12 +64,13 @@ int total = 0, stockToBuy = 0, realStock = 0;
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
                         <li class="active"><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <%  if (totalProducts > 0) { %>
+                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
@@ -94,50 +85,56 @@ int total = 0, stockToBuy = 0, realStock = 0;
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Modificar pedido</li>
+                    <li class="active">Editar Productos</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Modificar pedido</h1>
+                <div class="jumbotron">
+                    <h1>Editar Productos</h1>
+                    
+                    <h2>Agregar producto</h2>
+                    <form class="form-inline" role="form" action="productos/editar/agregar" method="post">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" name="producto" id="producto" class="form-control" placeholder="Nombre del producto" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="number" name="producto-stock" min="0" value="0" id="producto-stock" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="number" name="producto-precio" min="0" value="0" id="producto-precio" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-default">Agregar producto</button>
+                    </form>
+                    
+                    <h2>Productos actuales</h2>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Producto</th>
                                 <th>Precio</th>
-                                <th>Unidades</th>
                                 <th>Stock</th>
-                                <th>Quitar</th>
+                                <th>Modificar</th>
+                                <th>Eliminar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <%                             
-                            for (Details d : details) {
-                                // Recover product data
-                                p = d.getProducts();
-                                // Differentiate the amount of unities that
-                                // the user want to buy with the real stock
-                                stockToBuy = d.getAmount(); 
-                                realStock  = p.getStock();
-                                // Check if the user's wishes are over the reality
-                                // In such case scenario, I would congratulate him :-)
-                                itemIsOverProductStock = (stockToBuy <= 0 || stockToBuy > realStock);
-                            %>
-                            <tr class="<%= itemIsOverProductStock?"danger":"" %>">
-                                <td><%= p.getProduct() %></td>
-                                <td><%= d.getPrice() %></td>
-                                <td><%= stockToBuy %></td>
-                                <td><%= realStock %></td>
-                                <td><a href="quitar-del-carrito?producto=<%= p.getIdProduct() %>" class="btn btn-xs btn-warning" title="Quitar del pedido"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
-                            </tr>
-                            <%
-                                total += d.getAmount() * d.getPrice();
-                            } %>
+                            <% for (Products r : products) { %>
+                                <form action="DeleteProductServlet" method="post">
+                                    <input type="hidden" name="product-id" value="<%= r.getIdProduct()%>">
+                                    <tr>
+                                        <td><%= r.getProduct()%></td>
+                                        <td><%= r.getPrice() %></td>
+                                        <td><%= r.getStock() %></td>
+                                        <td><a href="productos/editar/producto?id=<%= r.getIdProduct()%>" class="btn btn-xs btn-info">Editar</a></td>
+                                        <td><input type="submit" class="btn btn-xs btn-danger" value="Eliminar"></td>
+                                    </tr>
+                                </form>
+                            <% } %>
                         </tbody>
                     </table>
-                    <p class="lead">Total: <%= total %></p>
-                    <a href="productos/compra" class="btn btn-info" <%= itemIsOverProductStock?"disabled":""%>>Realizar Pedido</a>
-                    <h4 class="text-muted">Advertencia: no se podra realizar la compra si la cantidad de unidades de un art&iacute;culo supera el stock disponible.</h4>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

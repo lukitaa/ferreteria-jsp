@@ -30,8 +30,14 @@ import javax.servlet.http.HttpSession;
 public class Common {
 
     private static String SESSION_ATTR_NAME = "sessionUser",
-                          SESSION_ATTR_NAME_PURCHASE_DETAILS = "purchase_details",
-                          SESSION_ATTR_NAME_CART = "shopping_cart";
+                          SESSION_ATTR_NAME_PURCHASE_DETAILS = "purchaseDetails",
+                          SESSION_ATTR_NAME_CART = "shoppingCart";
+
+    public static void addAttribute(HttpServletRequest request, String attrName, Object attr) {
+        // Get session
+        HttpSession session = request.getSession();
+        session.setAttribute(attrName, attr);
+    }
 
     public static boolean adminIsLogged(HttpServletRequest request) {
         // Get the session or generate it if doesn't exist already
@@ -91,7 +97,6 @@ public class Common {
 
 
     // LAST PURCHASE DETAILS STUFF
-
     public static HttpSession generatePurchaseDetails(HttpServletRequest request, List<Details> details) {
         HttpSession session = null;
 
@@ -102,7 +107,6 @@ public class Common {
 
         return session;
     }
-
     public static List<Details> getPurchaseDetails(HttpServletRequest request) {
         return (List<Details>) request.getSession().getAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS);
     }

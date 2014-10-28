@@ -17,7 +17,13 @@
 
 package servlets;
 
+import controllers.ProductsController;
+import controllers.StorageException;
+import entity.Products;
 import java.io.IOException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class OrdersServlet extends HttpServlet {
+public class EditProductsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,15 +47,23 @@ public class OrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-
         // Check if admin user is logged
         if (!Common.adminIsLogged(request)) {
             response.sendRedirect("inicio");
             return;
         }
 
+        List<Products> products = null;
+        try {
+            products = ProductsController.getProducts();
+        } catch (StorageException ex) {
+            Logger.getLogger(EditProductsServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Common.addAttribute(request, "products", products);
+
         // Render page
-        request.getRequestDispatcher("/WEB-INF/orders.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/edit-products.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

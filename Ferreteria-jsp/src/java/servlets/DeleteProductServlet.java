@@ -47,7 +47,7 @@ public class DeleteProductServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
@@ -64,8 +64,9 @@ public class DeleteProductServlet extends HttpServlet {
                 Logger.getLogger(DeleteUserServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        //Realizar el redirect.
-        response.sendRedirect("products-add.jsp");
+
+        // Realizar el redirect.
+        response.sendRedirect("productos/editar");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -8,20 +8,15 @@
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="util.HibernateUtil"%>
 <%@page import="org.hibernate.Session"%>
-<%@page import="java.util.Set"%>
 <%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Details"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
+<jsp:useBean id="details" type="java.util.Set<Details>" scope="session"/>
 <%
-ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-// Recover details from last purchase
-int purchaseId = Integer.parseInt(request.getParameter("id"));
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-Set<Details> details = PurchaseController.getPurchase(sessionHibernate, purchaseId).getDetailses();
 
 int total = 0;
 %>   
@@ -92,28 +87,32 @@ int total = 0;
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
                     <h1 class="header">Detalle de la compra</h1>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Precio</th>
-                                <th>Unidades</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Details d : details) { %>
-                            <tr>
-                                <td><%= d.getProducts().getProduct() %></td>
-                                <td class="price"><%= d.getPrice() %></td>
-                                <td class="stock"><%= d.getAmount() %></td>
-                            </tr>
-                            <% 
-                                total += d.getAmount() * d.getPrice();
-                            } 
-                            %>
-                        </tbody>
-                    </table>
-                    <p class="lead">Total: <%= total %></p>
+                    <% if (details != null) { %>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Precio</th>
+                                    <th>Unidades</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% for (Details d : details) { %>
+                                <tr>
+                                    <td><%= d.getProducts().getProduct() %></td>
+                                    <td class="price"><%= d.getPrice() %></td>
+                                    <td class="stock"><%= d.getAmount() %></td>
+                                </tr>
+                                <% 
+                                    total += d.getAmount() * d.getPrice();
+                                } 
+                                %>
+                            </tbody>
+                        </table>
+                        <p class="lead">Total: <%= total %></p>
+                    <% } else { %>
+                        <p class="lead">No se han encontrado resultados para la compra ingresada.</p>
+                    <% } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
@@ -124,8 +123,3 @@ int total = 0;
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
-<%
-if (sessionHibernate != null) {
-    sessionHibernate.close();
-}
-%>

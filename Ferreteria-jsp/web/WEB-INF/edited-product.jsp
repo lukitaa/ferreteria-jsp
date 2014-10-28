@@ -1,23 +1,16 @@
 <%-- 
-    Document   : edited-user
-    Created on : 16/09/2014, 19:41:33
-    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+    Document   : edited-product
+    Created on : 21/10/2014, 12:52:01
+    Author     : usuario
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">     
@@ -26,7 +19,7 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Ferreter&iacute;a - Editar usuario</title>           
+        <title>Ferreter&iacute;a - Editar producto</title>           
 
         <base href="${pageContext.request.contextPath}/" >
         
@@ -58,8 +51,8 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>"
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
+                        <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -76,25 +69,25 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="users.jsp">Usuarios</a></li>
-                    <li class="active">Editar usuario</li>
+                    <li><a href="users.jsp">Productos</a></li>
+                    <li><a href="products-add.jsp">Editar Productos</a></li>
+                    <li class="active">Editar</li>
                 </ol>
                 <div class="jumbotron">
-                    <h1>Editar Usuario</h1>
-                    <% if (request.getParameter("error").equals("false")) {     %>
-                        <p class="lead">Usuario editado exitosamente.</p>
-                    <% } else {                                                 %>
-                        <p class="lead">Usuario no editado debido a un error interno.</p>
-                    <% }                                                        %>
-                    <h2><a href="users.jsp">Volver a pagina usuarios.</a></h2>
+                    <h1>Editar producto</h1>
+                    <% if (request.getParameter("success").equals("true")) { %>
+                        <p class="lead">Producto editado exitosamente.</p>
+                    <% } else { %>
+                        <p class="lead">Producto no editado debido a un error interno.</p>
+                    <% } %>
+                    <h2><a href="productos/editar">Volver</a></h2>
                 </div>
             </div>
         </main>
     
-    <script src="static/vendors/jquery/js/jquery.min.js"></script>
-    <script src="static/vendors/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/js/scripts.js"></script>
-    
+        <script src="static/vendors/jquery/js/jquery.min.js"></script>
+        <script src="static/vendors/bootstrap/js/bootstrap.min.js"></script>
+        <script src="static/js/scripts.js"></script>
     </body>
 </html>
     

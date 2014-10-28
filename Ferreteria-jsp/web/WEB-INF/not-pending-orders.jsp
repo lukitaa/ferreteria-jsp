@@ -102,7 +102,7 @@ List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate
                         <tbody>
                             <% for (Purchases p : orders) { %>
                             <tr>    
-                                <td><a href="compra?id=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
+                                <td><a href="compras/historial?compra=<%= p.getIdPurchase() %>" title="Ver compra" target="_blank"><%= p.getIdPurchase() %></a></td>
                                 <td><%= p.getUsers().getUsername() %></td>
                             </tr>
                             <% } %>

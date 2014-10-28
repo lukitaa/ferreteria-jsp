@@ -17,7 +17,12 @@
 
 package servlets;
 
+import controllers.StorageException;
+import controllers.UsersController;
+import entity.Users;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class OrdersServlet extends HttpServlet {
+public class UsersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,15 +46,23 @@ public class OrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-
         // Check if admin user is logged
         if (!Common.adminIsLogged(request)) {
             response.sendRedirect("inicio");
             return;
         }
 
+        List<Users> users = new ArrayList();
+        try {
+            users = UsersController.getUsers();
+        } catch (StorageException ex) {
+            //TODO: do something
+        }
+
+        Common.addAttribute(request, "users", users);
+
         // Render page
-        request.getRequestDispatcher("/WEB-INF/orders.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

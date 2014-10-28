@@ -46,7 +46,7 @@ public class AddUserServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
@@ -58,19 +58,17 @@ public class AddUserServlet extends HttpServlet {
         String username = request.getParameter("username"),
                password = request.getParameter("password");
         boolean isAdmin = (request.getParameter("admin") != null && request.getParameter("admin").equals("on")),
-                error   = false;
+                success = false;
 
         try {
             UsersController.addUser(username, password, isAdmin);
 
-        } catch (InvalidParameterException ex) {
-            error = true;
-        } catch (StorageException ex) {
-            error = true;
+            success = true;
         }
-
-
-        response.sendRedirect("users-add.jsp?error=" + error);
+        catch (InvalidParameterException ex) { }
+        catch (StorageException ex) { }
+        
+        request.getRequestDispatcher("/WEB-INF/added-user.jsp?success="+success).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

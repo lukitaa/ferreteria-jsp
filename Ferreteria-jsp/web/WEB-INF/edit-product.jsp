@@ -1,21 +1,20 @@
 <%-- 
-    Document   : home
-    Created on : Aug 26, 2014, 5:16:07 PM
-    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+    Document   : edit-product
+    Created on : 21/10/2014, 12:19:17
+    Author     : usuario
 --%>
 
 
-<%@page import="servlets.ShoppingCart"%>
+<%@page import="controllers.ProductsController"%>
+<%@page import="entity.Products"%>
 <%@page import="servlets.Common"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="entity.Users"%>
+<%@page import="controllers.UsersController"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
+<jsp:useBean id="product" type="Products" scope="session"/>
+<%  
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
 %>
@@ -26,7 +25,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Inicio</title>
+        <title>Ferreter&iacute;a - Editar producto</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -42,6 +41,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         <![endif]-->
     </head>
     <body>
+        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -56,16 +56,14 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="home.jsp">Inicio</a></li>
+                        <li><a href="home.jsp">Inicio</a></li>
                         <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
+                        <li class="active"><a href="products.jsp">Productos</a></li>
                         <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <%  if (totalProducts > 0) { %>
+                        <% if (totalProducts > 0) { %>
                         <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
@@ -78,20 +76,33 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
+                <!-- BEGINS BREADCRUMBS -->
+                <ol class="breadcrumb">
+                    <li><a href="home.jsp">Inicio</a></li>
+                    <li><a href="products.jsp">Productos</a></li>
+                    <li><a href="products-add.jsp">Editar Productos</a></li>
+                    <li class="active">Editar</li>
+                </ol>
+                <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation home">
-                    <h1>Bienvenido a Ferreter&iacute;a!</h1>
-                    <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
-                    <div class="container menu">
-                        <div class="row">
-                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg">historial</a>
-                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg">productos</a>
-                            <% if (sessionUser.isAdmin()){ %>
-                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
-                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">ordenes</a>
-                            <% } %>
+                <div class="jumbotron presentation users">
+                    <h1>Editar Producto</h1>
+                    <form role="form" action="productos/editar/producto" method="post">
+                        <input type="hidden" name="product-id" value="<%= product.getIdProduct() %>" >
+                        <div class="form-group">
+                            <label>Nombre producto</label>
+                            <input type="text" name="product-name" id="producto" class="form-control" placeholder="Nombre del producto" value="<%= product.getProduct() %>" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label>Precio</label>
+                            <input type="text" name="product-precio" id="producto-precio" class="form-control" placeholder="Precio producto" value="<%= product.getPrice() %>" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="text" name="product-stock" id="producto-stock" class="form-control" placeholder="Stock del producto" value="<%= product.getStock() %>" required>
+                        </div>
+                        <button type="submit" class="btn btn-default">Editar</button>
+                    </form>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

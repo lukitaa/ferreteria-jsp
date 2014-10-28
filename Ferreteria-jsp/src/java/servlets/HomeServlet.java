@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class OrdersServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,15 +41,13 @@ public class OrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-
-        // Check if admin user is logged
-        if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("inicio");
+        // User must be logged in to access this page!
+        if (!Common.userIsLogged(request)) {
+            response.sendRedirect("login");
             return;
         }
 
-        // Render page
-        request.getRequestDispatcher("/WEB-INF/orders.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

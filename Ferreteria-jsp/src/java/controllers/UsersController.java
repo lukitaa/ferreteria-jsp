@@ -111,10 +111,20 @@ public class UsersController extends IntermediateController {
         }
     }
 
-    public static Set<Purchases> getUserPurchases(int userId, Session session) throws StorageException {
+
+    /**
+     * Get purchases of the user
+     *
+     * @param userId id of the user to get purchases
+     * @param session hibernate session already opened
+     * @return Set of purchases
+     * @throws StorageException
+     */
+    public static Set<Purchases> getUserPurchases(int userId, Session session)
+            throws StorageException {
+
         Set<Purchases> purchases;
 
-        
         try {
             session.beginTransaction();
 

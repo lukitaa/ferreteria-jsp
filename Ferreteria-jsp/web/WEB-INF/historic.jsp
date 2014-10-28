@@ -1,35 +1,23 @@
 <%-- 
-    Document   : users-add
-    Created on : Aug 26, 2014, 5:16:07 PM
+    Document   : historic
+    Created on : Sep 23, 2014, 3:00:57 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.logging.Logger"%>
-<%@page import="java.util.logging.Level"%>
+
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.UsersController"%>
-<%@page import="java.util.List"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
-
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="users" type="java.util.List<Users>" scope="session"/>
+<%    
 ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-String receivedError = request.getParameter("error");
-boolean error = (receivedError != null && receivedError.equals("true"));
-%>   
+int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+%>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -37,7 +25,7 @@ boolean error = (receivedError != null && receivedError.equals("true"));
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Usuarios</title>
+        <title>Ferreter&iacute;a - Historial</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -69,10 +57,12 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
+                        <li class="active"><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <% if (sessionUser.isAdmin()) { %>
+                        <li><a href="users.jsp">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
+                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
@@ -91,21 +81,28 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="users.jsp">Usuarios</a></li>
-                    <li class="active">Agregar</li>
+                    <li class="active">Historial</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron">
-                    <h1>Agregar Usuario</h1>
-                    <%
-                    if (!error) {
-                    %>
-                        <p class="lead">Usuario agregado exitosamente.</p>
-                    <% } else { %>
-                        <p class="lead">Usuario no agregado.</p>
-                    <% } %>
-                    <h2><a href="users.jsp">Volver a pagina usuarios.</a></h2>
+                <div class="jumbotron presentation products">
+                    <h1 class="header">Historial de compras</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre de usuario</th>
+                                <th>Historial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Users u : users) { %>
+                            <tr>    
+                                <td><%= u.getUsername() %></td>
+                                <td><a href="compras/historial?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
+                            </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

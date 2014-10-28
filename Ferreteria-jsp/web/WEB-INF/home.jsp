@@ -1,36 +1,18 @@
 <%-- 
-    Document   : historic
-    Created on : Sep 23, 2014, 3:00:57 PM
+    Document   : home
+    Created on : Aug 26, 2014, 5:16:07 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%@page import="controllers.StorageException"%>
-<%@page import="controllers.UsersController"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="entity.Users"%>
 
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("historic-detail.jsp");
-    return;
-}
-    
+<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<%    
 ShoppingCart shoppingCart = Common.getCart(request);
 int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-List<Users> users = new ArrayList();
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-%>  
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -38,7 +20,7 @@ try {
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Historial</title>
+        <title>Ferreter&iacute;a - Inicio</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -54,7 +36,6 @@ try {
         <![endif]-->
     </head>
     <body>
-        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -69,8 +50,8 @@ try {
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
+                        <li class="active"><a href="home.jsp">Inicio</a></li>
+                        <li><a href="historic.jsp">Historial</a></li>
                         <li><a href="products.jsp">Productos</a></li>
                         <% if (sessionUser.isAdmin()) { %>
                         <li><a href="users.jsp">Usuarios</a></li>
@@ -91,31 +72,20 @@ try {
         
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
-                <!-- BEGINS BREADCRUMBS -->
-                <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li class="active">Historial</li>
-                </ol>
-                <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation products">
-                    <h1 class="header">Historial de compras</h1>
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Nombre de usuario</th>
-                                <th>Historial</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% for (Users u : users) { %>
-                            <tr>    
-                                <td><%= u.getUsername() %></td>
-                                <td><a href="historic-detail.jsp?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
-                            </tr>
+                <div class="jumbotron presentation home">
+                    <h1>Bienvenido a Ferreter&iacute;a!</h1>
+                    <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
+                    <div class="container menu">
+                        <div class="row">
+                            <a href="compras/historial" class="col-md-3 btn-block btn btn-lg">historial</a>
+                            <a href="productos" class="col-md-3 btn-block btn btn-lg">productos</a>
+                            <% if (sessionUser.isAdmin()){ %>
+                            <a href="usuarios" class="col-md-3 btn-block btn btn-lg">usuarios</a>
+                            <a href="ordenes" class="col-md-3 btn-block btn btn-lg">ordenes</a>
                             <% } %>
-                        </tbody>
-                    </table>
+                        </div>
+                    </div>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>
