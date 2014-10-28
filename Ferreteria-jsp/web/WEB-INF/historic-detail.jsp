@@ -73,7 +73,7 @@ int total = 0;
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>

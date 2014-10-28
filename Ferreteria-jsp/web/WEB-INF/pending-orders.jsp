@@ -14,12 +14,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
+<jsp:useBean id="orders" type="java.util.List<Purchases>" scope="session"/>
 <%
 int totalProducts = shoppingCart.getTotalProducts();
-
-// Get pending orders
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
 %>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -69,7 +66,7 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
@@ -124,8 +121,3 @@ List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
-<%
-if (sessionHibernate != null) {
-    sessionHibernate.close();
-}
-%>

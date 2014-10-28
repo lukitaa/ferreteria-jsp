@@ -17,11 +17,17 @@
 
 package servlets;
 
+import controllers.PurchaseController;
+import controllers.StorageException;
+import entity.Purchases;
 import java.io.IOException;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.hibernate.Session;
+import util.HibernateUtil;
 
 /**
  *
@@ -43,12 +49,26 @@ public class PendingOrdersServlet extends HttpServlet {
 
         // Check if admin user is logged
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
-        // Render page
-        request.getRequestDispatcher("/WEB-INF/pending-orders.jsp").forward(request, response);
+        // Get pending orders
+        Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
+        try {
+            List<Purchases> orders = PurchaseController.getPendingOrders(sessionHibernate);
+
+            Common.addAttribute(request, "orders", orders);
+
+            // Render page
+            request.getRequestDispatcher("/WEB-INF/pending-orders.jsp").forward(request, response);
+        } catch (StorageException ex) {
+            //TODO: do something
+        }
+
+        if (sessionHibernate != null) {
+            sessionHibernate.close();
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
