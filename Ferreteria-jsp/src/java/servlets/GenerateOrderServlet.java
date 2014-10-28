@@ -49,7 +49,7 @@ public class GenerateOrderServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
