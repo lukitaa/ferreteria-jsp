@@ -97,6 +97,7 @@ public class Common {
 
 
     // LAST PURCHASE DETAILS STUFF
+    /*
     public static HttpSession generatePurchaseDetails(HttpServletRequest request, List<Details> details) {
         HttpSession session = null;
 
@@ -107,6 +108,7 @@ public class Common {
 
         return session;
     }
+    */
     public static List<Details> getPurchaseDetails(HttpServletRequest request) {
         return (List<Details>) request.getSession().getAttribute(SESSION_ATTR_NAME_PURCHASE_DETAILS);
     }
