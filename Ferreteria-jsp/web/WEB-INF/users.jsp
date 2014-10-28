@@ -57,14 +57,14 @@ String message = request.getParameter("result");
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>
+                        <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -83,7 +83,7 @@ String message = request.getParameter("result");
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
+                    <li><a href="inicio">Inicio</a></li>
                     <li class="active">Usuarios</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->

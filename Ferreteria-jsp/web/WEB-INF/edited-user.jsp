@@ -45,14 +45,14 @@ int totalProducts = shoppingCart.getTotalProducts();
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span>        
                     </button>                   
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a> 
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a> 
                 </div>        
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>"
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>"
+                        <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -68,8 +68,8 @@ int totalProducts = shoppingCart.getTotalProducts();
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="users.jsp">Usuarios</a></li>
+                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="usuarios">Usuarios</a></li>
                     <li class="active">Editar usuario</li>
                 </ol>
                 <div class="jumbotron">
@@ -79,7 +79,7 @@ int totalProducts = shoppingCart.getTotalProducts();
                     <% } else {                                                 %>
                         <p class="lead">Usuario no editado debido a un error interno.</p>
                     <% }                                                        %>
-                    <h2><a href="users.jsp">Volver a pagina usuarios.</a></h2>
+                    <h2><a href="usuarios">Volver a pagina usuarios.</a></h2>
                 </div>
             </div>
         </main>
