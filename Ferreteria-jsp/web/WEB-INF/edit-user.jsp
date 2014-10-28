@@ -55,6 +55,7 @@ int totalProducts = shoppingCart.getTotalProducts();
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
                         <li><a href="productos">Productos</a></li>
                         <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
@@ -82,7 +83,7 @@ int totalProducts = shoppingCart.getTotalProducts();
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
-                    <h1>Editar Usuarios</h1>
+                    <h1>Editar Usuario</h1>
                     <form class="form-inline" role="form" action="usuarios/editar" method="post">
                         <input type="hidden" name="user-id" value="<%= user.getIdUser() %>" >
                         <div class="form-group">
