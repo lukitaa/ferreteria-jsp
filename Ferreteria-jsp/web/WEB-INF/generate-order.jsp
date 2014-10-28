@@ -79,6 +79,7 @@ boolean error = (args != null && !args.isEmpty());
                 <ol class="breadcrumb">
                     <li><a href="home.jsp">Inicio</a></li>
                     <li><a href="ordenes">Ordenes</a></li>
+                    <li><a href="ordenes/pendientes">Ordenes Pendientes</a></li>
                     <li class="active">Generar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->

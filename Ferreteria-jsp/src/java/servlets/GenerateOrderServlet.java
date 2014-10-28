@@ -76,6 +76,8 @@ public class GenerateOrderServlet extends HttpServlet {
                 Logger.getLogger(GenerateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch(NumberFormatException e) {
                 // I don't care about assholes
+            } catch(NullPointerException e) {
+                // I don't care about assholes
             }
         }
 
