@@ -1,10 +1,3 @@
-#NO TOCAR
-
-Por favor no pushear, estoy codeando
-
-![pic](http://www.vam.ac.uk/__data/assets/image/0006/230388/58374-large_custom_290x215_04080303.jpg)
-
-
 ferreteria-jsp
 ==============
 
