@@ -16,9 +16,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <jsp:useBean id="users" type="java.util.List<Users>" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%  
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = shoppingCart.getTotalProducts();
 
 // Catch possible transaction results message
 String message = request.getParameter("result");

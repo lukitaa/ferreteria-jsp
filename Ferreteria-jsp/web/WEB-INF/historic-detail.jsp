@@ -19,15 +19,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
 <jsp:useBean id="purchases" type="Set<Purchases>" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = shoppingCart.getTotalProducts();
 
 int total = 0;
 %>

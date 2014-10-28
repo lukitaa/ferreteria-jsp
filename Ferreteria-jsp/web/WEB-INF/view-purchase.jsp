@@ -16,7 +16,7 @@
 <jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <jsp:useBean id="details" type="java.util.Set<Details>" scope="session"/>
 <%
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = shoppingCart.getTotalProducts();
 
 int total = 0;
 %>   
