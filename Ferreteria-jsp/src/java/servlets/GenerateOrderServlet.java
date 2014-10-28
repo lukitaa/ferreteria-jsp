@@ -49,7 +49,7 @@ public class GenerateOrderServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
@@ -75,6 +75,8 @@ public class GenerateOrderServlet extends HttpServlet {
             } catch (InvalidParameterException ex) {
                 Logger.getLogger(GenerateOrderServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch(NumberFormatException e) {
+                // I don't care about assholes
+            } catch(NullPointerException e) {
                 // I don't care about assholes
             }
         }

@@ -19,21 +19,19 @@ package servlets;
 
 import controllers.PurchaseController;
 import controllers.StorageException;
-import entity.Purchases;
+import entity.Products;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
-import util.HibernateUtil;
 
 /**
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class NotPendingOrdersServlet extends HttpServlet {
+public class ProductsServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,27 +45,21 @@ public class NotPendingOrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Check if admin user is logged
-        if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("inicio");
+        // User must be logged in to access this page!
+        if (!Common.userIsLogged(request)) {
+            response.sendRedirect("login");
             return;
         }
 
-        // Get pending orders
-        Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
         try {
-            List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate);
+            // Load products
+            List<Products> products = PurchaseController.getProducts();
 
-            Common.addAttribute(request, "orders", orders);
+            Common.addAttribute(request, "products", products);
 
-            // Render page
-            request.getRequestDispatcher("/WEB-INF/not-pending-orders.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/products.jsp").forward(request, response);
         } catch (StorageException ex) {
             //TODO: do something
-        }
-
-        if (sessionHibernate != null) {
-            sessionHibernate.close();
         }
     }
 

@@ -33,18 +33,46 @@ import javax.servlet.http.HttpServletResponse;
 public class EditUserServlet extends HttpServlet {
 
 
-    void loadUserEditedView(HttpServletResponse response, SessionUser session, ShoppingCart shoppingCart, int userId, String newUsername, String newPassword, boolean newAdminPolicy) throws IOException {
-        boolean error = false;
+    private void renderEditUserPage(HttpServletRequest request, HttpServletResponse response,
+            int userId) throws IOException, ServletException {
+        // DO NOT edit the logged user
+        //TODO: pass message through POST
+        if (userId == Common.getSessionUser(request).getIdUser()) {
+            response.sendRedirect("../usuarios?result=El usuario se encuentra activo.");
+            return;
+        }
+
+        try {
+            Users user = UsersController.getUser(userId);
+
+            Common.addAttribute(request, "user", user);
+
+            request.getRequestDispatcher("/WEB-INF/edit-user.jsp").forward(request, response);
+        } catch (StorageException ex) {
+            //TODO: do something
+        }
+    }
+
+    private void renderUserEditedView(HttpServletRequest request, HttpServletResponse response,
+            int userId)
+            throws IOException, ServletException {
+
+        String username = request.getParameter("username"),
+               password = request.getParameter("password");
+        boolean admin   = (request.getParameter("admin") != null && request.getParameter("admin").equals("on")),
+                success = false;
 
         try {
             // Recover user
             Users u = UsersController.getUser(userId);
             // Update user attributes
-            UsersController.updateAllUsersAttributes(u, newUsername, newPassword, newAdminPolicy);
-        } catch (StorageException ex) {
-            error = true;
-        }
-        response.sendRedirect("../edited-user.jsp?error="+error);
+            UsersController.updateAllUsersAttributes(u, username, password, admin);
+
+            success = true;
+
+        } catch (StorageException ex) { }
+
+        request.getRequestDispatcher("/WEB-INF/edited-user.jsp?success="+success).forward(request, response);
     }
 
     /**
@@ -58,10 +86,10 @@ public class EditUserServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
@@ -69,22 +97,24 @@ public class EditUserServlet extends HttpServlet {
         ShoppingCart shoppingCart = Common.getCart(request);
 
         // Get the user to edit
-        String userIdToEdit = request.getParameter("usuario"),
-               userIdEdited = request.getParameter("user-id");
+        String userIdReceived = request.getParameter("usuario"),
+               userIdToEdit = request.getParameter("user-id");
 
-        if (userIdToEdit != null && !userIdToEdit.isEmpty()) {
-            //Se llama a la pagina de editar usuario.
-            response.sendRedirect("edited-user.jsp");
-        } else if (userIdEdited != null && !userIdEdited.isEmpty()) {
+        if (userIdReceived != null && !userIdReceived.isEmpty()) {
 
-            String username = request.getParameter("username"),
-                   password = request.getParameter("password");
-            boolean admin   = (request.getParameter("admin") != null && request.getParameter("admin").equals("on"));
+            // User has been selected for edit
+            int userId = Integer.parseInt(userIdReceived);
+            renderEditUserPage(request, response, userId);
 
-            loadUserEditedView(response, session, shoppingCart, Integer.parseInt(userIdEdited), username, password, admin);
+        } else if (userIdToEdit != null && !userIdToEdit.isEmpty()) {
+
+            // User has been edited
+            int userId = Integer.parseInt(userIdToEdit);
+            renderUserEditedView(request, response, userId);
+
         } else {
-            // WTF do the user want to?? Go to ...
-            response.sendRedirect("/Ferreteria-jsp/users.jsp");
+            // WTF do the user want to?? Go to the f...
+            response.sendRedirect("../usuarios");
         }
     }
 

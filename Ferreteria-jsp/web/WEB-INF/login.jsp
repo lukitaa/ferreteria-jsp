@@ -47,11 +47,11 @@ String username = request.getParameter("username");
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
+                        <li><a href="inicio">Inicio</a></li>
                         <li class="active"><a href="login.jsp">Login</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
@@ -66,7 +66,7 @@ String username = request.getParameter("username");
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
+                    <li><a href="inicio">Inicio</a></li>
                     <li class="active">Login</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -76,14 +76,14 @@ String username = request.getParameter("username");
                     <p>Inicia sesi&oacute;n para entrar al sistema de compras.</p>
                     
                     <!-- Intento de login fallido -->
-                    <% if(username != null) { %>
+                    <% if(!username.isEmpty()) { %>
                     <div class="alert alert-danger alert-dismissible" role="alert">
                         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
                         <strong>Error</strong> La combinaci&oacute;n usuario contraseña es incorrecta.
                     </div>
                     <% } %> 
                     
-                    <form role="form" class="form form-horizontal" method="POST" action="Login">
+                    <form role="form" class="form form-horizontal" method="POST" action="login">
                         <div class="form-group">
                             <label for="username-login" class="col-sm-3 control-label">Nombre de Usuario</label>
                             <div class="col-sm-7">

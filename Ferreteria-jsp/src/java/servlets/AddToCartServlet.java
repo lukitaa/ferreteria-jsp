@@ -19,7 +19,6 @@ package servlets;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +27,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author alumno
  */
-@WebServlet(name = "AddToCart", urlPatterns = {"/carrito"})
 public class AddToCartServlet extends HttpServlet {
 
 
@@ -68,7 +66,7 @@ public class AddToCartServlet extends HttpServlet {
 
         // User must be logged in to access this page!
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("/Ferreteria-jsp/login");
+            response.sendRedirect("login");
             return;
         }
 
@@ -94,7 +92,7 @@ public class AddToCartServlet extends HttpServlet {
                 updateCart(shoppingCart, productId, productAmount);
         }
 
-        response.sendRedirect("products.jsp");
+        response.sendRedirect("productos");
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

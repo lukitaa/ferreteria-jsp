@@ -44,7 +44,7 @@ public class OrdersServlet extends HttpServlet {
 
         // Check if admin user is logged
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 

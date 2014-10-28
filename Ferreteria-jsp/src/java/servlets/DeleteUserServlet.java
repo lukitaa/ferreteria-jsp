@@ -48,7 +48,7 @@ public class DeleteUserServlet extends HttpServlet {
 
         // An admin must be logged in to access this page!
         if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
@@ -67,10 +67,14 @@ public class DeleteUserServlet extends HttpServlet {
                 if (userId != loggedUser.getIdUser()) {
                     // Get user to remove
                     Users u = UsersController.getUser(userId);
-                    // Remove it
-                    UsersController.deleteUser(u);
 
-                    resultMessage = "Exito al eliminar el usuario.";
+                    if (u != null) {
+                        // Remove it
+                        UsersController.deleteUser(u);
+                        resultMessage = "Exito al eliminar el usuario.";
+                    } else {
+                        resultMessage = "Do not be a dick :-)";
+                    }
                 } else {
                     resultMessage = "El usuario se encuentra activo.";
                 }
@@ -81,7 +85,7 @@ public class DeleteUserServlet extends HttpServlet {
         }
 
         // Do not display success/error messages
-        response.sendRedirect("users.jsp?result="+resultMessage);
+        response.sendRedirect("usuarios?result="+resultMessage);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

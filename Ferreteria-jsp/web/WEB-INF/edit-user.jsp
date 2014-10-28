@@ -1,23 +1,20 @@
 <%-- 
-    Document   : home
-    Created on : Aug 26, 2014, 5:16:07 PM
-    Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
+    Document   : edit-user
+    Created on : 16/09/2014, 19:41:33
+    Author     : alumno
 --%>
 
 
-<%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>  
+<%@page import="servlets.ShoppingCart"%>
+<%@page import="entity.Users"%>
+<%@page import="controllers.UsersController"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="user" type="Users" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = shoppingCart.getTotalProducts();
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -26,7 +23,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Inicio</title>
+        <title>Ferreter&iacute;a - Editar usuario</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -42,6 +39,7 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         <![endif]-->
     </head>
     <body>
+        
         <!-- BEGINS NAV -->
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -52,21 +50,19 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <% if (sessionUser.isAdmin()) { %>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>
+                        <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
-                        <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <%  if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <% if (totalProducts > 0) { %>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
@@ -78,20 +74,33 @@ int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0
         
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
+                <!-- BEGINS BREADCRUMBS -->
+                <ol class="breadcrumb">
+                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="usuarios">Usuarios</a></li>
+                    <li class="active">Editar</li>
+                </ol>
+                <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
-                <div class="jumbotron presentation home">
-                    <h1>Bienvenido a Ferreter&iacute;a!</h1>
-                    <p>Desde aqu&iacute; puedes acceder a las siguientes opciones: </p>
-                    <div class="container menu">
-                        <div class="row">
-                            <a href="historic.jsp" class="col-md-3 btn-block btn btn-lg">historial</a>
-                            <a href="products.jsp" class="col-md-3 btn-block btn btn-lg">productos</a>
-                            <% if (sessionUser.isAdmin()){ %>
-                                <a href="users.jsp" class="col-md-3 btn-block btn btn-lg">usuarios</a>
-                                <a href="ordenes" class="col-md-3 btn-block btn btn-lg">ordenes</a>
-                            <% } %>
+                <div class="jumbotron presentation users">
+                    <h1>Editar Usuario</h1>
+                    <form class="form-inline" role="form" action="usuarios/editar" method="post">
+                        <input type="hidden" name="user-id" value="<%= user.getIdUser() %>" >
+                        <div class="form-group">
+                            <label for="username">Nombre de usuario</label>
+                            <input type="text" name="username" id="username" class="form-control" placeholder="Nuevo nombre de usuario" value="<%= user.getUsername() %>" required>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <label for="user-password">Contraseña</label>
+                            <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" required>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                Es administrador?  <input type="checkbox" name="admin" <%= (((user.isAdmin()))?"checked":"")%>>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-default">Editar</button>
+                    </form>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

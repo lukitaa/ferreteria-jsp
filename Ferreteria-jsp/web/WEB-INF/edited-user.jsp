@@ -4,20 +4,13 @@
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-
-ShoppingCart shoppingCart = Common.getCart(request);
-
-int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
+int totalProducts = shoppingCart.getTotalProducts();
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">     
@@ -43,7 +36,7 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
     <body>  
          
         <!-- BEGINS NAV -->
-        <nav class="navbar navbar-default" role=\"navigation\">
+        <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid"> 
                 <div class="navbar-header">  
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -52,19 +45,19 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
                         <span class="icon-bar"></span> 
                         <span class="icon-bar"></span>        
                     </button>                   
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a> 
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a> 
                 </div>        
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>"
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>
+                        <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>                     
@@ -75,18 +68,18 @@ int totalProducts         = (shoppingCart != null) ? shoppingCart.getTotalProduc
         <main role="main" class="container">
             <div class="col-md-10 col-md-offset-1">
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="users.jsp">Usuarios</a></li>
+                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="usuarios">Usuarios</a></li>
                     <li class="active">Editar usuario</li>
                 </ol>
                 <div class="jumbotron">
                     <h1>Editar Usuario</h1>
-                    <% if (request.getParameter("error").equals("false")) {     %>
+                    <% if (request.getParameter("success").equals("true")) {     %>
                         <p class="lead">Usuario editado exitosamente.</p>
                     <% } else {                                                 %>
                         <p class="lead">Usuario no editado debido a un error interno.</p>
                     <% }                                                        %>
-                    <h2><a href="users.jsp">Volver a pagina usuarios.</a></h2>
+                    <h2><a href="usuarios">Volver a pagina usuarios.</a></h2>
                 </div>
             </div>
         </main>

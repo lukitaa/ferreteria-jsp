@@ -20,7 +20,6 @@ import controllers.ProductsController;
 import controllers.StorageException;
 import entity.Products;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -34,6 +33,48 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EditProductServlet extends HttpServlet {
 
+
+    private void renderEditProductPage(HttpServletRequest request, HttpServletResponse response,
+            int productId) throws IOException, ServletException {
+
+        Products product = null;
+        try {
+            product = ProductsController.getProduct(productId);
+        } catch (StorageException ex) {
+            Logger.getLogger(EditProductServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        Common.addAttribute(request, "product", product);
+
+        // Render page
+        request.getRequestDispatcher("/WEB-INF/edit-product.jsp").forward(request, response);
+    }
+
+
+    private void renderEditedProductPage(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String productName = request.getParameter("product-name");
+        int productId      = Integer.parseInt(request.getParameter("product-id")),
+            productPrice   = Integer.parseInt(request.getParameter("product-precio")),
+            productStock   = Integer.parseInt(request.getParameter("product-stock"));
+
+        boolean success = false;
+
+        // Obtener los datos antiguos para pasar a la controladora junto a los nuevos y editar.
+        Products oldProduct = null;
+        try {
+            oldProduct = ProductsController.getProduct(productId);
+
+            if(oldProduct != null) {
+                ProductsController.updateProduct(oldProduct, productName, productPrice, productStock);
+                success = true;
+            }
+        }
+        catch (StorageException ex) { }
+
+        // Render page
+        request.getRequestDispatcher("/WEB-INF/edited-product.jsp?success="+success).forward(request, response);
+    }
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,22 +86,27 @@ public class EditProductServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Obtener los valores del producto a editar.
-        int productId = Integer.valueOf(request.getParameter("product-id")),
-            price = Integer.valueOf(request.getParameter("producto-precio")),
-            stock = Integer.valueOf(request.getParameter("producto-stock"));
-        String producto = request.getParameter("producto");
-        boolean error = false;
-        //Obtener los datos antiguos para pasar a la controladora junto a los nuevos y editar.
-        Products oldProduct = null;
-        try {
-            oldProduct = ProductsController.getProduct(productId);
-            if(oldProduct != null)
-                ProductsController.updateProduct(oldProduct, producto, price, stock);
-        } catch (StorageException ex) {
-            error = true;
+
+
+        // An admin must be logged in to access this page!
+        if (!Common.adminIsLogged(request)) {
+            response.sendRedirect("../../inicio");
+            return;
         }
-        response.sendRedirect("edited-product.jsp?error="+error);
+
+
+        String productIdReceived = request.getParameter("id");
+
+        if (productIdReceived != null) {
+
+            // Product has been selected for edit
+            int productId = Integer.parseInt(productIdReceived);
+            renderEditProductPage(request, response, productId);
+
+        } else {
+            // Fuck him if this doesn't want to be loaded
+            renderEditedProductPage(request, response);
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

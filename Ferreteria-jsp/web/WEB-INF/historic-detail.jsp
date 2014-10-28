@@ -1,38 +1,30 @@
 <%-- 
-    Document   : details
-    Created on : Oct 19, 2014, 12:54:45 PM
+    Document   : historic-detail
+    Created on : Sep 23, 2014, 3:34:13 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%@page import="entity.Products"%>
+<%@page import="entity.Purchases"%>
+<%@page import="util.HibernateUtil"%>
+<%@page import="org.hibernate.Session"%>
+<%@page import="java.util.Set"%>
+<%@page import="controllers.PurchaseController"%>
 <%@page import="entity.Details"%>
+<%@page import="controllers.StorageException"%>
+<%@page import="controllers.UsersController"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="purchases" type="Set<Purchases>" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
+int totalProducts = shoppingCart.getTotalProducts();
 
-
-// Load details list
-List<Details> details = Common.getPurchaseDetails(request);
-
-// Check if there is something to list, otherwise exit
-if (details == null) {
-    response.sendRedirect("products.jsp");
-    return;
-}
-
-// Initializate auxiliar variables
-Products p = null;
-boolean itemIsOverProductStock = false;
-int total = 0, stockToBuy = 0, realStock = 0;
-%>   
+int total = 0;
+%>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -40,7 +32,7 @@ int total = 0, stockToBuy = 0, realStock = 0;
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Modificar pedido</title>
+        <title>Ferreter&iacute;a - Historial</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -67,19 +59,22 @@ int total = 0, stockToBuy = 0, realStock = 0;
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li class="active"><a href="products.jsp">Productos</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li class="active"><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>
                         <% if (sessionUser.isAdmin()) { %>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
+                        <%  if (totalProducts > 0) { %>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
                     </ul>
@@ -92,52 +87,43 @@ int total = 0, stockToBuy = 0, realStock = 0;
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="products.jsp">Productos</a></li>
-                    <li class="active">Modificar pedido</li>
+                    <li><a href="inicio">Inicio</a></li>
+                    <li class="active">Historial</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Modificar pedido</h1>
+                    <h1 class="header">Pedidos realizados</h1>
+                    <% if (purchases.size() == 0) { %>
+                    <p class="lead">No se han encontrado pedidos realizados por el usuario.</p>
+                    <% } %>
+                    <% for (Purchases p : purchases) { %>
                     <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Producto</th>
-                                <th>Precio</th>
+                                <th>Precio Historico</th>
                                 <th>Unidades</th>
-                                <th>Stock</th>
-                                <th>Quitar</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <%                             
-                            for (Details d : details) {
-                                // Recover product data
-                                p = d.getProducts();
-                                // Differentiate the amount of unities that
-                                // the user want to buy with the real stock
-                                stockToBuy = d.getAmount(); 
-                                realStock  = p.getStock();
-                                // Check if the user's wishes are over the reality
-                                // In such case scenario, I would congratulate him :-)
-                                itemIsOverProductStock = (stockToBuy <= 0 || stockToBuy > realStock);
-                            %>
-                            <tr class="<%= itemIsOverProductStock?"danger":"" %>">
-                                <td><%= p.getProduct() %></td>
-                                <td><%= d.getPrice() %></td>
-                                <td><%= stockToBuy %></td>
-                                <td><%= realStock %></td>
-                                <td><a href="quitar-del-carrito?producto=<%= p.getIdProduct() %>" class="btn btn-xs btn-warning" title="Quitar del pedido"><span aria-hidden="true">&times;</span><span class="sr-only">Quitar</span></a></td>
-                            </tr>
-                            <%
-                                total += d.getAmount() * d.getPrice();
-                            } %>
+                        <% 
+                        Set<Details> purchaseDetails = p.getDetailses();
+                        for (Details d : purchaseDetails) { 
+                        %>
+                        <tr> 
+                            <td><%= d.getProducts().getProduct() %></td>
+                            <td><%= d.getPrice() %></td>
+                            <td><%= d.getAmount() %></td>
+                        </tr>
+                        <% total += d.getPrice() * d.getAmount(); %>
+                        <% } %>
                         </tbody>
                     </table>
                     <p class="lead">Total: <%= total %></p>
-                    <a href="productos/compra" class="btn btn-info" <%= itemIsOverProductStock?"disabled":""%>>Realizar Pedido</a>
-                    <h4 class="text-muted">Advertencia: no se podra realizar la compra si la cantidad de unidades de un art&iacute;culo supera el stock disponible.</h4>
+                    <% 
+                        total = 0; 
+                    } %>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

@@ -17,23 +17,17 @@
 
 package servlets;
 
-import controllers.PurchaseController;
-import controllers.StorageException;
-import entity.Purchases;
 import java.io.IOException;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
-import util.HibernateUtil;
 
 /**
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class NotPendingOrdersServlet extends HttpServlet {
+public class HomeServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,28 +41,13 @@ public class NotPendingOrdersServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Check if admin user is logged
-        if (!Common.adminIsLogged(request)) {
-            response.sendRedirect("inicio");
+        // User must be logged in to access this page!
+        if (!Common.userIsLogged(request)) {
+            response.sendRedirect("login");
             return;
         }
 
-        // Get pending orders
-        Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-        try {
-            List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate);
-
-            Common.addAttribute(request, "orders", orders);
-
-            // Render page
-            request.getRequestDispatcher("/WEB-INF/not-pending-orders.jsp").forward(request, response);
-        } catch (StorageException ex) {
-            //TODO: do something
-        }
-
-        if (sessionHibernate != null) {
-            sessionHibernate.close();
-        }
+        request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

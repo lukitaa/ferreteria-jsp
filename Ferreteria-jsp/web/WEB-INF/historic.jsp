@@ -1,58 +1,23 @@
 <%-- 
-    Document   : historic-detail
-    Created on : Sep 23, 2014, 3:34:13 PM
+    Document   : historic
+    Created on : Sep 23, 2014, 3:00:57 PM
     Author     : Lucio Martinez <luciomartinez at openmailbox dot org>
 --%>
 
-<%@page import="entity.Purchases"%>
-<%@page import="util.HibernateUtil"%>
-<%@page import="org.hibernate.Session"%>
-<%@page import="java.util.Set"%>
-<%@page import="controllers.PurchaseController"%>
-<%@page import="entity.Details"%>
+
 <%@page import="controllers.StorageException"%>
 <%@page import="controllers.UsersController"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
 <%@page import="entity.Users"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%
-// Check if user is logged
-if (sessionUser == null) {
-    response.sendRedirect("login.jsp");
-    return;
-}
-    
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-List<Users> users = new ArrayList();
-Users u = null;
-try {
-    users = UsersController.getUsers();
-} catch (StorageException ex) {
-    //TODO: do something
-}
-
-String userIdReceived = request.getParameter("usuario");
-// Default to current user when ID is wrong or missing
-// Why? because we don't have an ERROR message *yet*
-int userId = (userIdReceived != null && !userIdReceived.isEmpty()) ? Integer.parseInt(userIdReceived) : sessionUser.getIdUser();
-
-for(Users user : users){
-    if(user.getIdUser() == userId )
-        u = user;
-}
-
-Set<Purchases> purchases = u.getPurchaseses();
-Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
-purchases = UsersController.getUserPurchases(userId, sessionHibernate);
-
-int total = 0;
-%>
+<jsp:useBean id="users" type="java.util.List<Users>" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
+<%    
+int totalProducts = shoppingCart.getTotalProducts();
+%>  
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
     <head>
@@ -87,21 +52,21 @@ int total = 0;
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li class="active"><a href="historic.jsp">Historial</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li class="active"><a href="compras/historial">Historial</a></li>
+                        <li><a href="productos">Productos</a></li>
                         <% if (sessionUser.isAdmin()) { %>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         <% } %>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
@@ -115,40 +80,29 @@ int total = 0;
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
+                    <li><a href="inicio">Inicio</a></li>
                     <li class="active">Historial</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation products">
-                    <h1 class="header">Pedidos realizados</h1>
-                    <% for (Purchases p : purchases) { %>
-                        <table class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th>Producto</th>
-                                    <th>Precio Historico</th>
-                                    <th>Unidades</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <% 
-                            Set<Details> purchaseDetails = p.getDetailses();
-                            for (Details d : purchaseDetails) { 
-                            %>
-                                <tr> 
-                                    <td><%= d.getProducts().getProduct() %></td>
-                                    <td><%= d.getPrice() %></td>
-                                    <td><%= d.getAmount() %></td>
-                                </tr>
-                                <% 
-                                    total += d.getPrice() * d.getAmount();
-                                %>
+                    <h1 class="header">Historial de compras</h1>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Nombre de usuario</th>
+                                <th>Historial</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for (Users u : users) { %>
+                            <tr>    
+                                <td><%= u.getUsername() %></td>
+                                <td><a href="compras/historial?usuario=<%= u.getIdUser()%>" class="btn btn-xs btn-info">Ver</a></td>
+                            </tr>
                             <% } %>
-                            </tbody>
-                        </table>
-                        <p class="lead">Total: <%= total %></p>
-                    <% total = 0; } %>
+                        </tbody>
+                    </table>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

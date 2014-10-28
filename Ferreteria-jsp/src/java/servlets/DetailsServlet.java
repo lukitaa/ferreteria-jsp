@@ -48,15 +48,15 @@ public class DetailsServlet extends HttpServlet {
 
         // Check if user is logged
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
             return;
         }
 
         ShoppingCart shoppingCart = Common.getCart(request);
 
-        // Check if they are products, otherwise exit
-        if (shoppingCart == null || shoppingCart.getProductsId().size() == 0) {
-            response.sendRedirect("/Ferreteria-jsp/products.jsp");
+        // Check if they are products, otherwise show products
+        if (shoppingCart == null || shoppingCart.getProductsId().isEmpty()) {
+            response.sendRedirect("productos");
             return;
         }
 
@@ -66,8 +66,15 @@ public class DetailsServlet extends HttpServlet {
 
             List<Details> details = PurchaseController.getDetailsFromCart(shoppingCart);
 
+            // Check if there is something to buy, otherwise exit
+            if (details == null) {
+                response.sendRedirect("productos");
+                return;
+            }
+
             // Store details on session to be processed on view
-            Common.generatePurchaseDetails(request, details);
+            //Common.generatePurchaseDetails(request, details);
+            Common.addAttribute(request, "purchaseDetails", details);
 
         } catch (InvalidParameterException ex) {
             errorLoadingData = true;
@@ -75,7 +82,7 @@ public class DetailsServlet extends HttpServlet {
             errorLoadingData = true;
         }
 
-        response.sendRedirect("details.jsp" + ((errorLoadingData) ? "?error=1" : ""));
+        request.getRequestDispatcher("/WEB-INF/details.jsp" + ((errorLoadingData) ? "?error=1" : "")).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

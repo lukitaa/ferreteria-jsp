@@ -58,12 +58,12 @@ public class IndexServlet extends HttpServlet {
             throws ServletException, IOException {
 
         install();
-        
+
         // If user is logged in, redirect to the home page
         if (Common.userIsLogged(request))
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("inicio");
         else // Otherwise display the login form
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("login");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -45,6 +45,10 @@
         <servlet-class>servlets.AddProductsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <servlet-class>servlets.AddToCartServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>DeleteProductServlet</servlet-name>
         <servlet-class>servlets.DeleteProductServlet</servlet-class>
     </servlet>
@@ -64,15 +68,36 @@
         <servlet-name>ViewPurchaseServlet</servlet-name>
         <servlet-class>servlets.ViewPurchaseServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>HomeServlet</servlet-name>
+        <servlet-class>servlets.HomeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>PurchaseHistoryServlet</servlet-name>
+        <servlet-class>servlets.PurchaseHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UsersServlet</servlet-name>
+        <servlet-class>servlets.UsersServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProductsServlet</servlet-name>
+        <servlet-class>servlets.ProductsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditProductsServlet</servlet-name>
+        <servlet-class>servlets.EditProductsServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Index</servlet-name>
+        <url-pattern/>
+        <!-- Make it the index -->
         <url-pattern>/index</url-pattern>
         <!--<url-pattern>/</url-pattern> Warning: THIS WILL LOAD INDEX ALWAYS!-->
-        <url-pattern/>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
-        <url-pattern>/Login</url-pattern>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Logout</servlet-name>
@@ -80,11 +105,11 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PurchaseServlet</servlet-name>
-        <url-pattern>/productos/compra</url-pattern>
+        <url-pattern>/carrito/comprar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddUserServlet</servlet-name>
-        <url-pattern>/AddUserServlet</url-pattern>
+        <url-pattern>/usuarios/quitar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditUserServlet</servlet-name>
@@ -92,11 +117,15 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DetailsServlet</servlet-name>
-        <url-pattern>/DetailsServlet</url-pattern>
+        <url-pattern>/carrito</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddToCartServlet</servlet-name>
+        <url-pattern>/AddToCartServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>RemoveProductFromCartServlet</servlet-name>
-        <url-pattern>/quitar-del-carrito</url-pattern>
+        <url-pattern>/carrito/quitar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrdersServlet</servlet-name>
@@ -108,7 +137,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>AddProductsServlet</servlet-name>
-        <url-pattern>/AddProductsServlet</url-pattern>
+        <url-pattern>/productos/editar/agregar</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DeleteProductServlet</servlet-name>
@@ -116,7 +145,7 @@
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>EditProductServlet</servlet-name>
-        <url-pattern>/EditProductServlet</url-pattern>
+        <url-pattern>/productos/editar/producto</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>PendingOrdersServlet</servlet-name>
@@ -129,6 +158,26 @@
     <servlet-mapping>
         <servlet-name>ViewPurchaseServlet</servlet-name>
         <url-pattern>/compra</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HomeServlet</servlet-name>
+        <url-pattern>/inicio</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>PurchaseHistoryServlet</servlet-name>
+        <url-pattern>/compras/historial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UsersServlet</servlet-name>
+        <url-pattern>/usuarios</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProductsServlet</servlet-name>
+        <url-pattern>/productos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditProductsServlet</servlet-name>
+        <url-pattern>/productos/editar</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

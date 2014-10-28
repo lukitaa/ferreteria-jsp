@@ -16,18 +16,12 @@
 <%@page import="servlets.Common"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
-<%
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
+<%   
+int totalProducts = shoppingCart.getTotalProducts();
     
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-    
-String receivedError = request.getParameter("error");
-boolean error = (receivedError != null && receivedError.equals("true"));
+String receivedError = request.getParameter("success");
+boolean error = (receivedError != null && receivedError.equals("false"));
 %>   
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -63,19 +57,19 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="historic.jsp">Historial</a></li>
-                        <li class="active"><a href="products.jsp">Productos</a></li>
-                        <li><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li class="active"><a href="productos">Productos</a></li>
+                        <li><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <%  if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
@@ -89,9 +83,9 @@ boolean error = (receivedError != null && receivedError.equals("true"));
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="products.jsp">Productos</a></li>
-                    <li><a href="products-add.jsp">Editar Productos</a></li>
+                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="productos">Productos</a></li>
+                    <li><a href="productos/editar">Editar Productos</a></li>
                     <li class="active">Agregar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
@@ -103,7 +97,7 @@ boolean error = (receivedError != null && receivedError.equals("true"));
                     <% } else { %>
                         <p class="lead">Producto no agregado.</p>
                     <% } %>
-                    <h2><a href="products-add.jsp">Volver</a></h2>
+                    <h2><a href="productos/editar">Volver</a></h2>
                 </div>
                 <!-- ENDS CONTENT -->
             </div>

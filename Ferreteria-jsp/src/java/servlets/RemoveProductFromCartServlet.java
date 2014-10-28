@@ -53,7 +53,7 @@ public class RemoveProductFromCartServlet extends HttpServlet {
 
         // Check if user is logged
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("login.jsp");
+            response.sendRedirect("../login");
             return;
         }
 
@@ -61,7 +61,7 @@ public class RemoveProductFromCartServlet extends HttpServlet {
 
         // Check if they are products, otherwise exit
         if (shoppingCart == null) {
-            response.sendRedirect("/Ferreteria-jsp/products.jsp");
+            response.sendRedirect("../inicio");
             return;
         }
 
@@ -74,7 +74,7 @@ public class RemoveProductFromCartServlet extends HttpServlet {
             } catch(NumberFormatException e) { } // I don't care about assholes
         }
 
-        response.sendRedirect("DetailsServlet");
+        response.sendRedirect("../carrito");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

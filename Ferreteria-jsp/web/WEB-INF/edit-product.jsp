@@ -1,35 +1,22 @@
 <%-- 
-    Document   : edit-user
-    Created on : 16/09/2014, 19:41:33
-    Author     : alumno
+    Document   : edit-product
+    Created on : 21/10/2014, 12:19:17
+    Author     : usuario
 --%>
 
 
+<%@page import="controllers.ProductsController"%>
+<%@page import="entity.Products"%>
 <%@page import="servlets.Common"%>
 <%@page import="servlets.ShoppingCart"%>
 <%@page import="entity.Users"%>
 <%@page import="controllers.UsersController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <jsp:useBean id="sessionUser" class="servlets.SessionUser" scope="session"/>
+<jsp:useBean id="product" type="Products" scope="session"/>
+<jsp:useBean id="shoppingCart" class="servlets.ShoppingCart" scope="session"/>
 <%  
-// Check if admin user is logged
-if (sessionUser == null || !sessionUser.isAdmin()) {
-    response.sendRedirect("home.jsp");
-    return;
-}
-
-ShoppingCart shoppingCart = Common.getCart(request);
-int totalProducts = (shoppingCart != null) ? shoppingCart.getTotalProducts() : 0;
-
-int userID = Integer.parseInt(request.getParameter("user"));
-
-// DO NOT edit the logged user
-//TODO: pass message through POST
-if (userID == sessionUser.getIdUser()) {
-    response.sendRedirect("users.jsp?result=El usuario se encuentra activo.");
-    return;
-}
-Users user = UsersController.getUser(userID);
+int totalProducts = shoppingCart.getTotalProducts();
 %>
 <!DOCTYPE html>
 <html lang="es" dir="ltr">
@@ -38,7 +25,7 @@ Users user = UsersController.getUser(userID);
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <title>Ferreter&iacute;a - Editar usuario</title>
+        <title>Ferreter&iacute;a - Editar producto</title>
         
         <base href="${pageContext.request.contextPath}/" >
         
@@ -65,18 +52,19 @@ Users user = UsersController.getUser(userID);
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home.jsp">Ferreter&iacute;a</a>
+                    <a class="navbar-brand" href="inicio">Ferreter&iacute;a</a>
                 </div>
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li><a href="home.jsp">Inicio</a></li>
-                        <li><a href="products.jsp">Productos</a></li>
-                        <li class="active"><a href="users.jsp">Usuarios</a></li>
+                        <li><a href="inicio">Inicio</a></li>
+                        <li><a href="compras/historial">Historial</a></li>
+                        <li class="active"><a href="productos">Productos</a></li>
+                        <li><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <% if (totalProducts > 0) { %>
-                        <li><a href="DetailsServlet">Carrito <span class="badge"><%= totalProducts %></span></a></li>
+                        <li><a href="carrito">Carrito <span class="badge"><%= totalProducts %></span></a></li>
                         <% } %>
                         <li><a>Hola, <%= sessionUser.getUsername() %>!</a></li>
                         <li><a class="btn-logout" href="logout">Salir</a></li>
@@ -90,32 +78,28 @@ Users user = UsersController.getUser(userID);
             <div class="col-md-10 col-md-offset-1">
                 <!-- BEGINS BREADCRUMBS -->
                 <ol class="breadcrumb">
-                    <li><a href="home.jsp">Inicio</a></li>
-                    <li><a href="users.jsp">Usuarios</a></li>
+                    <li><a href="inicio">Inicio</a></li>
+                    <li><a href="productos">Productos</a></li>
+                    <li><a href="productos/editar">Editar Productos</a></li>
                     <li class="active">Editar</li>
                 </ol>
                 <!-- ENDS BREADCRUMBS -->
                 <!-- BEGINS CONTENT -->
                 <div class="jumbotron presentation users">
-                    <h1>Editar Usuarios</h1>
-                    <form class="form-inline" role="form" action="usuarios/editar" method="post">
-                        <input type="hidden" name="user-id" value="<%= user.getIdUser() %>" >
+                    <h1>Editar Producto</h1>
+                    <form role="form" action="productos/editar/producto" method="post">
+                        <input type="hidden" name="product-id" value="<%= product.getIdProduct() %>" >
                         <div class="form-group">
-                            <label for="username">Nombre de usuario</label>
-                            <input type="text" name="username" id="username" class="form-control" placeholder="Nuevo nombre de usuario" value="<%= user.getUsername() %>" required>
+                            <label>Nombre producto</label>
+                            <input type="text" name="product-name" id="producto" class="form-control" placeholder="Nombre del producto" value="<%= product.getProduct() %>" required>
                         </div>
                         <div class="form-group">
-                            <label for="user-password">Contraseña</label>
-                            <input type="password" name="password" id="user-password" class="form-control" placeholder="Nueva contraseña" required>
+                            <label>Precio</label>
+                            <input type="text" name="product-precio" id="producto-precio" class="form-control" placeholder="Precio producto" value="<%= product.getPrice() %>" required>
                         </div>
-                        <div class="checkbox">
-                            <label>
-                                <% if(user.isAdmin()) { %> 
-                                    Es administrador?  <input type="checkbox" name="admin" checked>
-                                <% } else { %>
-                                    Es administrador?  <input type="checkbox" name="admin"> 
-                                <% } %>
-                            </label>
+                        <div class="form-group">
+                            <label>Stock</label>
+                            <input type="text" name="product-stock" id="producto-stock" class="form-control" placeholder="Stock del producto" value="<%= product.getStock() %>" required>
                         </div>
                         <button type="submit" class="btn btn-default">Editar</button>
                     </form>

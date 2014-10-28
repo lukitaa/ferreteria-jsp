@@ -17,23 +17,22 @@
 
 package servlets;
 
-import controllers.PurchaseController;
 import controllers.StorageException;
-import entity.Purchases;
+import controllers.UsersController;
+import entity.Users;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.hibernate.Session;
-import util.HibernateUtil;
 
 /**
  *
  * @author Lucio Martinez <luciomartinez at openmailbox dot org>
  */
-public class NotPendingOrdersServlet extends HttpServlet {
+public class UsersServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -53,22 +52,17 @@ public class NotPendingOrdersServlet extends HttpServlet {
             return;
         }
 
-        // Get pending orders
-        Session sessionHibernate = HibernateUtil.getSessionFactory().openSession();
+        List<Users> users = new ArrayList();
         try {
-            List<Purchases> orders = PurchaseController.getNotPendingOrders(sessionHibernate);
-
-            Common.addAttribute(request, "orders", orders);
-
-            // Render page
-            request.getRequestDispatcher("/WEB-INF/not-pending-orders.jsp").forward(request, response);
+            users = UsersController.getUsers();
         } catch (StorageException ex) {
             //TODO: do something
         }
 
-        if (sessionHibernate != null) {
-            sessionHibernate.close();
-        }
+        Common.addAttribute(request, "users", users);
+
+        // Render page
+        request.getRequestDispatcher("/WEB-INF/users.jsp").forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

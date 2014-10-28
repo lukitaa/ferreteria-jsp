@@ -49,21 +49,18 @@ public class PurchaseServlet extends HttpServlet {
 
         // User must be logged in to access this page!
         if (!Common.userIsLogged(request)) {
-            response.sendRedirect("login");
+            response.sendRedirect("../login");
             return;
         }
 
         SessionUser session = Common.getSessionUser(request);
 
-        //TODO: get products to buy from POST
         List<Details> purchaseDetails = Common.getPurchaseDetails(request);
         boolean error = false;
 
-        //List<Details> details = new ArrayList();
-
         // Check if they are products, otherwise exit
         if (purchaseDetails == null) {
-            response.sendRedirect("products.jsp");
+            response.sendRedirect("../inicio");
             return;
         }
 
@@ -80,16 +77,18 @@ public class PurchaseServlet extends HttpServlet {
         }
 
         // Check if there was an error or nothing has been bought
-        if (error || purchaseDetails.size() <= 0) {
+        if (error || purchaseDetails.isEmpty()) {
             //TODO: display an error message
-            response.sendRedirect("products.jsp");
+            response.sendRedirect("../inicio");
             return;
         }
 
-        // Add details into session to pass it to the view
-        //Common.generatePurchaseDetails(request, details);
+        Common.addAttribute(request, "details", purchaseDetails);
 
         request.getRequestDispatcher("/WEB-INF/purchase.jsp").forward(request, response);
+
+        Common.destroyPurchaseDetails(request);
+        Common.destroyCart(request);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

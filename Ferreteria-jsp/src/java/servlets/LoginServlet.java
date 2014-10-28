@@ -48,17 +48,17 @@ public class LoginServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // If user is logged, do not login *again*!
         if (Common.userIsLogged(request)) {
-            response.sendRedirect("home.jsp");
+            response.sendRedirect("inicio");
             return;
         }
 
         // Verify username and password
         String username = request.getParameter("username"),
                password = request.getParameter("password");
-        
+
         // Check if user is trying to login
         if (username != null) {
             try {
@@ -69,7 +69,7 @@ public class LoginServlet extends HttpServlet {
                 // Generate session
                 Common.generateSession(request, u);
                 // Redirect to index
-                response.sendRedirect("home.jsp");
+                response.sendRedirect("inicio");
                 return;
 
             } catch(InvalidParameterException e) {
@@ -77,9 +77,12 @@ public class LoginServlet extends HttpServlet {
             } catch(StorageException e) {
                 Logger.getLogger(LoginServlet.class.getName()).log(Level.SEVERE, null, e);
             }
+        } else {
+            // DO not display 'null' literally
+            username = "";
         }
-        
-        response.sendRedirect("login.jsp?username=" + username);
+
+        request.getRequestDispatcher("/WEB-INF/login.jsp?username="+username).forward(request, response);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
