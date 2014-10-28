@@ -17,7 +17,7 @@ Once again a ferreteria, but this time made with JSP
 
 Aún no completada, pero los pasos por el momento son los siguientes.
 
- 1. Ejecuta el archivo ./Ferreteria/db/install.sql sobre MySQL
+ 1. Corre el script `./Ferreteria/db/install.sql` sobre MySQL
  2. Añade las dependencias al proyecto:
     1. Hibernate
     2. Persistence JPA 2.0
@@ -26,7 +26,8 @@ Aún no completada, pero los pasos por el momento son los siguientes.
  3. En el directorio `./Ferreteria/src/java/`, copia el archivo `hibernate.cfg.xml.template` y pegalo en la misma carpeta con el nombre `hibernate.cfg.xml`
  4. Luego modifica el nuevo archivo `hibernate.cfg.xml` con tus datos
  5. El usuario administrador sera generado al ejecutar `IndexServlet.java`
- 6. Corre el script `add_products.sql` para cargar productos para hacer pruebas
+
+Si te encuentras perezoso, corre el script `./Ferreteria/db/add_products.sql` para cargar algunos productos.
 
 #Autores
 
