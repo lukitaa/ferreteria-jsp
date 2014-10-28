@@ -86,6 +86,9 @@ public class PurchaseServlet extends HttpServlet {
         Common.addAttribute(request, "details", purchaseDetails);
 
         request.getRequestDispatcher("/WEB-INF/purchase.jsp").forward(request, response);
+
+        Common.destroyPurchaseDetails(request);
+        Common.destroyCart(request);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

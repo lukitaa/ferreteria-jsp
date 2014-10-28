@@ -112,7 +112,3 @@ int total = 0;
         <script src="static/js/scripts.js"></script>
     </body>
 </html>
-<%
-Common.destroyPurchaseDetails(request);
-Common.destroyCart(request);
-%>   
