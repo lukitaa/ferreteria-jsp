@@ -36,7 +36,7 @@ int totalProducts = shoppingCart.getTotalProducts();
     <body>  
          
         <!-- BEGINS NAV -->
-        <nav class="navbar navbar-default" role=\"navigagtion\">
+        <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid"> 
                 <div class="navbar-header">  
                     <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -51,7 +51,7 @@ int totalProducts = shoppingCart.getTotalProducts();
                     <ul class="nav navbar-nav">
                         <li><a href="inicio">Inicio</a></li>
                         <li><a href="compras/historial">Historial</a></li>
-                        <li><a href="productos">Productos</a></li>"
+                        <li><a href="productos">Productos</a></li>
                         <li class="active"><a href="usuarios">Usuarios</a></li>
                         <li><a href="ordenes">Ordenes</a></li>
                         </ul>
